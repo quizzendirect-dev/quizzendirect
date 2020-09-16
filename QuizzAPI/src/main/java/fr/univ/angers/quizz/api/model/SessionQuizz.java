@@ -1,20 +1,23 @@
 package fr.univ.angers.quizz.api.model;
 
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-public class SessionQuizz {
+@Data
+@Entity
+@Table(name = "SESSIONQUIZZ")
+public class SessionQuizz implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(name = "NAME")
     private String enoncer;
     @Column(name = "REPONSES")
-    private List<Reponse> reponses;
+    private ReponseList reponses;
     @Column(name = "code")
     private String code;
     @Column(name = "time")
@@ -32,10 +35,10 @@ public class SessionQuizz {
 	public void setEnoncer(String enoncer) {
 		this.enoncer = enoncer;
 	}
-	public List<Reponse> getReponses() {
+	public ReponseList getReponses() {
 		return reponses;
 	}
-	public void setReponses(List<Reponse> reponses) {
+	public void setReponses(ReponseList reponses) {
 		this.reponses = reponses;
 	}
 	public String getCode() {

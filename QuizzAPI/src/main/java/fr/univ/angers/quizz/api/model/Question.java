@@ -1,24 +1,23 @@
 package fr.univ.angers.quizz.api.model;
 
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
-public class Question {
+@Data
+@Entity
+@Table(name = "QUESTION")
+public class Question implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(name = "ENONCER")
     private String enoncer;
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "reponse", cascade = CascadeType.ALL)
     @Column(name = "REPONSES")
-    private List<Reponse> reponses;
+    private ReponseList reponses;
     
     public long getId() {
 		return id;
@@ -32,10 +31,10 @@ public class Question {
 	public void setEnoncer(String enoncer) {
 		this.enoncer = enoncer;
 	}
-	public List<Reponse> getReponses() {
+	public ReponseList getReponses() {
 		return reponses;
 	}
-	public void setReponses(List<Reponse> reponses) {
+	public void setReponses(ReponseList reponses) {
 		this.reponses = reponses;
 	}
 

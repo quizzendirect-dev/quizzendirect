@@ -1,5 +1,7 @@
 package fr.univ.angers.quizz.api.model;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -12,18 +14,19 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "PROFESSEUR")
-public class Professeur {
+public class Professeur implements Serializable {
 
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private long id;
 	    @Column(name = "USER_NAME")
 	    private String userName;
-	    @Column(name = "time")
-	    private Set<Question> questions;
-	    
-	    @OneToOne(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
-	    private Set<SessionQuizz> sessions;
+		@Column(name = "questions")
+	    private QuestionList questions;
+
+	    //@OneToOne(targetEntity=SessionQuizz.class, mappedBy = "sessions", fetch=FetchType.EAGER)
+		@Column(name = "sessions")
+	    private SessionQuizz sessions;
 	    
 	    public long getId() {
 			return id;
@@ -41,19 +44,19 @@ public class Professeur {
 			this.userName = userName;
 		}
 
-		public Set<Question> getQuestions() {
+		public QuestionList getQuestions() {
 			return questions;
 		}
 
-		public void setQuestions(Set<Question> questions) {
+		public void setQuestions(QuestionList questions) {
 			this.questions = questions;
 		}
 
-		public Set<SessionQuizz> getSessions() {
+		public SessionQuizz getSessions() {
 			return sessions;
 		}
 
-		public void setSessions(Set<SessionQuizz> sessions) {
+		public void setSessions(SessionQuizz sessions) {
 			this.sessions = sessions;
 		}
 

@@ -1,13 +1,16 @@
 package fr.univ.angers.quizz.api.model;
 
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-public class Reponse {
+@Data
+@Entity
+@Table(name = "REPONSE")
+public class Reponse implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
