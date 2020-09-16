@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fr.univ.angers.quizz.api.model.Professeur;
 import fr.univ.angers.quizz.api.repository.ProfesseurRepository;
 import graphql.schema.DataFetcher;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProfesseurDataFetcher {
 	
 	 @Autowired
-	  private ProfesseurRepository professeurRepository;
+	 private ProfesseurRepository professeurRepository;
 	  
 
 	  
@@ -22,7 +24,7 @@ public class ProfesseurDataFetcher {
 	    }
 	  
 	  public DataFetcher<Professeur> getProfesseurByName(){
-	      return dataFetchingEnvironment -> professeurRepository.findByName(dataFetchingEnvironment.getArgument("name"));
+	      return dataFetchingEnvironment -> professeurRepository.findByUserName(dataFetchingEnvironment.getArgument("userName"));
 	    }
 
 }

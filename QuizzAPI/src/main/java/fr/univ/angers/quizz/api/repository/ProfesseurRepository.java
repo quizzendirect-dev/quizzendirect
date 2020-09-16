@@ -12,7 +12,7 @@ public interface ProfesseurRepository  extends CrudRepository<Professeur, Long> 
      * @param code
      * @return
      */
-    public Professeur findByName(String code);
+    public Professeur findByUserName(String code);
 
     /**
      * @return

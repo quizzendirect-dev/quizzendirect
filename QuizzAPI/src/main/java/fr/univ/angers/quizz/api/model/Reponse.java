@@ -18,6 +18,7 @@ public class Reponse implements Serializable {
     private String enoncer;
     @Column(name = "VALID")
     private boolean valid;
+
 	public long getId() {
 		return id;
 	}

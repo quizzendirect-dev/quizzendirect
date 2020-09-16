@@ -1,0 +1,37 @@
+type Reponse {
+   id : ID!
+   enoncer : String
+   valid : Boolean
+}
+
+type ReponseList{
+   reponses : [Reponse]
+}
+
+type Question {
+   id : ID!
+   enoncer : String
+   reponses : ReponseList
+}
+type QuestionList {
+   questions : [Question]
+}
+
+type Session {
+    id : ID!
+    enoncer : String
+    reponses : ReponseList
+    code : String
+    time : Int
+}
+
+type Professeur{
+    id : ID!
+    userName : String
+    questions : QuestionList
+    sessions : Session
+}
+
+type Query {
+    allProfesseur : [Professeur]
+}
