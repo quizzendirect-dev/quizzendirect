@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.univ-angers</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>QED</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>quizzendirect</name>
