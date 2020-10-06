@@ -10,4 +10,5 @@ public class Home {
     public String home() {
         return "home";
     }
+
 }
