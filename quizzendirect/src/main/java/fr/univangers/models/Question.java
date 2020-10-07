@@ -22,9 +22,9 @@ public class Question {
     @ElementCollection
     private List<String> reponsesFausses;
     private int time; //En secondes
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @JoinColumn(name = "id_quest")
-    private List<AffectationQuestion> affectations = new ArrayList<>();
+    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "repertoire")
+    private Repertoire repertoire;
 
     public Question() {}
     public Question(String intitule, Choix type, List<String> reponsesBonnes, List<String> reponsesFausses, int time){
@@ -53,10 +53,10 @@ public class Question {
     public void setTime(int time) {this.time = time;}
     public int getTime() {return time;}
 
-    public void setAffectations(List<AffectationQuestion> affectations) {
-        this.affectations = affectations;
+    public void setRepertoire(Repertoire repertoire) {
+        this.repertoire = repertoire;
     }
-    public List<AffectationQuestion> getAffectations() {
-        return affectations;
+    public Repertoire getRepertoire() {
+        return repertoire;
     }
 }

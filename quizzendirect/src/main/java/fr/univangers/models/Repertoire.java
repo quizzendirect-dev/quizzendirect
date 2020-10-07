@@ -13,13 +13,14 @@ public class Repertoire {
     private String nom;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_rep")
-    private List<AffectationQuestion> affectationsQuestions = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Question> questions = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rep")
-    private List<AffectationEnseignant> affectationsEnseignants = new ArrayList<>();
+    private Enseignant enseignant;
 
     public Repertoire() {}
-    public Repertoire(String nom){
+    public Repertoire(String nom, Enseignant enseignant){
+        this.enseignant = enseignant;
         this.nom = nom;
     }
 
@@ -29,13 +30,13 @@ public class Repertoire {
     public void setNom(String nom) {this.nom = nom;}
     public String getNom() {return nom;}
 
-    public void setAffectationsQuestions(List<AffectationQuestion> affectationsQuestions) {this.affectationsQuestions = affectationsQuestions;}
-    public List<AffectationQuestion> getAffectationsQuestions() {return affectationsQuestions;}
+    public void setAffectationsQuestions(List<Question> affectationsQuestions) {this.questions = questions;}
+    public List<Question> getAffectationsQuestions() {return questions;}
 
-    public void setAffectationsEnseignants(List<AffectationEnseignant> affectationsEnseignants) {
-        this.affectationsEnseignants = affectationsEnseignants;
+    public void setEnseignant(Enseignant enseignant) {
+        enseignant = enseignant;
     }
-    public List<AffectationEnseignant> getAffectationsEnseignants() {
-        return affectationsEnseignants;
+    public Enseignant getEnseignant() {
+        return enseignant;
     }
 }

@@ -15,7 +15,7 @@ public class Enseignant {
     private String motdepasse;
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "id_ens")
-    private List<AffectationEnseignant> affectations = new ArrayList<>();
+    private List<Repertoire> repertoires;
 
     public Enseignant() {}
     public Enseignant(String nom, String mail, String motdepasse) {
@@ -36,10 +36,10 @@ public class Enseignant {
     public void setMotdepasse(String motdepasse) {this.motdepasse = motdepasse;}
     public String getMotdepasse() {return motdepasse;}
 
-    public void setAffectations(List<AffectationEnseignant> affectations) {
-        this.affectations = affectations;
+    public void setRepertoires(List<Repertoire> affectations) {
+        this.repertoires = affectations;
     }
-    public List<AffectationEnseignant> getAffectations() {
-        return affectations;
+    public List<Repertoire> getRepertoires() {
+        return repertoires;
     }
 }
