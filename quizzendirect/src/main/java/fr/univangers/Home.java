@@ -1,7 +1,6 @@
 package fr.univangers;
 
 import fr.univangers.models.Enseignant;
-import fr.univangers.models.Question;
 import fr.univangers.models.Repertoire;
 import fr.univangers.services.QuestionService;
 import fr.univangers.services.RepertoireService;

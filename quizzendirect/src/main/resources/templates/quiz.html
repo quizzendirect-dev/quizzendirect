@@ -14,11 +14,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><span class="label label-warning" id="qid">2</span><span th:text="' '+${info.questions.get(0)}">Enoncé</span></h3>
+                <h3>
+                    <span class="label label-warning" id="qid">2</span>
+                    <span id="enonce1" th:text="${info.questions.get(0)}">Enoncé</span>
+                    <span id="enonce2" th:text="${info.questions.get(1)}" style="visibility: hidden" >Enoncé</span>
+                </h3>
             </div>
             <div class="modal-body">
                 <div class="col-xs-3 col-xs-offset-5">
-                    <div id="loadbar" style="display: none;">0)
+                    <div id="loadbar" style="display: none;">)
                         <div class="blockG" id="rotateG_01"></div>
                         <div class="blockG" id="rotateG_02"></div>
                         <div class="blockG" id="rotateG_03"></div>
@@ -31,10 +35,10 @@
                 </div>
 
                 <div class="quiz" id="quiz" data-toggle="buttons" >
-                    <label class="element-animation1 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(0)}" ><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="1">Réponse 1</label>
-                    <label class="element-animation2 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(1)}"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="2" >Réponse 2</label>
-                    <label class="element-animation3 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(2)}"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="3" >Réponse 3</label>
-                    <label class="element-animation4 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(3)}"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="4" >Réponse 4</label>
+                    <label class="element-animation1 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(2)}" ><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="1">Réponse 1</label>
+                    <label class="element-animation2 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(3)}"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="2" >Réponse 2</label>
+                    <label class="element-animation3 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(4)}"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="3" >Réponse 3</label>
+                    <label class="element-animation4 btn btn-lg btn-primary btn-block" th:text="${info.reponses.get(5)}"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name="q_answer" value="4" >Réponse 4</label>
                 </div>
             </div>
             <div class="modal-footer text-muted">

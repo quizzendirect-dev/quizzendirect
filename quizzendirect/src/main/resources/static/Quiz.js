@@ -1,5 +1,5 @@
 $(function(){
-    var loading = $('#loadbar').hide();
+    let loading = $('#loadbar').hide();
     $(document)
         .ajaxStart(function () {
             loading.show();
@@ -8,13 +8,18 @@ $(function(){
     });
 
     $("label.btn").on('click',function () {
-        var choice = $(this).find('input:radio').val();
+        let choice = $(this).find('input:radio').val();
         $('#loadbar').show();
         $('#quiz').fadeOut();
         setTimeout(function(){
             $( "#answer" ).html(  $(this).checking(choice) );
             $('#quiz').show();
             $('#loadbar').fadeOut();
+            let indiceQuestion = $("#qid").html();
+            indiceQuestion++;
+            $("#qid").html(indiceQuestion);
+            $('#enonce1').html($('#enonce2').html());
+
             /* something else */
         }, 1500);
     });
