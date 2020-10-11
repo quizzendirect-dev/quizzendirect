@@ -15,14 +15,14 @@ public class QuizzController {
     public String changeQuestion(Model model) {
 
         class Info{
-           public ArrayList<String> questions;
-           public ArrayList<String> reponses;
+            public ArrayList<String> questions;
+            public ArrayList<String> reponses;
 
-           Info()
-           {
-               questions = new ArrayList<String>();
-               reponses = new ArrayList<String>();
-           }
+            Info()
+            {
+                questions = new ArrayList<String>();
+                reponses = new ArrayList<String>();
+            }
         };
         Info info = new Info();
         info.questions.add("C++ est-il un langage Orienté Objet ?");
