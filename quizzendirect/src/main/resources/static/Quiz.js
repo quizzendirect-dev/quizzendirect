@@ -1,27 +1,68 @@
+var Interval;
+var Choix = 2;
+var Checked = false;
+function start() {
+    return setInterval(changeChrono, 1000);
+}
+
+Interval = start();
+
+function changeChrono()
+{
+    let x = $('#timer').html();
+    x--;
+    if(x >= 0) $('#timer').html(x);
+    else if ( x < 0 || Checked ) {
+        $('#loadbar').show();
+        $('#quiz').fadeOut();
+        $('#quiz2q').fadeOut();
+
+        clearInterval(Interval);
+        setTimeout(changeQuestion,5000);
+    }
+}
+function changeQuestion() {
+    $('#loadbar').hide();
+    let i = $("#qid").html();
+    i++;
+    $("#qid").html(i);
+    $('#enonce1').html($('#enonce2').html());
+    if( Choix == 2) {
+        $('#quiz2q').show();
+        Choix = 4;
+    }
+    else {
+        $('#quiz').show();
+        Choix = 2;
+    }
+
+    $('#timer').html(10);
+    Interval = start();
+}
+
+
 $(function(){
     let loading = $('#loadbar').hide();
     $(document)
         .ajaxStart(function () {
             loading.show();
         }).ajaxStop(function () {
-        loading.hide();
+            loading.hide();
     });
 
     $("label.btn").on('click',function () {
         let choice = $(this).find('input:radio').val();
+        Checked = true;
         $('#loadbar').show();
         $('#quiz').fadeOut();
-        setTimeout(function(){
+        changeChrono();
+
+        /**Changement de la question **/
+      /*  setTimeout(function(){
             $( "#answer" ).html(  $(this).checking(choice) );
             $('#quiz').show();
             $('#loadbar').fadeOut();
-            let indiceQuestion = $("#qid").html();
-            indiceQuestion++;
-            $("#qid").html(indiceQuestion);
-            $('#enonce1').html($('#enonce2').html());
-
-            /* something else */
-        }, 1500);
+        }, 1500);*/
     });
 
     $ans = 3;
