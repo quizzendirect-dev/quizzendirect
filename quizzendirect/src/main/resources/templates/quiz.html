@@ -7,6 +7,11 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var questions = [[${info.questions}]];
+        /*]]>*/
+    </script>
     <script src="../Quiz.js" ></script>
 </head>
 <body>
@@ -15,10 +20,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>
-                    <span class="label label-warning" id="qid">2</span>
-                    <span id="enonce1" th:text="${info.questions.get(0)}">Enoncé</span>
+                    <span class="label label-warning" id="qid">1</span>
+                    <span id="enonce" th:text="${info.questions.get(0)}">Enoncé</span>
                     <span id="timer" class="label label-info" style="float:right;">10</span>
-                    <span id="enonce2" th:text="${info.questions.get(1)}" style="visibility: hidden" >Enoncé</span>
                 </h3>
             </div>
             <div class="modal-body">

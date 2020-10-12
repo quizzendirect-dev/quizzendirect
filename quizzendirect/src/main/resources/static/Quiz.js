@@ -1,6 +1,8 @@
-var Interval;
-var Choix = 2;
-var Checked = false;
+let Interval;
+let Choix = 2;
+let Checked = false;
+
+
 function start() {
     return setInterval(changeChrono, 1000);
 }
@@ -23,19 +25,23 @@ function changeChrono()
 }
 function changeQuestion() {
     $('#loadbar').hide();
-    let i = $("#qid").html();
+
+    //Récuperation des données
+    let i = $('#qid').html();
+
+    //Modification des données dans le modal
     i++;
-    $("#qid").html(i);
-    $('#enonce1').html($('#enonce2').html());
+    $('#qid').html(i);
     if( Choix == 2) {
         $('#quiz2q').show();
+        $('#enonce').html(questions[i-1]);
         Choix = 4;
     }
     else {
         $('#quiz').show();
+        $('#enonce').html(questions[i-1]);
         Choix = 2;
     }
-
     $('#timer').html(10);
     Interval = start();
 }
@@ -55,9 +61,7 @@ $(function(){
         Checked = true;
         $('#loadbar').show();
         $('#quiz').fadeOut();
-        changeChrono();
 
-        /**Changement de la question **/
       /*  setTimeout(function(){
             $( "#answer" ).html(  $(this).checking(choice) );
             $('#quiz').show();

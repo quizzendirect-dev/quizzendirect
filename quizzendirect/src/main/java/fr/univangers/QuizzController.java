@@ -27,6 +27,9 @@ public class QuizzController {
         Info info = new Info();
         info.questions.add("C++ est-il un langage Orienté Objet ?");
         info.questions.add("A hérite de B es-ce que A a les attributs de B ?");
+        info.questions.add("Question numero 3 !");
+        info.questions.add("Question numero 4 !");
+
         info.reponses.add("Oui");
         info.reponses.add("Non");
         info.reponses.add("D'accord");
@@ -35,7 +38,7 @@ public class QuizzController {
         info.reponses.add("Impossible");
 
 
-        model.addAttribute("info",info);
+        model.addAttribute("info", info);
         return "quiz";
     }
 
