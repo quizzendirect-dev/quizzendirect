@@ -10,9 +10,10 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         var questions = [[${info.questions}]];
+        var reponses = [[${info.reponses}]];
         /*]]>*/
     </script>
-    <script src="../Quiz.js" ></script>
+    <script src="../Quiz.js" th:inline="javascript" ></script>
 </head>
 <body>
 <div class="container-fluid bg-info">

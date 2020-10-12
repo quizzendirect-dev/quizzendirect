@@ -61,6 +61,7 @@ $(function(){
         Checked = true;
         $('#loadbar').show();
         $('#quiz').fadeOut();
+        $('#quiz2q').fadeOut();
 
       /*  setTimeout(function(){
             $( "#answer" ).html(  $(this).checking(choice) );
