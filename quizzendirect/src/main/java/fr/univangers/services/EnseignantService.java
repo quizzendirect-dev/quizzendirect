@@ -18,7 +18,9 @@ public class EnseignantService {
         return enseignants;
     }
 
-    public Enseignant getEnseignant(int id_ens) {return enseignantRepository.findById(id_ens).orElse(new Enseignant());}
+    public Enseignant getEnseignant(int id_ens) {
+        return enseignantRepository.findById(id_ens).orElse(new Enseignant());
+    }
 
     public void addEnseignant(Enseignant enseignant){
         enseignantRepository.save(enseignant);

@@ -18,7 +18,7 @@ public class Home {
 
     @GetMapping("/")
     public String home() {
-        Enseignant enseignant = new Enseignant("Genest","Genest.dav@html.fr","1234");
+        Enseignant enseignant = new Enseignant("David","Genest","Genest.dav@html.fr","1234");
         Repertoire repTmp1 = new Repertoire("elo",enseignant);
         repertoireService.addRepertoire(repTmp1);
         for (Repertoire rep:

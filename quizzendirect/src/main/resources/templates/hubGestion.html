@@ -17,7 +17,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 th:text="'Bienvenue M. '+ ${userName}"> Bienvenue M. Dupond </h3>
+                        <h3 th:text="'Bienvenue '+ ${user.getName()}"> Bienvenue </h3>
                     </div>
                     <div class="modal-body">
                         <div class="col-xs-3 col-xs-offset-5">
@@ -34,15 +34,21 @@
                         </div>
 
                         <div class="quiz" id="quiz" data-toggle="buttons">
-                            <label class="element-animation1 btn btn-lg btn-info btn-block">
+                            <label onclick="window.location.href='/CreerSalon';"
+                                   class="element-animation1 btn btn-lg btn-info btn-block">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="1">Créer un Salon</label>
-                            <label class="element-animation2 btn btn-lg btn-warning btn-block">
+                                <input type="radio" name="q_answer" value="1">Créer un Salon
+                            </label>
+                            <label onclick="window.location.href='/GestionQuestions';"
+                                   class="element-animation2 btn btn-lg btn-warning btn-block">
                                 <span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="2"><a href="/GestionQuestions">Gérer vos Questions</a></label>
-                            <label class="element-animation3 btn btn-lg btn-success btn-block"><span class="btn-label">
+                                <input type="radio" name="q_answer" value="2">Gérer vos Questions
+                            </label>
+                            <label onclick="window.location.href='/ConnexionSalonStudent';"
+                                   class="element-animation3 btn btn-lg btn-success btn-block"><span class="btn-label">
                                 <i class="glyphicon glyphicon-chevron-right"></i></span>
-                                <input type="radio" name="q_answer" value="3"><a href="/ConnexionSalonStudent">Vous Connecter à un Quizz</a></label>
+                                <input type="radio" name="q_answer" value="3">Vous Connecter à un Quizz
+                            </label>
 
                         </div>
                     </div>
