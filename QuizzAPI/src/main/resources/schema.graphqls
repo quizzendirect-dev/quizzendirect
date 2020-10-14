@@ -1,37 +1,36 @@
-type Reponse {
-   id : ID!
-   enoncer : String
-   valid : Boolean
-}
-
-type ReponseList{
-   reponses : [Reponse]
-}
-
 type Question {
-   id : ID!
-   enoncer : String
-   reponses : ReponseList
-}
-type QuestionList {
-   questions : [Question]
-}
-
-type Session {
-    id : ID!
-    enoncer : String
-    reponses : ReponseList
-    code : String
-    time : Int
+    id_quest : ID!
+	intitule : String
+	choixUnique : Boolean
+	reponsesBonnes : [String]
+	reponsesFausses : [String]
+	time : Int
+	repertoire : Repertoire
 }
 
-type Professeur{
-    id : ID!
-    userName : String
-    questions : QuestionList
-    sessions : Session
+type Repertoire {
+    id_rep : ID!
+    nom : String
+    questions : [Question]
+    professeur : Professeur
+}
+
+type Professeur {
+    id_ens : ID!
+	nom : String
+	mail : String
+	motdepasse : String
+	repertoires : [Repertoire]
+}
+
+type Historique {
+    id_quest : ID!
+    date : String
 }
 
 type Query {
-    allProfesseur : [Professeur]
+    allProfesseurs : [Professeur]
+    allQuestions : [Question]
+    allRepertoires : [Repertoire]
+    allHistoriques : [Historique]
 }
