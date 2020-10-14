@@ -51,11 +51,10 @@ public class GraphQLProvider {
   
    
   private RuntimeWiring buildWiring() {
-      return RuntimeWiring.newRuntimeWiring().type("Query", typeWiring-> typeWiring
-              .dataFetcher("allProfesseur", professeurDataFetcher.getAllProduct())
-
-                  )
-          .build();
+      return RuntimeWiring.newRuntimeWiring()
+              .type("Query", typeWiring-> typeWiring
+                      .dataFetcher("allProfesseur", professeurDataFetcher.getAllProduct()))
+              .build();
   }
 
   @Bean

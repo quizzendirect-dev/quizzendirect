@@ -15,16 +15,12 @@ public class ProfesseurDataFetcher {
 	
 	 @Autowired
 	 private ProfesseurRepository professeurRepository;
-	  
 
+	 public DataFetcher<List<Professeur>> getAllProduct(){
+	    return dataFetchingEnvironment -> professeurRepository.findAll();
+	 }
 	  
-	  
-	  public DataFetcher<List<Professeur>> getAllProduct(){
-	      return dataFetchingEnvironment -> professeurRepository.findAll();
-	    }
-	  
-	  public DataFetcher<Professeur> getProfesseurByName(){
-	      return dataFetchingEnvironment -> professeurRepository.findByUserName(dataFetchingEnvironment.getArgument("userName"));
-	    }
-
+	 public DataFetcher<Professeur> getProfesseurByName(){
+	 	return dataFetchingEnvironment -> professeurRepository.findByNom(dataFetchingEnvironment.getArgument("userName"));
+	 }
 }
