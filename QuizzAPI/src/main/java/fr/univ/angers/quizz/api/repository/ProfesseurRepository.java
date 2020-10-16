@@ -21,6 +21,6 @@ public interface ProfesseurRepository extends CrudRepository<Professeur, Integer
      */
     @Override
     public List<Professeur> findAll();
-    
+
 }
 

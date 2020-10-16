@@ -22,8 +22,8 @@ public class Repertoire {
     private Professeur professeur;
 
     public Repertoire() {}
-    public Repertoire(String nom, Professeur enseignant){
-        this.professeur = enseignant;
+    public Repertoire(String nom, Professeur professeur){
+        this.professeur = professeur;
         this.nom = nom;
     }
 
@@ -33,13 +33,15 @@ public class Repertoire {
     public void setNom(String nom) {this.nom = nom;}
     public String getNom() {return nom;}
 
-    public void setAffectationsQuestions(List<Question> affectationsQuestions) {this.questions = questions;}
-    public List<Question> getAffectationsQuestions() {return questions;}
+    public void setQuestions(List<Question> affectationsQuestions) {this.questions = questions;}
+    public List<Question> getQuestions() {return questions;}
+    public void addQuestion(Question question) {questions.add(question);}
+    public void removeQuestion(Question question) {questions.remove(question);}
 
-    public void setEnseignant(Professeur enseignant) {
-        enseignant = enseignant;
+    public void setProfesseur(Professeur professeur) {
+        this.professeur = professeur;
     }
-    public Professeur getEnseignant() {
+    public Professeur getProfesseur() {
         return professeur;
     }
 }

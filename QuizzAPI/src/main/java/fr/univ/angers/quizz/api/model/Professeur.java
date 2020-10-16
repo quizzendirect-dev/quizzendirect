@@ -18,12 +18,12 @@ public class Professeur implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_ens;
+	private int id_prof;
 	private String nom; //Nom + prénom
 	private String mail;
 	private String motdepasse;
 	@OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-	@JoinColumn(name = "id_ens")
+	@JoinColumn(name = "id_prof")
 	private List<Repertoire> repertoires;
 
 	public Professeur() {}
@@ -33,8 +33,8 @@ public class Professeur implements Serializable {
 		this.motdepasse = motdepasse;
 	}
 
-	public void setId_ens(int id_ens) {this.id_ens = id_ens;}
-	public int getId_ens() {return id_ens;}
+	public void setId_prof(int id_prof) {this.id_prof = id_prof;}
+	public int getId_prof() {return id_prof;}
 
 	public void setNom(String nom) {this.nom = nom;}
 	public String getNom() {return nom;}
@@ -51,7 +51,6 @@ public class Professeur implements Serializable {
 	public List<Repertoire> getRepertoires() {
 		return repertoires;
 	}
-
-		
-
-	}
+	public void addRepertoire(Repertoire repertoire) {this.repertoires.add(repertoire);}
+	public void removeRepertoire(Repertoire repertoire) {this.repertoires.remove(repertoire);}
+}
