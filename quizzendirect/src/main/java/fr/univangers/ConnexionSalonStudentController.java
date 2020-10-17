@@ -90,6 +90,7 @@ public class ConnexionSalonStudentController {
             return "quiz";
         }
         else {
+            model.addAttribute("erreur","Mauvais salon en entrée");
             return "/ConnexionSallonStudent";
         }
     }

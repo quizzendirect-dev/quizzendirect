@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -30,12 +30,13 @@
 
                             <div class="form-group">
                                 <h3>ID du Salon (4 caractères) </h3>
-                            <input type="text" name="idSalon" class="form-control">
+                                <small style="color:red;" th:text="${erreur}"></small>
+                            <input pattern="[A-Za-z1-9]{4,4}" type="text" name="idSalon" class="form-control">
 
 
 
                             <h3>Votre pseudonyme </h3>
-                            <input type="text" name="pseudo" class="form-control">
+                            <input pattern="[A-Za-z]{1,50}" type="text" name="pseudo" class="form-control">
                         </div>
 
                             <input class=" btn btn-lg btn-block btn-success" type="submit" value="Connexion au salon">

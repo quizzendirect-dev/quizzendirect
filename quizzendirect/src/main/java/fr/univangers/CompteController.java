@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
+
 @Controller
 public class CompteController {
 
@@ -29,7 +30,9 @@ public class CompteController {
         // test si le cookie existe ou est vide
         if(!userEmail.equals("")) {
             User user = new User();
-            user.setId(Integer.parseInt(userId_ens)); user.setEmail(userEmail);
+            if(!userId_ens.equals(""))
+                user.setId(Integer.parseInt(userId_ens));
+            user.setEmail(userEmail);
             user.setPrenom(userPrenom); user.setName(userName);
             // debug console
             System.out.println("\n\n\n###### Test register ######");
@@ -50,6 +53,17 @@ public class CompteController {
     @PostMapping("/register")
     public String register(@ModelAttribute User user, Model model,HttpServletResponse response) {
 
+        // vérifier que le mail n'existe pas déja
+        ArrayList<Enseignant> enseignants = enseignantService.getAllEnseignants();
+
+        for (Enseignant enseignant : enseignants) {
+            if(enseignant.getMail().equals(user.getEmail())) {
+                model.addAttribute("email_exists",true);
+                return "/comptePage";
+            }
+        }
+        // arrivé là, l'email n'est pas présent dans la bdd, on peut créé un nouvel enseignant
+        // création nouvel enseignant
         Enseignant enseignant = new Enseignant(user.getPrenom(),user.getName(),user.getEmail(),user.getPasswd());
         enseignantService.addEnseignant(enseignant);
 
@@ -97,18 +111,18 @@ public class CompteController {
     public String logIn(@ModelAttribute User user, Model model, HttpServletResponse response) {
 
         // debug console
-        System.out.println("\n\n\n###### Test login ######");
+        /*System.out.println("\n\n\n###### Test login ######");
         System.out.println("Prenom : " + user.getPrenom());
         System.out.println("Name : " + user.getName());
         System.out.println("Email : " + user.getEmail());
-        System.out.println("Password : " + user.getPasswd());
+        System.out.println("Password : " + user.getPasswd());*/
 
         ArrayList<Enseignant> enseignants = enseignantService.getAllEnseignants();
 
         for (Enseignant enseignant : enseignants) {
-            System.out.println("enseignant : \n");
+            /*System.out.println("enseignant : \n");
             System.out.println(enseignant.getMail()+"\n");
-            System.out.println(enseignant.getMotdepasse()+"\n");
+            System.out.println(enseignant.getMotdepasse()+"\n");*/
             // si l'enseignant correspond à un enseignant déja enregistré
             if (enseignant.getMail().equals(user.getEmail()) && enseignant.getMotdepasse().equals(user.getPasswd())) {
                 // compléter l'object user envoyé depuis la page login avec le prénom et le nom et l'id
