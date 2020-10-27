@@ -37,78 +37,70 @@
 </div>
 <!--- ********************************************************************************************************************** -->
 
-
-<!-- Modal: modalPoll -->
+<!-- Modal: Pour les Questions -->
 <div class="modal fade right" id="modalPoll-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
         <div class="modal-content">
             <!--Header-->
             <div class="modal-header">
-                <p class="heading lead">Feedback request
-                </p>
-
+                <p class="heading lead" style="color: #00415d;" id="NomRepertoiremodal">Nom Du Repertoire</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="white-text">×</span>
                 </button>
             </div>
-
             <!--Body-->
             <div class="modal-body">
                 <div class="text-center">
                     <i class="far fa-file-alt fa-4x mb-3 animated rotateIn"></i>
                     <p>
-                        <strong>Your opinion matters</strong>
-                    </p>
-                    <p>Have some ideas how to improve our product?
-                        <strong>Give us your feedback.</strong>
-                    </p>
+                        <strong class="heading lead" style="margin:auto; color: #00415d;">Intitulé de la question :</strong>
+                        <input type="text" id="enonceQuestion" placeholder="Question..." style="width: 100%;" />
                 </div>
 
                 <hr>
 
                 <!-- Radio -->
                 <p class="text-center">
-                    <strong>Your rating</strong>
+                    <strong>Réponses possibles :</strong>
                 </p>
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-179" value="option1" checked>
-                    <label class="form-check-label" for="radio-179">Very good</label>
+                    <label class="form-check-label" for="radio-179"><input type="text" placeholder="Reponse A" style="width: 100%;"></label>
                 </div>
 
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-279" value="option2">
-                    <label class="form-check-label" for="radio-279">Good</label>
+                    <label class="form-check-label" for="radio-279"><input type="text" placeholder="Reponse B" style="width: 100%;"></label>
                 </div>
 
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-379" value="option3">
-                    <label class="form-check-label" for="radio-379">Mediocre</label>
+                    <label class="form-check-label" for="radio-379"><input type="text" placeholder="Reponse C" style="width: 100%;"></label>
                 </div>
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-479" value="option4">
-                    <label class="form-check-label" for="radio-479">Bad</label>
+                    <label class="form-check-label" for="radio-479"><input type="text" placeholder="Reponse D" style="width: 100%;"></label>
                 </div>
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-579" value="option5">
-                    <label class="form-check-label" for="radio-579">Very bad</label>
+                    <label class="form-check-label" for="radio-579"><input type="text" placeholder="Aucune des réponses" style="width: 100%;"></label>
                 </div>
                 <!-- Radio -->
 
                 <p class="text-center">
-                    <strong>What could we improve?</strong>
+                    <strong>Petite précision :</strong>
                 </p>
                 <!--Basic textarea-->
                 <div class="md-form">
                     <textarea type="text" id="form79textarea" class="md-textarea form-control" rows="3"></textarea>
-                    <label for="form79textarea">Your message</label>
                 </div>
 
             </div>
 
             <!--Footer-->
             <div class="modal-footer justify-content-center">
-                <a type="button" class="btn btn-primary waves-effect waves-light">Send
+                <a type="button" class="btn btn-primary waves-effect waves-light" id="AjoutQuestion">Ajouter
                     <i class="fa fa-paper-plane ml-1"></i>
                 </a>
                 <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">Cancel</a>
@@ -137,6 +129,7 @@
     </div>
 </div>
 
+<!-- Exemples de repertoires *********************************************************************************************** -->
 <div class="container">
     <button type="button" class="btn btn-lg btn-primary btn-create" data-toggle="modal" data-target="#CreationRep" id="CreationRepertoire">+ Repertoire Question</button>
     <div class="row">
