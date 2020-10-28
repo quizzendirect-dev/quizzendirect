@@ -34,6 +34,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
     public void newSalon(Salon salon) {
         logger.info("StompSessionHandler : newSalon()");
+        logger.info("StompSessionHandler : session connected ? " + this.session.isConnected());
         this.session.send("/app/salon.nouveau", salon);
     }
 

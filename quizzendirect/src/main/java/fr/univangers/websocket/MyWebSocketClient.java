@@ -11,7 +11,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 public class MyWebSocketClient {
 
     // url pour la connexion du websocket
-    private static final String URL = "http://localhost:20020/ws";
+    private static final String URL = "ws://localhost:20020/ws";
     private Logger logger = LogManager.getLogger(MyWebSocketClient.class);
 
     @Autowired
@@ -33,7 +33,8 @@ public class MyWebSocketClient {
         sessionHandler = new MyStompSessionHandler();
         logger.info("WebSocketClient : openConnection()5");
         stompClient.connect(URL, sessionHandler);
-        logger.info("WebSocketClient : openConnection()6");
+        stompClient.start();
+        logger.info("WebSocketClient : isRunning ? " + stompClient.isRunning());
     }
 
 }
