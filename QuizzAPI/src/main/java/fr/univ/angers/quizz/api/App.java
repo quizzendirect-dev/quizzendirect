@@ -13,15 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-public class App
-{
-    @Autowired
-    private ProfesseurRepository professeurRepository;
+public class App {
     
-    public static void main( String[] args )
-    {
-        Professeur prof = new Professeur();
-        prof.setUserName("Prof1");
+    public static void main( String[] args ) {
         SpringApplication.run(App.class, args);
     }
+
 }

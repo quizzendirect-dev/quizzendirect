@@ -2,6 +2,18 @@ package fr.univ.angers.quizz.api.model;
 
 public class Etudiant {
 
+    private int id;
+    private String pseudo;
+    private String idSalon;
+
+    public String getIdSalon() {
+        return idSalon;
+    }
+
+    public void setIdSalon(String idSalon) {
+        this.idSalon = idSalon;
+    }
+
     public int getId() {
         return id;
     }
@@ -17,8 +29,4 @@ public class Etudiant {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
-
-    private int id;
-    private String pseudo;
-
 }

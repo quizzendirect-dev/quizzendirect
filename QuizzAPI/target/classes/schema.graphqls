@@ -1,37 +1,133 @@
-type Reponse {
-   id : ID!
-   enoncer : String
-   valid : Boolean
-}
-
-type ReponseList{
-   reponses : [Reponse]
-}
-
 type Question {
-   id : ID!
-   enoncer : String
-   reponses : ReponseList
-}
-type QuestionList {
-   questions : [Question]
+    """Id unique de la question"""
+    id_quest : ID!
+    """Intitulé de la question"""
+	intitule : String
+    """Vrai si la question est à choix unique, faux sinon"""
+	choixUnique : Boolean
+    """Liste de la (des) bonne(s) réponse(s) à la question"""
+	reponsesBonnes : [String]
+    """Liste de la (des) mauvaise(s) réponse(s) à la question"""
+	reponsesFausses : [String]
+    """Temps de réponse autorisé pour répondre à la question (en secondes)"""
+	time : Int
+    """Répertoire dans lequel est contenue la question"""
+	repertoire : Repertoire
 }
 
-type Session {
-    id : ID!
-    enoncer : String
-    reponses : ReponseList
-    code : String
-    time : Int
+type Repertoire {
+    """Id unique du répertoire"""
+    id_rep : ID!
+    """Nom du répertoire"""
+    nom : String
+    """Liste des différentes questions contenues dans le répertoire"""
+    questions : [Question]
+    """Professeur à qui le répertoire appartient"""
+    professeur : Professeur
 }
 
-type Professeur{
-    id : ID!
-    userName : String
-    questions : QuestionList
-    sessions : Session
+type Professeur {
+    """Id unique du professeur"""
+    id_prof : ID!
+    """Nom du professeur"""
+	nom : String
+    """Adresse mail du professeur"""
+	mail : String
+    """Mot de passe du professeur"""
+	motdepasse : String
+    """Liste des différents répertoires du professeur"""
+	repertoires : [Repertoire]
+}
+
+type Historique {
+    """Id unique de l'historique"""
+    id_quest : ID!
+    """Date de l'historique (jj/mm/aaaa + heure)"""
+    date : String
 }
 
 type Query {
-    allProfesseur : [Professeur]
+    """Renvoie la liste de tous les professeurs"""
+    allProfesseurs : [Professeur]
+    """Renvoie la liste de toutes les questions"""
+    allQuestions : [Question]
+    """Renvoie la liste de tous les répertoires"""
+    allRepertoires : [Repertoire]
+    """Renvoie la liste de tous les historiques"""
+    allHistoriques : [Historique]
+    """Renvoie le professeur correspondant au nom spécifié"""
+    getProfesseurByNom(nom: String!) : Professeur
+    """Renvoie la question correspondant à l'intitulé spécifié"""
+    getQuestionByIntitule(intitule: String!) : Question
+    """Renvoie le répertoire correspondant au nom spécifié"""
+    getRepertoireByNom(nom: String!) : Repertoire
+    """Renvoie l'historique correspondant à la date spécifiée"""
+    getHistoriqueByDate(date: String!) : Historique
+}
+
+type Mutation {
+
+    #Créations
+    """Crée un nouveau professeur correspondant aux paramètres spécifiés"""
+    createProfesseur(nom: String!, mail: String!, motdepasse: String!) : Professeur
+    """Crée une nouvelle question correspondant aux paramètres spécifiés"""
+    createQuestion(intitule: String!, choixUnique: Boolean!, time: Int!) : Question
+    """Crée un nouveau répertoire correspondant au nom spécifié"""
+    createRepertoire(nom: String!) : Repertoire
+    """Crée un nouvel historique correspondant à la date spécifiée"""
+    createHistorique(id_quest: ID!, date: String!) : Historique
+
+
+    #Modifications
+
+    #   Professeur
+    """Modifie le nom d'un professeur"""
+    updateProfesseurNom(id_prof: ID!, nom: String!) : Professeur
+    """Modifie l'adresse mail d'un professeur"""
+    updateProfesseurMail(id_prof: ID!, mail: String!) : Professeur
+    """Modifie le mot de passe d'un professeur"""
+    updateProfesseurMotDePasse(id_prof: ID!, motdepasse: String!) : Professeur
+    """Ajoute un répertoire dans la liste des répertoires d'un professeur"""
+    ajouterRepertoireProfesseur(id_prof: ID!, id_rep: ID!) : Professeur
+    """Supprimer un répertoire de la liste des répertoires d'un professeur"""
+    supprimerRepertoireProfesseur(id_prof: ID!, id_rep: ID!) : Professeur
+
+    #   Question
+    """Modifie l'intitule de la question"""
+    updateQuestionIntitule(id_quest: ID!, intitule: String!) : Question
+    """Modifie le type de la question (True: Choix unique, False: Choix multiple)"""
+    updateQuestionChoixUnique(id_quest: ID!, choixUnique: Boolean!) : Question
+    """Modifie la liste de la (des) bonne(s) réponse(s) à la question"""
+    updateQuestionReponsesBonnes(id_quest: ID!, reponsesBonnes: [String]!) : Question
+    """Modifie la liste de la (des) mauvaise(s) réponse(s) à la question"""
+    updateQuestionReponsesFausses(id_quest: ID!, reponsesFausses: [String]!) : Question
+    """Modifie le temps de réponse de la question"""
+    updateQuestionTime(id_quest: ID!, time: Int) : Question
+    """Modifie le répertoire contenant la question"""
+    updateQuestionRepertoire(id_quest: ID!, id_rep: ID!) : Question
+
+    #   Répertoire
+    """Modifie le nom du répertoire"""
+    updateRepertoireNom(id_rep: ID!, nom: String!) : Repertoire
+    """Ajoute une question dans la liste des questions du répertoire"""
+    ajouterQuestionRepertoire(id_rep: ID!, id_quest: ID!) : Repertoire
+    """Supprime une question de la liste des questions du répertoire"""
+    supprimerQuestionRepertoire(id_rep: ID!, id_quest: ID!) : Repertoire
+    """Modifie le professeur à qui appartient ce répertoire"""
+    updateRepertoireProfesseur(id_rep: ID!, id_prof: ID!) : Repertoire
+
+    #   Historique
+    """Modifie la date de l'historique"""
+    updateHistoriqueDate(id_quest: ID!, date: String!) : Historique
+
+
+    #Suppressions
+    """Supprime le professeur correspondant à l'id spécifié"""
+    removeProfesseur(id_prof: ID!) : Professeur
+    """Supprime la question correspondant à l'id spécifié"""
+    removeQuestion(id_quest: ID!) : Question
+    """Supprime le répertoire correspondant à l'id spécifié"""
+    removeRepertoire(id_rep: ID!) : Repertoire
+    """Supprime l'historique correspondant à l'id spécifié"""
+    removeHistorique(id_quest: ID!) : Historique
 }
