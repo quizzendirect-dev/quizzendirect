@@ -1,4 +1,4 @@
-package fr.univangers;
+package fr.univangers.controller;
 
 import fr.univangers.models.Enseignant;
 import fr.univangers.models.Repertoire;
