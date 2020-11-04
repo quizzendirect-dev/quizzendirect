@@ -14,7 +14,6 @@
 </head>
 <body>
 
-<a href="#" data-toggle="modal" data-target="#CreationRep">Login</a>
 <!--- ********************************************************************************************************************** -->
 <!-- Modal: modalAbandonedCart-->
 <div class="modal fade right" id="CreationRep" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
@@ -28,7 +27,7 @@
                 </button>
                 <div class="md-form">
                     <label for="NomRepertoire">Nom du répertoire</label>
-                    <input type="text" id="NomRepertoire" class="md-textarea form-control" rows="3"/>
+                    <input type="text" id="NomRepertoire" class="md-textarea form-control" rows="3" placeholder="Entrer un repertoire "/>
                 </div>
                 <button type="submit" id="modalRep" class="btn btn-info" style="float: right;margin-top: 10px;">Créer repertoire</button>
             </div>
@@ -44,52 +43,52 @@
         <div class="modal-content">
             <!--Header-->
             <div class="modal-header">
-                <p class="heading lead" style="color: #00415d;" id="NomRepertoiremodal">Nom Du Repertoire</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="white-text">×</span>
                 </button>
+                <p class="heading lead" style="color: #00415d;" id="NomRepertoiremodal">Nom Du Repertoire</p>
             </div>
             <!--Body-->
             <div class="modal-body">
                 <div class="text-center">
                     <i class="far fa-file-alt fa-4x mb-3 animated rotateIn"></i>
                     <p>
-                        <strong class="heading lead" style="margin:auto; color: #00415d;">Intitulé de la question :</strong>
+                        <strong class="heading lead" style="color: #00415d;">Intitulé de la question :</strong>
                         <input type="text" id="enonceQuestion" placeholder="Question..." style="width: 100%;" />
                 </div>
-
                 <hr>
-
+                <label>Type de la question</label><br>
+                <select id="TypeChoix">
+                    <option checked></option>
+                    <option value="unique" >Unique</option>
+                    <option value="multiple">Multiple</option>
+                </select>
                 <!-- Radio -->
-                <p class="text-center">
-                    <strong>Réponses possibles :</strong>
+                <p>
+                    <strong>Réponses possibles : Cocher la bonne réponse </strong>
                 </p>
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-179" value="option1" checked>
-                    <label class="form-check-label" for="radio-179"><input type="text" placeholder="Reponse A" style="width: 100%;"></label>
+                    <label class="form-check-label" for="radio-179"><input type="text" placeholder="Reponse A"></label>
                 </div>
 
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-279" value="option2">
-                    <label class="form-check-label" for="radio-279"><input type="text" placeholder="Reponse B" style="width: 100%;"></label>
+                    <label class="form-check-label" for="radio-279"><input type="text" placeholder="Reponse B"></label>
                 </div>
 
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-379" value="option3">
-                    <label class="form-check-label" for="radio-379"><input type="text" placeholder="Reponse C" style="width: 100%;"></label>
-                </div>
-                <div class="form-check mb-4">
-                    <input class="form-check-input" name="group1" type="radio" id="radio-479" value="option4">
-                    <label class="form-check-label" for="radio-479"><input type="text" placeholder="Reponse D" style="width: 100%;"></label>
+                    <label class="form-check-label" for="radio-379"><input type="text" placeholder="Reponse C"></label>
                 </div>
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-579" value="option5">
-                    <label class="form-check-label" for="radio-579"><input type="text" placeholder="Aucune des réponses" style="width: 100%;"></label>
+                    <label class="form-check-label" for="radio-579"><input type="text" placeholder="Aucune des réponses"></label>
                 </div>
                 <!-- Radio -->
 
-                <p class="text-center">
-                    <strong>Petite précision :</strong>
+                <p>
+                    <strong>Commentaire :</strong>
                 </p>
                 <!--Basic textarea-->
                 <div class="md-form">
@@ -133,51 +132,7 @@
 <div class="container">
     <button type="button" class="btn btn-lg btn-primary btn-create" data-toggle="modal" data-target="#CreationRep" id="CreationRepertoire">+ Repertoire Question</button>
     <div class="row">
-        <div class="col-md-7" >
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Questions Programmation Objet </h3>
-                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                </div>
-                <div class="panel-body">
-                    <button type="button" class="btn btn-sm btn-secondary">+ Question</button>
-                    <button type="button" class="btn btn-lg btn-info btn-block">Comment fonctionne un pointeur intelligent?</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Questions MangoDB</h3>
-                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                </div>
-                <div class="panel-body">
-                    <button type="button" class="btn btn-sm btn-secondary">+ Question</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Questions Web Données</h3>
-                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                </div>
-                <div class="panel-body">
-                    <button type="button" class="btn btn-sm btn-secondary">+ Question</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7">
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Questions Programmation Système</h3>
-                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                </div>
-                <div class="panel-body">
-                    <button type="button" class="btn btn-sm btn-secondary">+ Question</button>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 

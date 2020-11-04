@@ -15,15 +15,27 @@ $(document).on('click', '.panel-heading span.clickable', function(e){
 //Création d'un répertoire
 $(document).on('click','#modalRep',function (){
 
-    let nomNouveauRep = $('#NomRepertoire').val().toString();
+    let value = $('#NomRepertoire').val().toString();
+    let nomNouveauRep = value.substr(0,2).toUpperCase() + value.substr(2);
+
     let repexist = false;
 
+   $('h3').each(function (){
+       if($(this).html() == nomNouveauRep) {
+           $('#NomRepertoire').css('border-color','red');
+           $('#NomRepertoire').val(' ');
+           repexist=true;
+       }
+   });
 
     if(repexist == true){
-        alert("Nom de Répertoire existant!!");
+        let parent = $('#NomRepertoire').parent();
+        $(parent).append("<Label id=\"error\" style=\"color: darkred; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
     }
     else
     {
+        $('#NomRepertoire').css('border-color','black');
+
         let rep = "<div class=\"col-md-7\" id=\"nouveauRep\">\n" +
             "            <div class=\"panel panel-success\">\n" +
             "                <div class=\"panel-heading\">\n" +
@@ -39,6 +51,7 @@ $(document).on('click','#modalRep',function (){
         $('.row').append(rep);
 
         $("#nouveauRep h3").html(nomNouveauRep);
+
         let cpt = $('.row').children().length;
         let mod = cpt % 3;
         if (mod == 2) $("#nouveauRep > div").attr('class', "panel panel-primary");
@@ -56,25 +69,48 @@ $(document).on('click','#modalRep',function (){
         $("#plusquestion").attr("id", id_rep_quest);
         $("#listQuestion").attr("id", id_list_quest);
 
+        $(id_rep).val(' ');
+        $('#error').remove();
+
+
     }
 });
 
 //Modification du NomduRepertoire lors d'un clique sur +Question
 $(document).on('click','.row button',function () {
     let id_bouton_cliquer= $(this).attr('id');
-    console.log(id_bouton_cliquer);
     let tab = id_bouton_cliquer.split("_");
     $("#NomRepertoiremodal").html(tab[1]);
+    $("#NomRepertoiremodal").css('text-align','center');
+    $("#NomRepertoiremodal").css('font-size','30px');
+    $("#NomRepertoiremodal").css('margin-top','20px');
+
 
 });
 
 
 //Ajout des questions à un repertoire
 $(document).on('click','#AjoutQuestion',function () {
+
+    $choix = $('#TypeChoix').val().toString();
+    if( $choix == "multiple") $('.form-check-input').attr('type','checkbox');
+    else $('.form-check-input').attr('type','radio');
+
     let enonce = $("#enonceQuestion").val().toString();
+
+
     let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\">" + enonce + "</button>";
 
     let nomRepertoire = $("#NomRepertoiremodal").html();
+
     let list_question= "#list"+nomRepertoire;
     $(question).appendTo(list_question);
 });
+
+$(document).on('click',"#TypeChoix",function ()
+{
+    $choix = $(this).val().toString();
+    if( $choix == "multiple") $('.form-check-input').attr('type','checkbox');
+    else $('.form-check-input').attr('type','radio');
+});
+

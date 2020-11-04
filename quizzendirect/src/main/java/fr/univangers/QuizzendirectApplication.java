@@ -12,10 +12,10 @@ public class QuizzendirectApplication {
 		SpringApplication.run(QuizzendirectApplication.class, args);
 
 		//TEST DU WEBSOCKET
-		MyWebSocketClient client = new MyWebSocketClient();
+		/*MyWebSocketClient client = new MyWebSocketClient();
 		client.openConnection();
 		Salon salon = new Salon();
-		client.getSessionHandler().newSalon(salon);
+		client.getSessionHandler().newSalon(salon);*/
 	}
 
 }
