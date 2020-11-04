@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -26,9 +26,15 @@
             </div>
             <div class="modal-body">
                 <div class="" id="" data-toggle="buttons">
-                    <button class=" btn btn-lg btn-info btn-block"><span class="btn-label"></span> Un Etudiant</button>
+                    <button onclick="window.location.href='/ConnexionSalonStudent';"
+                            class=" btn btn-lg btn-info btn-block"><span class="btn-label"></span>
+                        Un Etudiant
+                    </button>
                     <div class="text-center"><label class="btn-lg btn-block"> OU </label></div>
-                    <button class=" btn btn-lg btn-block btn-warning"><span class="btn-label"></span>Un Enseignant</button>
+                    <button onclick="window.location.href='/connection';"
+                            class=" btn btn-lg btn-block btn-warning"><span class="btn-label"></span>
+                        Un Enseignant
+                    </button>
 
                 </div>
             </div>

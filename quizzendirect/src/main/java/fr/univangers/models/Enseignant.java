@@ -10,7 +10,8 @@ public class Enseignant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_ens;
-    private String nom; //Nom + prénom
+    private String prenom;
+    private String nom;
     private String mail;
     private String motdepasse;
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
@@ -18,7 +19,8 @@ public class Enseignant {
     private List<Repertoire> repertoires;
 
     public Enseignant() {}
-    public Enseignant(String nom, String mail, String motdepasse) {
+    public Enseignant(String prenom,String nom, String mail, String motdepasse) {
+        this.prenom=prenom;
         this.nom = nom;
         this.mail = mail;
         this.motdepasse = motdepasse;
@@ -26,6 +28,9 @@ public class Enseignant {
 
     public void setId_ens(int id_ens) {this.id_ens = id_ens;}
     public int getId_ens() {return id_ens;}
+
+    public void setPrenom(String prenom) {this.prenom = prenom;}
+    public String getPrenom() {return prenom;}
 
     public void setNom(String nom) {this.nom = nom;}
     public String getNom() {return nom;}

@@ -1,7 +1,6 @@
-package fr.univangers;
+package fr.univangers.controller;
 
 import fr.univangers.models.Enseignant;
-import fr.univangers.models.Question;
 import fr.univangers.models.Repertoire;
 import fr.univangers.services.QuestionService;
 import fr.univangers.services.RepertoireService;
@@ -19,7 +18,7 @@ public class Home {
 
     @GetMapping("/")
     public String home() {
-        Enseignant enseignant = new Enseignant("Genest","Genest.dav@html.fr","1234");
+        Enseignant enseignant = new Enseignant("David","Genest","Genest.dav@html.fr","1234");
         Repertoire repTmp1 = new Repertoire("elo",enseignant);
         repertoireService.addRepertoire(repTmp1);
         for (Repertoire rep:

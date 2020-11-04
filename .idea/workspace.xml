@@ -50,19 +50,6 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/quizzendirect" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -76,6 +63,7 @@
       <workItem from="1601913875059" duration="666000" />
       <workItem from="1601984941671" duration="5000" />
       <workItem from="1601984957953" duration="38000" />
+      <workItem from="1603627673484" duration="64000" />
     </task>
     <servers />
   </component>
@@ -95,15 +83,17 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="405" y="184" width="1133" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1601913928889">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="405" y="185" width="1133" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603627684995">
+      <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="405" y="184" width="1133" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601913928889" />
+    <state x="405" y="185" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1048@0.0.1920.1048" timestamp="1603627684995" />
     <state x="456" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1600247356234" />
-    <state x="780" y="311" key="FileChooserDialogImpl" timestamp="1601984990731">
-      <screen x="65" y="24" width="1855" height="1056" />
+    <state x="740" y="285" width="424" height="491" key="FileChooserDialogImpl" timestamp="1603627735148">
+      <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="740" y="283" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1601913910408" />
+    <state x="740" y="285" width="424" height="491" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1603627735148" />
     <state x="780" y="311" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1601984990731" />
     <state x="461" y="164" key="SettingsEditor" timestamp="1601913947330">
       <screen x="0" y="0" width="1920" height="1040" />
