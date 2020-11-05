@@ -30,8 +30,11 @@ public class Repertoire {
     public void setNom(String nom) {this.nom = nom;}
     public String getNom() {return nom;}
 
-    public void setAffectationsQuestions(List<Question> affectationsQuestions) {this.questions = questions;}
-    public List<Question> getAffectationsQuestions() {return questions;}
+    public void setQuestions(List<Question> questions) {this.questions = questions;}
+    public List<Question> getQuestions() {return questions;}
+
+    public void addQuestion(Question question) {questions.add(question);}
+    public void removeQuestion(Question question) {questions.remove(question);}
 
     public void setEnseignant(Enseignant enseignant) {
         enseignant = enseignant;
