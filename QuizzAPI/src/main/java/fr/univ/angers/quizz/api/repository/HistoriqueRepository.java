@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface HistoriqueRepository extends CrudRepository<Historique, Integer> {
-    public Historique findByDate(String code);
     public List<Historique> findAll();
 }

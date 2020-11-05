@@ -1,61 +1,60 @@
 package fr.univ.angers.quizz.api.model;
 
+import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Salon {
+@Data
+@Entity
+@Table(name = "SALON")
+public class Salon implements Serializable {
 
-    private String id;
-    private int etat; // 0 -> en attente | 1 -> en cours | 2 -> terminé
-    private ArrayList<Question> questionsEnAttente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_salon;
+    private int codeAcces;
+    @OneToMany
+    private List<Question> questionsEnAttente;
+    @OneToMany
+    private List<Question> questionsPosees;
+    @OneToOne
+    @JoinColumn(name = "questioncourante")
     private Question questionCourante;
-    private ArrayList<Question> questionsPosees;
-    private int nbEtudiants;
+    @OneToMany
+    private List<Etudiant> etudiants;
+    @OneToOne
+    @JoinColumn(name = "enseignant")
+    private Enseignant enseignant;
 
-    public String getId() {
-        return id;
+    public Salon(){}
+    public Salon(int codeAcces, Enseignant enseignant){
+        this.codeAcces = codeAcces;
+        this.enseignant = enseignant;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public int getId_salon() {return id_salon;}
 
-    public int getEtat() {
-        return etat;
-    }
+    public void setCodeAcces(int codeAcces) {this.codeAcces = codeAcces;}
+    public int getCodeAcces() {return codeAcces;}
 
-    public void setEtat(int etat) {
-        this.etat = etat;
-    }
+    public void setQuestionsEnAttente(List<Question> questionsEnAttente) {this.questionsEnAttente = questionsEnAttente; }
+    public List<Question> getQuestionEnAttente() {return questionsEnAttente;}
+    public void addQuestion(Question question) {questionsEnAttente.add(question);}
+    public void removeQuestion(Question question) {questionsEnAttente.remove(question);}
 
-    public ArrayList<Question> getQuestionsEnAttente() {
-        return questionsEnAttente;
-    }
+    public List<Question> getQuestionPosees() {return this.questionsPosees;}
 
-    public void setQuestionsEnAttente(ArrayList<Question> questionsEnAttente) {
-        this.questionsEnAttente = questionsEnAttente;
-    }
+    public void setQuestionCourante(Question questionCourante) {this.questionCourante = questionCourante;}
+    public Question getQuestionCourante() {return this.questionCourante;}
 
-    public Question getQuestionCourante() {
-        return questionCourante;
-    }
+    public void setEtudiants(List<Etudiant> etudiants) {this.etudiants = etudiants;}
+    public List<Etudiant> getEtudiants() {return this.etudiants;}
+    public void addEtudiant(Etudiant etudiant) {etudiants.add(etudiant);}
+    public void removeEtudiant(Etudiant etudiant) {etudiants.remove(etudiant);}
 
-    public void setQuestionCourante(Question questionCourante) {
-        this.questionCourante = questionCourante;
-    }
-
-    public ArrayList<Question> getQuestionsPosees() {
-        return questionsPosees;
-    }
-
-    public void setQuestionsPosees(ArrayList<Question> questionsPosees) {
-        this.questionsPosees = questionsPosees;
-    }
-
-    public int getNbEtudiants() {
-        return nbEtudiants;
-    }
-
-    public void setNbEtudiants(int nbEtudiants) {
-        this.nbEtudiants = nbEtudiants;
-    }
+    public void setEnseignant(Enseignant enseignant) {this.enseignant = enseignant;}
+    public Enseignant getEnseignant() {return this.enseignant;}
 }
