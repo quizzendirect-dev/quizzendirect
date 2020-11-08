@@ -72,7 +72,7 @@ public class ConnexionSalonStudentController {
             Info info = new Info();
 
             // ajout des questions à l'objet info.questions
-            if(idSalon==salon1.nom)
+            if(idSalon.equals(salon1.nom))
                 for (int i = 0 ; i<salon1.questions.size();i++) info.questions.add(salon1.questions.get(i));
             else
                 for (int i = 0 ; i<salon2.questions.size();i++) info.questions.add(salon2.questions.get(i));

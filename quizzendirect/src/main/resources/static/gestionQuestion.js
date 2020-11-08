@@ -1,4 +1,3 @@
-
 $(document).on('click', '.panel-heading span.clickable', function(e){
     var $this = $(this);
     if(!$this.hasClass('panel-collapsed')) {
@@ -78,3 +77,6 @@ $(document).on('click','#AjoutQuestion',function () {
     let list_question= "#list"+nomRepertoire;
     $(question).appendTo(list_question);
 });
+
+
+console.log(getAllQuestions());
