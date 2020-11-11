@@ -41,8 +41,10 @@ type Enseignant {
 
 type Historique {
     """Id unique de l'historique"""
-    id_quest : ID!
-    """Date de l'historique (jj/mm/aaaa + heure)"""
+    id_hist : ID!
+    """Id de la question"""
+    question : Question
+    """Date de l'historique (jj/mm/aaaa-hh/mm/ss)"""
     date : String
 }
 
@@ -77,6 +79,8 @@ type Salon {
 }
 
 type Error {
+    function: String!
+    error: String!
     message : String!
 }
 
@@ -114,101 +118,78 @@ type Query {
     getEtudiantById(id_etud: ID!) : EtudiantResult
 }
 
+input QuestionInput {
+    intitule: String!
+    choixUnique: Boolean!
+    reponsesBonnes: [String]!
+    reponsesFausses: [String]!
+    time: Int!
+}
+
+input EnseignantInput {
+    mail : String!
+}
+
+input RepertoireInput {
+    nom: String!,
+    enseignant: EnseignantInput!
+}
+
+input EtudiantInput {
+    pseudo : String!
+    salon : SalonInput!
+}
+
+input SalonInput {
+    codeAcces : Int!
+}
+
 type Mutation {
-    #Créations
+    #   Enseignant
     """Crée un nouvel enseignant correspondant aux paramètres spécifiés"""
     createEnseignant(nom: String!, mail: String!, motdepasse: String!) : EnseignantResult
-    """Crée une nouvelle question correspondant aux paramètres spécifiés"""
-    createQuestion(intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
-    """Crée un nouveau répertoire correspondant aux paramètres spécifiés"""
-    createRepertoire(nom: String!, id_ens: ID!) : RepertoireResult
-    """Crée un nouvel historique correspondant aux paramètres spécifiés"""
-    createHistorique(id_quest: ID!, date: String!) : HistoriqueResult
-    """Crée un nouveau salon correspondant aux paramètres spécifiés"""
-    createSalon(codeAcces: Int!, id_ens: ID!) : SalonResult
-    """Crée un nouvel étudiant correspondant aux paramètres spécifiés"""
-    createEtudiant(pseudo: String!, id_salon: ID!) : EtudiantResult
-
-
-    #Modifications
-    #   Enseignant
-    """Modifie le nom d'un enseignant"""
-    updateEnseignantNom(id_ens: ID!, nom: String!) : EnseignantResult
-    """Modifie l'adresse mail d'un enseignant"""
-    updateEnseignantMail(id_ens: ID!, mail: String!) : EnseignantResult
-    """Modifie le mot de passe d'un enseignant"""
-    updateEnseignantMotDePasse(id_ens: ID!, motdepasse: String!) : EnseignantResult
-    """Ajoute un répertoire dans la liste des répertoires d'un enseignant"""
-    ajouterRepertoireEnseignant(id_ens: ID!, id_rep: ID!) : EnseignantResult
-    """Supprimer un répertoire de la liste des répertoires d'un enseignant"""
-    supprimerRepertoireEnseignant(id_ens: ID!, id_rep: ID!) : EnseignantResult
-
-    #   Question
-    """Modifie l'intitule de la question"""
-    updateQuestionIntitule(id_quest: ID!, intitule: String!) : QuestionResult
-    """Modifie le type de la question (True: Choix unique, False: Choix multiple)"""
-    updateQuestionChoixUnique(id_quest: ID!, choixUnique: Boolean!) : QuestionResult
-    """Modifie la liste de la (des) bonne(s) réponse(s) à la question"""
-    updateQuestionReponsesBonnes(id_quest: ID!, reponsesBonnes: [String]!) : QuestionResult
-    """Modifie la liste de la (des) mauvaise(s) réponse(s) à la question"""
-    updateQuestionReponsesFausses(id_quest: ID!, reponsesFausses: [String]!) : QuestionResult
-    """Modifie le temps de réponse de la question"""
-    updateQuestionTime(id_quest: ID!, time: Int) : QuestionResult
-    """Modifie le répertoire contenant la question"""
-    updateQuestionRepertoire(id_quest: ID!, id_rep: ID!) : QuestionResult
-
-    #   Répertoire
-    """Modifie le nom du répertoire"""
-    updateRepertoireNom(id_rep: ID!, nom: String!) : RepertoireResult
-    """Ajoute une question dans la liste des questions du répertoire"""
-    ajouterQuestionRepertoire(id_rep: ID!, id_quest: ID!) : RepertoireResult
-    """Supprime une question de la liste des questions du répertoire"""
-    supprimerQuestionRepertoire(id_rep: ID!, id_quest: ID!) : RepertoireResult
-    """Modifie l'enseignant à qui appartient ce répertoire"""
-    updateRepertoireEnseignant(id_rep: ID!, id_ens: ID!) : RepertoireResult
-
-    #   Historique
-    """Modifie la question de l'historique"""
-    updateHistoriqueQuestion(id_hist: ID!, id_quest: ID!) : HistoriqueResult
-    """Modifie la date de l'historique"""
-    updateHistoriqueDate(id_hist: ID!, date: String!) : HistoriqueResult
-
-    #   Salon
-    """Modifie le code d'accès au salon"""
-    updateSalonCodeAcces(id_salon: ID!, codeAcces: Int!) : SalonResult
-    """Modifie l'enseignant à qui appartient ce salon"""
-    updateSalonEnseignant(id_salon: ID!, id_ens: ID!) : SalonResult
-    """Ajoute une question dans la liste des questions à poser"""
-    ajouterQuestionSalon(id_salon: ID!, id_quest: ID!) : SalonResult
-    """Supprime une question de la liste des questions à poser"""
-    supprimerQuestionSalon(id_salon: ID!, id_quest: ID!) : SalonResult
-    """Ajoute un étudiant dans la liste des étudiants connectés à ce salon"""
-    ajouterEtudiantSalon(id_salon: ID!, id_quest: ID!) : SalonResult
-    """Supprime un étudiant de la liste des étudiants connectés à ce salon"""
-    supprimerEtudiantSalon(id_salon: ID!, id_quest: ID!) : SalonResult
-
-    #   Étudiant
-    """Modifie le pseudo de l'étudiant"""
-    updateEtudiantPseudo(id_etud: ID!, pseudo: String!) : EtudiantResult
-    """Modifie l'id du salon dans lequel l'étudiant se trouve"""
-    updateEtudiantSalon(id_etud: ID!, id_salon: ID!) : EtudiantResult
-    """Incrémente le compteur de bonnes réponses de l'étudiant"""
-    incrementerBonnesReponsesEtudiant(id_etud: ID!) : EtudiantResult
-    """Incrémente le compteur de questions répondues de l'étudiant"""
-    incrementerQuestionsReponduesEtudiant(id_etud: ID!) : EtudiantResult
-
-
-    #Suppressions
+    """Modifie un enseignant avec le ou les paramètre(s) spécifié(s)"""
+    updateEnseignant(id_ens: ID!, nom: String, mail: String, motdepasse: String, repertoires: [RepertoireInput]) : EnseignantResult
     """Supprime l'enseignant correspondant à l'id spécifié"""
     removeEnseignant(id_ens: ID!) : EnseignantResult
+
+    #   Question
+    """Crée une nouvelle question correspondant aux paramètres spécifiés"""
+    createQuestion(intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
+    """Modifie la question avec le ou les paramètre(s) spécifié(s)"""
+    updateQuestion(id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput) : QuestionResult
     """Supprime la question correspondant à l'id spécifié"""
     removeQuestion(id_quest: ID!) : QuestionResult
+
+    #   Répertoire
+    """Crée un nouveau répertoire correspondant aux paramètres spécifiés"""
+    createRepertoire(nom: String!, enseignant: EnseignantInput!) : RepertoireResult
+    """Modifie le répertoire avec le ou les paramètre(s) spécifié(s)"""
+    updateRepertoire(id_rep: ID!, nom: String, questions: [QuestionInput], enseignant: EnseignantInput) : RepertoireResult
     """Supprime le répertoire correspondant à l'id spécifié"""
     removeRepertoire(id_rep: ID!) : RepertoireResult
+
+    #   Historique
+    """Crée un nouvel historique correspondant aux paramètres spécifiés"""
+    createHistorique(question: QuestionInput!, date: String!) : HistoriqueResult
+    """Modifie l'historique avec le ou les paramètre(s) spécifié(s)"""
+    updateHistorique(id_hist: ID!, question: QuestionInput, date: String) : HistoriqueResult
     """Supprime l'historique correspondant à l'id spécifié"""
     removeHistorique(id_hist: ID!) : HistoriqueResult
+
+    #   Salon
+    """Crée un nouveau salon correspondant aux paramètres spécifiés"""
+    createSalon(codeAcces: Int!, enseignant: EnseignantInput!) : SalonResult
+    """Modifie le salon avec le ou les paramètre(s) spécifié(s)"""
+    updateSalon(id_salon: ID!, codeAcces: Int, questionsEnAttente: [QuestionInput], questionsPosees: [QuestionInput], questionCourante: QuestionInput, etudiants: [EtudiantInput], enseignant: EnseignantInput) : SalonResult
     """Supprime le salon correspondant à l'id spécifié"""
     removeSalon(id_salon: ID!) : SalonResult
+
+    #   Étudiant
+    """Crée un nouvel étudiant correspondant aux paramètres spécifiés"""
+    createEtudiant(pseudo: String!, salon: SalonInput!) : EtudiantResult
+    """Modifie l'étudiant avec le ou les paramètre(s) spécifié(s)"""
+    updateEtudiant(id_etud: ID!, pseudo: String, salon: SalonInput, bonnesReponses: Int, questionsRepondues: Int) : EtudiantResult
     """Supprime l'étudiant correspondant à l'id spécifié"""
     removeEtudiant(id_etud: ID!) : EtudiantResult
 }

@@ -22,8 +22,8 @@ public class Question implements Serializable {
 	@ElementCollection
 	private List<String> reponsesFausses;
 	private int time; //En secondes
-	@OneToOne
-	@JoinColumn(name = "repertoire")
+	@OneToOne()
+	@JoinColumn(name = "id_quest")
 	private Repertoire repertoire;
 
 	public Question() {}
@@ -62,5 +62,4 @@ public class Question implements Serializable {
 	public Repertoire getRepertoire() {
 		return repertoire;
 	}
-
 }

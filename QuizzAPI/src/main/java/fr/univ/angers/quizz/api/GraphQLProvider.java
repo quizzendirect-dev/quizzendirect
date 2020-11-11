@@ -95,55 +95,34 @@ public class GraphQLProvider {
                       .dataFetcher("getEtudiantById", etudiantDataFetcher.getEtudiantById())
               )
               .type("Mutation", typeWiring-> typeWiring
-                      //Créations
-                      .dataFetcher("createEnseignant", enseignantDataFetcher.createEnseignant())
-                      .dataFetcher("createQuestion", questionDataFetcher.createQuestion())
-                      .dataFetcher("createRepertoire", repertoireDataFetcher.createRepertoire())
-                      .dataFetcher("createHistorique", historiqueDataFetcher.createHistorique())
-                      .dataFetcher("createSalon", salonDataFetcher.createSalon())
-                      .dataFetcher("createEtudiant", etudiantDataFetcher.createEtudiant())
-
-                      //Modifications
                       //    Enseignant
-                      .dataFetcher("updateEnseignantNom", enseignantDataFetcher.updateNom())
-                      .dataFetcher("updateEnseignantMail", enseignantDataFetcher.updateMail())
-                      .dataFetcher("updateEnseignantMotDePasse", enseignantDataFetcher.updateMotDePasse())
-                      .dataFetcher("ajouterRepertoireEnseignant", enseignantDataFetcher.ajouterRepertoire())
-                      .dataFetcher("supprimerRepertoireEnseignant", enseignantDataFetcher.supprimerRepertoire())
-                      //    Question
-                      .dataFetcher("updateQuestionIntitule", questionDataFetcher.updateIntitule())
-                      .dataFetcher("updateQuestionChoixUnique", questionDataFetcher.updateChoixUnique())
-                      .dataFetcher("updateQuestionReponsesBonnes", questionDataFetcher.updateReponsesBonnes())
-                      .dataFetcher("updateQuestionReponsesFausses", questionDataFetcher.updateReponsesFausses())
-                      .dataFetcher("updateQuestionTime", questionDataFetcher.updateTime())
-                      .dataFetcher("updateQuestionRepertoire", questionDataFetcher.updateRepertoire())
-                      //    Repertoire
-                      .dataFetcher("updateRepertoireNom", repertoireDataFetcher.updateNom())
-                      .dataFetcher("ajouterQuestionRepertoire", repertoireDataFetcher.ajouterQuestion())
-                      .dataFetcher("supprimerQuestionRepertoire", repertoireDataFetcher.supprimerQuestion())
-                      .dataFetcher("updateRepertoireEnseignant", repertoireDataFetcher.updateEnseignant())
-                      //    Historique
-                      .dataFetcher("updateHistoriqueQuestion", historiqueDataFetcher.updateQuestion())
-                      .dataFetcher("updateHistoriqueDate", historiqueDataFetcher.updateDate())
-                      //    Salon
-                      .dataFetcher("updateSalonCodeAcces", salonDataFetcher.updateCodeAcces())
-                      .dataFetcher("updateSalonEnseignant", salonDataFetcher.updateEnseignant())
-                      .dataFetcher("ajouterQuestionSalon", salonDataFetcher.ajouterQuestion())
-                      .dataFetcher("supprimerQuestionSalon", salonDataFetcher.supprimerQuestion())
-                      .dataFetcher("ajouterEtudiantSalon", salonDataFetcher.ajouterEtudiant())
-                      .dataFetcher("supprimerEtudiantSalon", salonDataFetcher.supprimerEtudiant())
-                      //    Étudiant
-                      .dataFetcher("updateEtudiantPseudo", etudiantDataFetcher.updatePseudo())
-                      .dataFetcher("updateEtudiantSalon", etudiantDataFetcher.updateSalon())
-                      .dataFetcher("incrementerBonnesReponsesEtudiant", etudiantDataFetcher.incrementerBonnesReponses())
-                      .dataFetcher("incrementerQuestionsReponduesEtudiant", etudiantDataFetcher.incrementerQuestionsRepondues())
-
-                      //Suppressions
+                      .dataFetcher("createEnseignant", enseignantDataFetcher.createEnseignant())
+                      .dataFetcher("updateEnseignant", enseignantDataFetcher.updateEnseignant())
                       .dataFetcher("removeEnseignant", enseignantDataFetcher.removeEnseignant())
+
+                      //    Question
+                      .dataFetcher("createQuestion", questionDataFetcher.createQuestion())
+                      .dataFetcher("updateQuestion", questionDataFetcher.updateQuestion())
                       .dataFetcher("removeQuestion", questionDataFetcher.removeQuestion())
+
+                      //    Repertoire
+                      .dataFetcher("createRepertoire", repertoireDataFetcher.createRepertoire())
+                      .dataFetcher("updateRepertoire", repertoireDataFetcher.updateRepertoire())
                       .dataFetcher("removeRepertoire", repertoireDataFetcher.removeRepertoire())
+
+                      //    Historique
+                      .dataFetcher("createHistorique", historiqueDataFetcher.createHistorique())
+                      .dataFetcher("updateHistorique", historiqueDataFetcher.updateHistorique())
                       .dataFetcher("removeHistorique", historiqueDataFetcher.removeHistorique())
+
+                      //    Salon
+                      .dataFetcher("createSalon", salonDataFetcher.createSalon())
+                      .dataFetcher("updateSalon", salonDataFetcher.updateSalon())
                       .dataFetcher("removeSalon", salonDataFetcher.removeSalon())
+
+                      //    Étudiant
+                      .dataFetcher("createEtudiant", etudiantDataFetcher.createEtudiant())
+                      .dataFetcher("updateEtudiant", etudiantDataFetcher.updateEtudiant())
                       .dataFetcher("removeEtudiant", etudiantDataFetcher.removeEtudiant())
               )
               .type("EnseignantResult", typeWriting-> typeWriting.typeResolver(typeResolver))

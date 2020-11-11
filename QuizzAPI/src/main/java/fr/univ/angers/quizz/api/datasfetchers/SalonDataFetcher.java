@@ -1,21 +1,22 @@
 package fr.univ.angers.quizz.api.datasfetchers;
 
-import fr.univ.angers.quizz.api.model.Enseignant;
-import fr.univ.angers.quizz.api.model.Etudiant;
-import fr.univ.angers.quizz.api.model.Question;
-import fr.univ.angers.quizz.api.model.Salon;
+import fr.univ.angers.quizz.api.model.*;
+import fr.univ.angers.quizz.api.model.Error;
 import fr.univ.angers.quizz.api.repository.EnseignantRepository;
 import fr.univ.angers.quizz.api.repository.EtudiantRepository;
 import fr.univ.angers.quizz.api.repository.QuestionRepository;
 import fr.univ.angers.quizz.api.repository.SalonRepository;
 import graphql.schema.DataFetcher;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.text.html.Option;
 import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -38,105 +39,182 @@ public class SalonDataFetcher {
         return dataFetchingEnvironment -> {
             Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
             if(salon.isPresent()) return salon.get();
-            return new Error("Erreur : Ce salon n'existe pas.");
+            // Salon non trouvé
+            return new Error("getSalonById", "NOT_FOUND", "Erreur : Aucun salon correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")) +  "' n'a été trouvé.");
         };
     }
 
     public DataFetcher<Object> createSalon(){
         return dataFetchingEnvironment -> {
-            List<Salon> salons = salonRepository.findAll();
-            for(Salon salon : salons) {
-                if (dataFetchingEnvironment.getArgument("codeAcces").equals(salon.getCodeAcces())) {
-                    return new Error("Erreur : Ce salon existe déjà.");
+            // On vérifie que toutes les données passées en paramètres sont valides
+            if(((int) dataFetchingEnvironment.getArgument("codeAcces")) <= 0) return new Error("createSalon", "INVALID_ARG", "Erreur : Le code d'accès du salon que vous avez saisi : '" + dataFetchingEnvironment.getArgument("codeAcces") +  "' n'est pas correct.");
+            Map<String, Object> enseignantInput = dataFetchingEnvironment.getArgument("enseignant");
+            List<Enseignant> enseignants = enseignantRepository.findAll();
+            for(Enseignant enseignant : enseignants){
+                if(enseignantInput.get("mail").equals(enseignant.getMail())){
+                    // On vérifie que le salon n'existe pas déjà
+                    List<Salon> salons = salonRepository.findAll();
+                    for(Salon salon : salons) {
+                        if (dataFetchingEnvironment.getArgument("codeAcces").equals(salon.getCodeAcces())) return new Error("createSalon", "ALREADY_EXISTS", "Erreur : Ce salon existe déjà.");
+                    }
+                    // On crée le nouveau salon
+                    Salon nouveauSalon = new Salon(dataFetchingEnvironment.getArgument("codeAcces"), enseignant);
+                    salonRepository.save(nouveauSalon);
+                    // Sauvegarde dans la base de données
+                    return nouveauSalon;
                 }
             }
-
-            Optional<Enseignant> enseignant = enseignantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_ens")));
-            if(!enseignant.isPresent()) return new Error("Erreur : Cet enseignant n'existe pas.");
-
-            Salon nouveauSalon = new Salon();
-            nouveauSalon.setCodeAcces(dataFetchingEnvironment.getArgument("codeAcces"));
-            nouveauSalon.setEnseignant(enseignant.get());
-            salonRepository.save(nouveauSalon);
-            return nouveauSalon;
+            return new Error("createSalon", "NOT_FOUND", "Erreur : L'enseignant que vous avez saisi n'existe pas.");
         };
     }
 
-    public DataFetcher<Object> updateCodeAcces(){
+    public DataFetcher<Object> updateSalon(){
         return dataFetchingEnvironment -> {
+            // On vérifie que le salon existe
             Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
+            if(!salon.isPresent()) return new Error("updateSalon", "NOT_FOUND", "Erreur : Aucun salon correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")) +  "' n'a été trouvé.");
 
-            salon.get().setCodeAcces(dataFetchingEnvironment.getArgument("codeAcces"));
-            salonRepository.save(salon.get());
-            return salon;
-        };
-    }
+            // On modifie les attributs passés en paramètres si les nouvelles valeurs sont valides
+            if(dataFetchingEnvironment.containsArgument("codeAcces")) {
+                if(((int) dataFetchingEnvironment.getArgument("codeAcces")) <= 0) return new Error("updateSalon", "INVALID_ARG", "Erreur : Le code d'accès du salon que vous avez saisi : '" + dataFetchingEnvironment.getArgument("codeAcces") +  "' n'est pas correct.");
+                salon.get().setCodeAcces(dataFetchingEnvironment.getArgument("codeAcces"));
+            }
+            if(dataFetchingEnvironment.containsArgument("questionsEnAttente")){
+                List<Map<String, Object>> questionsInput = dataFetchingEnvironment.getArgument("questionsEnAttente");
+                List<Question> questions = questionRepository.findAll();
+                List<Question> questionsToAdd = new ArrayList<Question>();
+                for(Map<String, Object> questionInput : questionsInput){
+                    boolean questionFound = false;
+                    for(Question question : questions){
+                        if(question.getIntitule().equals(questionInput.get("intitule")) && questionInput.get("choixUnique").equals(question.isChoixUnique()) && question.getReponsesBonnes().size() == ((List<String>) questionInput.get("reponsesBonnes")).size() && question.getReponsesFausses().size() == ((List<String>) questionInput.get("reponsesFausses")).size() && questionInput.get("time").equals(question.getTime())){
+                            questionFound = true;
+                            for(int i = 0; i < question.getReponsesBonnes().size(); i++){
+                                if(!question.getReponsesBonnes().get(i).equals(((List<String>) questionInput.get("reponsesBonnes")).get(i))) {
+                                    questionFound = false;
+                                    break;
+                                }
+                            }
+                            for(int i = 0; i < question.getReponsesFausses().size(); i++){
+                                if(!question.getReponsesFausses().get(i).equals(((List<String>) questionInput.get("reponsesFausses")).get(i))) {
+                                    questionFound = false;
+                                    break;
+                                }
+                            }
+                            if(!questionFound) continue;
+                            questionsToAdd.add(question);
+                            break;
+                        }
+                    }
+                    if(!questionFound) return new Error("updateSalon", "NOT_FOUND", "Erreur :  La question '" + questionInput.get("intitule") +  "' n'existe pas.");
+                }
+                salon.get().setQuestionsEnAttente(questionsToAdd);
+            }
+            if(dataFetchingEnvironment.containsArgument("questionsPosees")){
+                List<Map<String, Object>> questionsInput = dataFetchingEnvironment.getArgument("questionsPosees");
+                List<Question> questions = questionRepository.findAll();
+                List<Question> questionsToAdd = new ArrayList<Question>();
+                for(Map<String, Object> questionInput : questionsInput){
+                    boolean questionFound = false;
+                    for(Question question : questions){
+                        if(question.getIntitule().equals(questionInput.get("intitule")) && questionInput.get("choixUnique").equals(question.isChoixUnique()) && question.getReponsesBonnes().size() == ((List<String>) questionInput.get("reponsesBonnes")).size() && question.getReponsesFausses().size() == ((List<String>) questionInput.get("reponsesFausses")).size() && questionInput.get("time").equals(question.getTime())){
+                            questionFound = true;
+                            for(int i = 0; i < question.getReponsesBonnes().size(); i++){
+                                if(!question.getReponsesBonnes().get(i).equals(((List<String>) questionInput.get("reponsesBonnes")).get(i))) {
+                                    questionFound = false;
+                                    break;
+                                }
+                            }
+                            for(int i = 0; i < question.getReponsesFausses().size(); i++){
+                                if(!question.getReponsesFausses().get(i).equals(((List<String>) questionInput.get("reponsesFausses")).get(i))) {
+                                    questionFound = false;
+                                    break;
+                                }
+                            }
+                            if(!questionFound) continue;
+                            questionsToAdd.add(question);
+                            break;
+                        }
+                    }
+                    if(!questionFound) return new Error("updateSalon", "NOT_FOUND", "Erreur :  La question '" + questionInput.get("intitule") +  "' n'existe pas.");
+                }
+                salon.get().setQuestionsPosees(questionsToAdd);
+            }
+            if(dataFetchingEnvironment.containsArgument("questionCourante")){
+                Map<String, Object> questionInput = dataFetchingEnvironment.getArgument("questionCourante");
+                List<Question> questions = questionRepository.findAll();
+                boolean questionFound = false;
+                for(Question question : questions){
+                    if(question.getIntitule().equals(questionInput.get("intitule")) && questionInput.get("choixUnique").equals(question.isChoixUnique()) && question.getReponsesBonnes().size() == ((List<String>) questionInput.get("reponsesBonnes")).size() && question.getReponsesFausses().size() == ((List<String>) questionInput.get("reponsesFausses")).size() && questionInput.get("time").equals(question.getTime())){
+                        questionFound = true;
+                        for(int i = 0; i < question.getReponsesBonnes().size(); i++){
+                            if(!question.getReponsesBonnes().get(i).equals(((List<String>) questionInput.get("reponsesBonnes")).get(i))) {
+                                questionFound = false;
+                                break;
+                            }
+                        }
+                        for(int i = 0; i < question.getReponsesFausses().size(); i++){
+                            if(!question.getReponsesFausses().get(i).equals(((List<String>) questionInput.get("reponsesFausses")).get(i))) {
+                                questionFound = false;
+                                break;
+                            }
+                        }
+                        if(!questionFound) continue;
+                        salon.get().setQuestionCourante(question);
+                        break;
+                    }
+                }
+                if(!questionFound) return new Error("updateSalon", "NOT_FOUND", "Erreur :  La question '" + questionInput.get("intitule") +  "' n'existe pas.");
+            }
+            if(dataFetchingEnvironment.containsArgument("etudiants")) {
+                // On supprime les étudiants qui ne font pas partie de la nouvelle liste des étudiants
+                List<Map<String, Object>> etudiantsInput = dataFetchingEnvironment.getArgument("etudiants");
+                List<Etudiant> salonEtudiants = salon.get().getEtudiants();
+                List<Etudiant> etudiantsToRemove = new ArrayList<>();
+                for(Etudiant etudiant : salonEtudiants){
+                    boolean remove = true;
+                    for(Map<String, Object> etudiantInput : etudiantsInput){
+                        Map<String, Object> salonInput = (Map<String, Object>) etudiantInput.get("salon");
+                        if(etudiant.getPseudo().equals(etudiantInput.get("pseudo")) &&  (salonInput.get("codeAcces").equals(etudiant.getSalon().getCodeAcces()))){
+                            remove = false;
+                            break;
+                        }
+                    }
+                    if(remove) etudiantsToRemove.add(etudiant);
+                    if(salon.get().getEtudiants().isEmpty()) break;
+                }
+                salon.get().removeEtudiants(etudiantsToRemove);
+                // On ajoute les nouveaux étudiants
+                List<Etudiant> etudiants = etudiantRepository.findAll();
+                for(Map<String, Object> etudiantInput : etudiantsInput) {
+                    boolean etudiantExists = false;
+                    Map<String, Object> salonInput = (Map<String, Object>) etudiantInput.get("salon");
+                    for (Etudiant etudiant : etudiants) {
+                        if(etudiant.getPseudo().equals(etudiantInput.get("pseudo")) && salonInput.get("codeAcces").equals(etudiant.getSalon().getCodeAcces())){
+                            if(!salon.get().getEtudiants().contains(etudiant)){//------------------------------------------------
+                                salon.get().addEtudiants(etudiant);
+                            }
+                            etudiantExists = true;
+                            break;
+                        }
+                    }
+                    if(!etudiantExists) return new Error("updateSalon", "NOT_FOUND", "Erreur : L'étudiant '" + etudiantInput.get("pseudo") + "' n'existe pas.");
+                }
+            }
+            if(dataFetchingEnvironment.containsArgument("enseignant")){
+                Map<String, Object> enseignantInput = dataFetchingEnvironment.getArgument("enseignant");
+                List<Enseignant> enseignants = enseignantRepository.findAll();
+                boolean enseignantFound = false;
+                for(Enseignant enseignant : enseignants){
+                    if(enseignantInput.get("mail").equals(enseignant.getMail())){
+                        salon.get().setEnseignant(enseignant);
+                        enseignantFound = true;
+                        break;
+                    }
+                }
+                if(!enseignantFound) return new Error("updateSalon", "NOT_FOUND", "Erreur :  L'enseignant '" + enseignantInput.get("mail") +  "' n'existe pas.");
+            }
 
-    public DataFetcher<Object> updateEnseignant(){
-        return dataFetchingEnvironment -> {
-            Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
-
-            Optional<Enseignant> enseignant = enseignantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_ens")));
-            if(!enseignant.isPresent()) return new Error("Erreur : Cet enseignant n'existe pas.");
-
-            salon.get().setEnseignant(enseignant.get());
-            salonRepository.save(salon.get());
-            return salon;
-        };
-    }
-
-    public DataFetcher<Object> ajouterQuestion(){
-        return dataFetchingEnvironment -> {
-            Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
-
-            Optional<Question> question = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
-            if(!question.isPresent()) return new Error("Erreur : Cette question n'existe pas.");
-
-            salon.get().addQuestion(question.get());
-            salonRepository.save(salon.get());
-            return salon;
-        };
-    }
-
-    public DataFetcher<Object> supprimerQuestion(){
-        return dataFetchingEnvironment -> {
-            Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
-
-            Optional<Question> question = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
-            if(!question.isPresent()) return new Error("Erreur : Cette question n'existe pas.");
-
-            salon.get().removeQuestion(question.get());
-            salonRepository.save(salon.get());
-            return salon;
-        };
-    }
-
-    public DataFetcher<Object> ajouterEtudiant(){
-        return dataFetchingEnvironment -> {
-            Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
-
-            Optional<Etudiant> etudiant = etudiantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_etud")));
-            if(!etudiant.isPresent()) return new Error("Erreur : Cet étudiant n'existe pas.");
-            salon.get().addEtudiant(etudiant.get());
-            salonRepository.save(salon.get());
-            return salon;
-        };
-    }
-
-    public DataFetcher<Object> supprimerEtudiant(){
-        return dataFetchingEnvironment -> {
-            Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
-
-            Optional<Etudiant> etudiant = etudiantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_etud")));
-            if(!etudiant.isPresent()) return new Error("Erreur : Cet étudiant n'existe pas.");
-
-            salon.get().removeEtudiant(etudiant.get());
+            // Sauvegarde dans la base de données
             salonRepository.save(salon.get());
             return salon;
         };
@@ -144,9 +222,11 @@ public class SalonDataFetcher {
 
     public DataFetcher<Object> removeSalon(){
         return dataFetchingEnvironment -> {
+            // On vérifie que le salon existe
             Optional<Salon> salon = salonRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")));
-            if(!salon.isPresent()) return new Error("Erreur : Ce salon n'existe pas.");
+            if(!salon.isPresent()) return new Error("removeSalon", "NOT_FOUND", "Erreur : Aucun salon correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_salon")) +  "' n'a été trouvé.");
 
+            // Suppression du salon de la base de données
             salonRepository.delete(salon.get());
             return salon;
         };

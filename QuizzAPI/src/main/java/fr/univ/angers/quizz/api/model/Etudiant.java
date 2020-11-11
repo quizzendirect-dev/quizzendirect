@@ -15,7 +15,7 @@ public class Etudiant implements Serializable {
     private int id_etud;
     private String pseudo;
     @OneToOne
-    @JoinColumn(name = "salon")
+    @JoinColumn(name = "id_salon")
     private Salon salon;
     private int bonnesReponses = 0; //Pour les statistiques
     private int questionsRepondues = 0;
@@ -24,8 +24,6 @@ public class Etudiant implements Serializable {
     public Etudiant(String pseudo, Salon salon){
         this.pseudo = pseudo;
         this.salon = salon;
-        this.bonnesReponses = 0;
-        this.questionsRepondues = 0;
     }
 
     public int getId_etud() {return this.id_etud;}
@@ -40,9 +38,9 @@ public class Etudiant implements Serializable {
         return this.salon;
     }
 
-    public void addBonneReponse() {this.bonnesReponses++;}
-    public int getBonnesReponses() {return this.bonnesReponses;}
+    public void setBonnesReponses(int bonnesReponses) {this.bonnesReponses = bonnesReponses;}
+    public int getBonnesReponses() {return bonnesReponses; }
 
-    public void addQuestionsRepondues() {this.questionsRepondues++;}
+    public void setQuestionsRepondues(int questionsRepondues) { this.questionsRepondues = questionsRepondues; }
     public int getQuestionsRepondues() {return this.questionsRepondues;}
 }

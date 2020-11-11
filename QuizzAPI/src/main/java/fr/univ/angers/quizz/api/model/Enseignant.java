@@ -50,4 +50,7 @@ public class Enseignant implements Serializable {
 	}
 	public void addRepertoire(Repertoire repertoire) {this.repertoires.add(repertoire);}
 	public void removeRepertoire(Repertoire repertoire) {this.repertoires.remove(repertoire);}
+	public void removeRepertoire(List<Repertoire> repertoires) {
+		for(Repertoire repertoire : repertoires) removeRepertoire(repertoire);
+	}
 }

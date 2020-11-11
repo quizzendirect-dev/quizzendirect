@@ -23,7 +23,8 @@ public class Salon implements Serializable {
     @OneToOne
     @JoinColumn(name = "questioncourante")
     private Question questionCourante;
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "id_salon")
     private List<Etudiant> etudiants;
     @OneToOne
     @JoinColumn(name = "enseignant")
@@ -40,11 +41,10 @@ public class Salon implements Serializable {
     public void setCodeAcces(int codeAcces) {this.codeAcces = codeAcces;}
     public int getCodeAcces() {return codeAcces;}
 
-    public void setQuestionsEnAttente(List<Question> questionsEnAttente) {this.questionsEnAttente = questionsEnAttente; }
+    public void setQuestionsEnAttente(List<Question> questionsEnAttente) {this.questionsEnAttente = questionsEnAttente;}
     public List<Question> getQuestionEnAttente() {return questionsEnAttente;}
-    public void addQuestion(Question question) {questionsEnAttente.add(question);}
-    public void removeQuestion(Question question) {questionsEnAttente.remove(question);}
 
+    public void setQuestionsPosees(List<Question> questionsPosees) {this.questionsPosees = questionsPosees;}
     public List<Question> getQuestionPosees() {return this.questionsPosees;}
 
     public void setQuestionCourante(Question questionCourante) {this.questionCourante = questionCourante;}
@@ -52,8 +52,11 @@ public class Salon implements Serializable {
 
     public void setEtudiants(List<Etudiant> etudiants) {this.etudiants = etudiants;}
     public List<Etudiant> getEtudiants() {return this.etudiants;}
-    public void addEtudiant(Etudiant etudiant) {etudiants.add(etudiant);}
-    public void removeEtudiant(Etudiant etudiant) {etudiants.remove(etudiant);}
+    public void addEtudiants(Etudiant etudiant) {this.etudiants.add(etudiant);}
+    public void removeEtudiant(Etudiant etudiant) {this.etudiants.remove(etudiant);}
+    public void removeEtudiants(List<Etudiant> etudiants) {
+        for(Etudiant etudiant : etudiants) removeEtudiant(etudiant);
+    }
 
     public void setEnseignant(Enseignant enseignant) {this.enseignant = enseignant;}
     public Enseignant getEnseignant() {return this.enseignant;}

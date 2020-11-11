@@ -15,10 +15,11 @@ public class Historique {
     @OneToOne
     @JoinColumn(name = "question")
     private Question question;
-    private String date; //Format : jj/mm/aaaa + hh/mm/ss
+    private String date; //Format : "jj/mm/aaaa-hh/mm"
 
     public Historique() {}
-    public Historique(String date) {
+    public Historique(Question question, String date) {
+        this.question = question;
         this.date = date;
     }
 
