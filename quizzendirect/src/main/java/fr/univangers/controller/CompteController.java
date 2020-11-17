@@ -1,5 +1,6 @@
-package fr.univangers;
+package fr.univangers.controller;
 
+import fr.univangers.User;
 import fr.univangers.models.Enseignant;
 import fr.univangers.repositories.EnseignantRepository;
 import fr.univangers.services.EnseignantService;
