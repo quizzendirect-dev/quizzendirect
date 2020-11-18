@@ -46,7 +46,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="white-text">×</span>
                 </button>
-                <p class="heading lead" style="color: #00415d;" id="NomRepertoiremodal">Nom Du Repertoire</p>
+                <p class="heading lead" style="color: #00415d;" id="NomRepertoiremodal" required="required">Nom Du Repertoire</p>
             </div>
             <!--Body-->
             <div class="modal-body">
@@ -59,8 +59,7 @@
                 <hr>
                 <label>Type de la question</label><br>
                 <select id="TypeChoix">
-                    <option checked></option>
-                    <option value="unique" >Unique</option>
+                    <option value="unique" checked >Unique</option>
                     <option value="multiple">Multiple</option>
                 </select>
                 <!-- Radio -->
@@ -69,21 +68,21 @@
                 </p>
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-179" value="option1" checked>
-                    <label class="form-check-label" for="radio-179"><input type="text" placeholder="Reponse A"></label>
+                    <label class="form-check-label" for="radio-179" style="width: 95%;" ><input type="text" placeholder="Reponse A" style="width:100%;"></label>
                 </div>
 
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-279" value="option2">
-                    <label class="form-check-label" for="radio-279"><input type="text" placeholder="Reponse B"></label>
+                    <label class="form-check-label" for="radio-279" style="width: 95%;" ><input type="text" placeholder="Reponse B" style="width:100%;"></label>
                 </div>
 
                 <div class="form-check mb-4">
                     <input class="form-check-input" name="group1" type="radio" id="radio-379" value="option3">
-                    <label class="form-check-label" for="radio-379"><input type="text" placeholder="Reponse C"></label>
+                    <label class="form-check-label" for="radio-379" style="width: 95%;" ><input type="text" placeholder="Reponse C" style="width:100%;"></label>
                 </div>
                 <div class="form-check mb-4">
-                    <input class="form-check-input" name="group1" type="radio" id="radio-579" value="option5">
-                    <label class="form-check-label" for="radio-579"><input type="text" placeholder="Aucune des réponses"></label>
+                    <input class="form-check-input" name="group1" type="radio" id="radio-479" value="option4" >
+                    <label class="form-check-label" for="radio-479" style="width: 95%;" ><input type="text" placeholder="Aucune des réponses"  style="width:100%;"></label>
                 </div>
                 <!-- Radio -->
 
@@ -108,10 +107,6 @@
     </div>
 </div>
 <!-- Modal: modalPoll -->
-
-
-
-
 
 <!--- ********************************************************************************************************************** -->
 

@@ -16,7 +16,7 @@ $(document).on('click', '.panel-heading span.clickable', function(e){
 $(document).on('click','#modalRep',function (){
 
     let value = $('#NomRepertoire').val().toString();
-    let nomNouveauRep = value.substr(0,2).toUpperCase() + value.substr(2);
+    let nomNouveauRep = value.substr(0,1).toUpperCase() + value.substr(1);
 
     let repexist = false;
 
@@ -69,9 +69,14 @@ $(document).on('click','#modalRep',function (){
         $("#plusquestion").attr("id", id_rep_quest);
         $("#listQuestion").attr("id", id_list_quest);
 
+
+        console.log("Les information du Répertoire : ");
+        console.log("Repertoire à questions : "+ id_rep_quest );
+        console.log("List question id : "+ id_list_quest);
+        console.log("\n");
+
         $(id_rep).val(' ');
         $('#error').remove();
-
 
     }
 });
@@ -80,37 +85,93 @@ $(document).on('click','#modalRep',function (){
 $(document).on('click','.row button',function () {
     let id_bouton_cliquer= $(this).attr('id');
     let tab = id_bouton_cliquer.split("_");
+    let idrep = "#id"+tab[1]+"> div";
+    let classe = $(idrep).attr('class');
+
+    let parent = $('#NomRepertoiremodal').parent();
+
     $("#NomRepertoiremodal").html(tab[1]);
     $("#NomRepertoiremodal").css('text-align','center');
     $("#NomRepertoiremodal").css('font-size','30px');
     $("#NomRepertoiremodal").css('margin-top','20px');
 
+    // Changement de la couleur du titre de la modal
+    if(classe == "panel panel-primary" )
+       $(parent).css('background-color','#3498db');
+    else if( classe == "panel panel-success" )
+       $(parent).css('background-color','#58d68d');
+    else
+       $(parent).css('background-color','#fcf3cf');
 
+   // Initialisation des différentes champs dans la modal
+    $('#enonceQuestion').val(' ');
+    let i = 0;
+    $('input[name="group1"]').each(function () {
+        i++;
+        console.log("I :" + i);
+        let label_next = $(this).next();
+        let input_into_the_label = label_next.children();
+        if( i == 2)
+        {
+            $(this).attr('checked','true');
+            input_into_the_label.css('background-color', '#22d0ae');
+        }
+        else input_into_the_label.css('background-color', 'white');
+    });
 });
-
 
 //Ajout des questions à un repertoire
 $(document).on('click','#AjoutQuestion',function () {
 
-    $choix = $('#TypeChoix').val().toString();
-    if( $choix == "multiple") $('.form-check-input').attr('type','checkbox');
-    else $('.form-check-input').attr('type','radio');
-
     let enonce = $("#enonceQuestion").val().toString();
-
-
-    let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\">" + enonce + "</button>";
-
+    let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
     let nomRepertoire = $("#NomRepertoiremodal").html();
-
     let list_question= "#list"+nomRepertoire;
     $(question).appendTo(list_question);
+
 });
 
 $(document).on('click',"#TypeChoix",function ()
 {
     $choix = $(this).val().toString();
     if( $choix == "multiple") $('.form-check-input').attr('type','checkbox');
-    else $('.form-check-input').attr('type','radio');
+    else
+    {
+        $('.form-check-input').attr('type','radio');
+    }
+});
+
+
+$(document).on('click','input[name="group1"]',function (){
+    $choix = $('#TypeChoix').val().toString();
+    if( $choix == "multiple") {
+
+        $('input[name="group1"]').each(function () {
+            let label_next = $(this).next();
+            let input_into_the_label = label_next.children();
+            if( $(this).attr('checked')  )
+                input_into_the_label.css('background-color', '#22d0ae');
+            else
+                input_into_the_label.css('background-color', 'red');
+
+        });
+    }
+    else
+    {
+         $(this).attr('checked', 'true');
+         let input_selected = $(this);
+        $('input[name="group1"]').each(function () {
+            let label_next = $(this).next();
+            let input_into_the_label = label_next.children();
+            if ($(this).val() == input_selected.val() ) {
+                $(this).attr('checked', 'true');
+                input_into_the_label.css('background-color', '#22d0ae');
+            }
+            else {
+                $(this).attr('checked', 'false');
+                input_into_the_label.css('background-color', 'red');
+            }
+        });
+    }
 });
 
