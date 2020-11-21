@@ -18,13 +18,6 @@ public class Home {
 
     @GetMapping("/")
     public String home() {
-        Enseignant enseignant = new Enseignant("David","Genest","Genest.dav@html.fr","1234");
-        Repertoire repTmp1 = new Repertoire("elo",enseignant);
-        repertoireService.addRepertoire(repTmp1);
-        for (Repertoire rep:
-             repertoireService.getAllRepertoires()) {
-            System.out.println(rep.getEnseignant().getMail()+" rep:"+rep.getNom());
-        }
         return "home";
     }
     @GetMapping("/i")
