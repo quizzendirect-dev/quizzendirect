@@ -12,19 +12,6 @@ var stompClient = null;
 })();
 
 
-function sendQuestion() {
-    stompClient.send("/app/salon", {}, JSON.stringify(
-        {
-            'id_quest': 1,
-            'intitule': 'questionX',
-            'choixUnique': false,
-            'reponsesBonnes': [],
-            'reponsesFausses': [],
-            'time': 15
-        }
-        )
-    );
-};
 
 
 function getQuestion(message) {
@@ -33,6 +20,3 @@ function getQuestion(message) {
     $("#greetings").append("<p> Question en cours" + message.choixUnique + "</p>");
 }
 
-$(function () {
-    $( "#send" ).click(function() { sendQuestion(); });
-});

@@ -38,8 +38,8 @@ function sendQuestion() {
             'id_quest': 1,
             'intitule': 'questionX',
             'choixUnique': false,
-            'reponsesBonnes': [],
-            'reponsesFausses': [],
+            'reponsesBonnes': ["A" , "B"],
+            'reponsesFausses': ["C","D"],
             'time': 15
         }
         )
