@@ -1,5 +1,5 @@
 
-package fr.univangers;
+package fr.univangers.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;

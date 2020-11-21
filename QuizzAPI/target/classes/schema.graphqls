@@ -46,6 +46,10 @@ type Historique {
     date : String
 }
 
+type Subscription {
+    allProfesseursEvent : [Professeur]
+}
+
 type Query {
     """Renvoie la liste de tous les professeurs"""
     allProfesseurs : [Professeur]
