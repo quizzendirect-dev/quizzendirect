@@ -15,7 +15,7 @@ public class QuizzendirectApplication {
 		MyWebSocketClient client = new MyWebSocketClient();
 		client.openConnection();
 		Salon salon = new Salon();
-		client.getSessionHandler().newSalon(salon);
+		//client.getSessionHandler().newSalon(salon);
 	}
 
 }

@@ -105,10 +105,9 @@ $(document).on('click','.row button',function () {
 
    // Initialisation des différentes champs dans la modal
     $('#enonceQuestion').val(' ');
+    $('#TypeChoix').val("unique");
     let i = 0;
     $('input[name="group1"]').each(function () {
-        i++;
-        console.log("I :" + i);
         let label_next = $(this).next();
         let input_into_the_label = label_next.children();
         if( i == 2)
@@ -116,7 +115,11 @@ $(document).on('click','.row button',function () {
             $(this).attr('checked','true');
             input_into_the_label.css('background-color', '#22d0ae');
         }
-        else input_into_the_label.css('background-color', 'white');
+        else {
+            $(this).attr('checked','false');
+            input_into_the_label.css('background-color', 'white');
+        }
+        i++;
     });
 });
 
@@ -141,19 +144,21 @@ $(document).on('click',"#TypeChoix",function ()
     }
 });
 
-
+//Function qui gère le changement de couleur des reponses : Vert => Bonne reponse ,Rouge => mauvaise réponse
 $(document).on('click','input[name="group1"]',function (){
     $choix = $('#TypeChoix').val().toString();
     if( $choix == "multiple") {
-
-        $('input[name="group1"]').each(function () {
+        let checked = $('input:checked').map(function (){ return $(this).val();}).get();
+      $('input[name="group1"]').each(function () {
             let label_next = $(this).next();
             let input_into_the_label = label_next.children();
-            if( $(this).attr('checked')  )
+            if (  isChecked(checked,$(this).val()) ) {
                 input_into_the_label.css('background-color', '#22d0ae');
-            else
+            }
+            else {
+                $(this).attr('checked', 'false');
                 input_into_the_label.css('background-color', 'red');
-
+            }
         });
     }
     else
@@ -174,4 +179,13 @@ $(document).on('click','input[name="group1"]',function (){
         });
     }
 });
+
+
+function isChecked(checked, value)
+{
+    for(let i=0 ; i < checked.length ; i++) {
+        if( checked[i] == value ) return  true;
+    }
+    return false;
+}
 
