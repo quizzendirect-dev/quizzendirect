@@ -12,10 +12,20 @@ $(document).on('click', '.panel-heading span.clickable', function(e){
     }
 })
 
+
+
+function deletespace(string)
+{
+    let i=0;
+    while(string[i] ==' ') {
+        i++;
+    }
+    return string.substr(i);
+}
 //Création d'un répertoire
 $(document).on('click','#modalRep',function (){
 
-    let value = $('#NomRepertoire').val().toString();
+    let value = deletespace($('#NomRepertoire').val().toString());
     let nomNouveauRep = value.substr(0,1).toUpperCase() + value.substr(1);
 
     let repexist = false;
@@ -63,17 +73,12 @@ $(document).on('click','#modalRep',function (){
         $("#nouveauRep button").attr("data-toggle", "modal");
         let id_rep = "id" + nomNouveauRep;
         let id_rep_quest = "question_" + nomNouveauRep;
-        let id_list_quest = "list" + nomNouveauRep;
+        let id_list_quest = "list_" + nomNouveauRep;
 
         $("#nouveauRep").attr("id", id_rep);
         $("#plusquestion").attr("id", id_rep_quest);
         $("#listQuestion").attr("id", id_list_quest);
 
-
-        console.log("Les information du Répertoire : ");
-        console.log("Repertoire à questions : "+ id_rep_quest );
-        console.log("List question id : "+ id_list_quest);
-        console.log("\n");
 
         $(id_rep).val(' ');
         $('#error').remove();
@@ -105,7 +110,7 @@ $(document).on('click','.row button',function () {
 
    // Initialisation des différentes champs dans la modal
     $('#enonceQuestion').val(' ');
-    $('#TypeChoix').val("unique");
+    $('#TypeChoix').val('unique');
     let i = 0;
     $('input[name="group1"]').each(function () {
         let label_next = $(this).next();
@@ -116,7 +121,6 @@ $(document).on('click','.row button',function () {
             input_into_the_label.css('background-color', '#22d0ae');
         }
         else {
-            $(this).attr('checked','false');
             input_into_the_label.css('background-color', 'white');
         }
         i++;
@@ -125,11 +129,11 @@ $(document).on('click','.row button',function () {
 
 //Ajout des questions à un repertoire
 $(document).on('click','#AjoutQuestion',function () {
-
     let enonce = $("#enonceQuestion").val().toString();
     let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
     let nomRepertoire = $("#NomRepertoiremodal").html();
-    let list_question= "#list"+nomRepertoire;
+    let list_question= "#list_"+nomRepertoire;
+
     $(question).appendTo(list_question);
 
 });
@@ -141,6 +145,16 @@ $(document).on('click',"#TypeChoix",function ()
     else
     {
         $('.form-check-input').attr('type','radio');
+        let i=0;
+        $('input[name="group1"]').each(function (){
+            let label_next = $(this).next();
+            if( i == 2)
+                $(this).attr('checked','true');
+            else
+                $(this).attr('checked','false');
+
+            i++;
+        })
     }
 });
 
@@ -188,4 +202,3 @@ function isChecked(checked, value)
     }
     return false;
 }
-
