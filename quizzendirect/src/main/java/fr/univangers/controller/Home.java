@@ -27,5 +27,14 @@ public class Home {
         }
         return "home";
     }
+    @GetMapping("/i")
+    public String i() {
+        return "index";
+    }
+
+    @GetMapping("/i2")
+    public String i2() {
+        return "index2";
+    }
 
 }

@@ -19,10 +19,12 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         logger.info("WebSocketBrokerConfig : configureMessageBroker()");
-        // Définit le préfixe qui est utilisée pour filtrer les destinations traitées par des méthodes annotées avec @MessageMapping
-        registry.setApplicationDestinationPrefixes("/app");
+
         // Définit le préfixes de destination pour l'envoi et la réception de messages
         registry.enableSimpleBroker("/quiz");
+
+        // Définit le préfixe qui est utilisée pour filtrer les destinations traitées par des méthodes annotées avec @MessageMapping
+        registry.setApplicationDestinationPrefixes("/app");
     }
 
     // Enregistre l'endpoint /ws : point de connexion pour ouvrir un websocket
