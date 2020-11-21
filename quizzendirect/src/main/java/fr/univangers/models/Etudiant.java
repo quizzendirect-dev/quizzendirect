@@ -1,5 +1,8 @@
 package fr.univangers.models;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Etudiant {
 
     private int id;

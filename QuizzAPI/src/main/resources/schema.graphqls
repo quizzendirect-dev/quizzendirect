@@ -22,116 +22,175 @@ type Repertoire {
     nom : String
     """Liste des différentes questions contenues dans le répertoire"""
     questions : [Question]
-    """Professeur à qui le répertoire appartient"""
-    professeur : Professeur
+    """Enseignant à qui le répertoire appartient"""
+    enseignant : Enseignant
 }
 
-type Professeur {
-    """Id unique du professeur"""
-    id_prof : ID!
-    """Nom du professeur"""
+type Enseignant {
+    """Id unique de l'enseignant"""
+    id_ens : ID!
+    """Nom de l'enseignant"""
 	nom : String
-    """Adresse mail du professeur"""
+    """Adresse mail de l'enseignant"""
 	mail : String
-    """Mot de passe du professeur"""
+    """Mot de passe de l'enseignant"""
 	motdepasse : String
-    """Liste des différents répertoires du professeur"""
+    """Liste des différents répertoires de l'enseignant"""
 	repertoires : [Repertoire]
 }
 
 type Historique {
     """Id unique de l'historique"""
-    id_quest : ID!
-    """Date de l'historique (jj/mm/aaaa + heure)"""
+    id_hist : ID!
+    """Id de la question"""
+    question : Question
+    """Date de l'historique (jj/mm/aaaa-hh/mm/ss)"""
     date : String
 }
 
-type Subscription {
-    allProfesseursEvent : [Professeur]
+
+type Etudiant {
+    """Id unique de l'étudiant"""
+    id_etud : ID!
+    """Pseudo de l'étudiant"""
+    pseudo : String
+    """Salon dans lequel l'étudiant est connecté"""
+    salon : Salon
+    """Nombre total de bonnes réponses de l'étudiant"""
+    bonnesReponses : Int
+    """Nombre total de questions auxquelles l'étudiant a répondu"""
+    questionsRepondues : Int
 }
 
+type Salon {
+    """Id unique du salon"""
+    id_salon : ID!
+    """Code à saisir par les étudiants pour rejoindre le salon"""
+    codeAcces : Int
+    """Liste des questions à poser après la question courante"""
+    questionsEnAttente : [Question]
+    """Liste des question qui ont déjà été posées"""
+    questionsPosees : [Question]
+    """Question qui est en train d'être posée"""
+    questionCourante : Question
+    """Liste des étudiants ayant rejoint le salon"""
+    etudiants : [Etudiant]
+    """Enseignant qui a créé ce salon"""
+    enseignant : Enseignant
+}
+
+type Error {
+    function: String!
+    error: String!
+    message : String!
+}
+
+union EnseignantResult = Enseignant | Error
+union QuestionResult = Question | Error
+union RepertoireResult = Repertoire | Error
+union HistoriqueResult = Historique | Error
+union SalonResult = Salon | Error
+union EtudiantResult = Etudiant | Error
+
 type Query {
-    """Renvoie la liste de tous les professeurs"""
-    allProfesseurs : [Professeur]
+    """Renvoie la liste de tous les enseignants"""
+    allEnseignants : [Enseignant]
     """Renvoie la liste de toutes les questions"""
     allQuestions : [Question]
     """Renvoie la liste de tous les répertoires"""
     allRepertoires : [Repertoire]
     """Renvoie la liste de tous les historiques"""
     allHistoriques : [Historique]
-    """Renvoie le professeur correspondant au nom spécifié"""
-    getProfesseurByNom(nom: String!) : Professeur
+    """Renvoie la liste de tous les salons"""
+    allSalons : [Salon]
+    """Renvoie la liste de tous les étudiants"""
+    allEtudiants : [Etudiant]
+    """Renvoie le enseignant correspondant au nom spécifié"""
+    getEnseignantById(id_ens: ID!) : EnseignantResult
     """Renvoie la question correspondant à l'intitulé spécifié"""
-    getQuestionByIntitule(intitule: String!) : Question
+    getQuestionById(id_quest: ID!) : QuestionResult
     """Renvoie le répertoire correspondant au nom spécifié"""
-    getRepertoireByNom(nom: String!) : Repertoire
+    getRepertoireById(id_rep: ID!) : RepertoireResult
     """Renvoie l'historique correspondant à la date spécifiée"""
-    getHistoriqueByDate(date: String!) : Historique
+    getHistoriqueById(id_hist: ID!) : HistoriqueResult
+    """Renvoie le salon correspondant au code d'accès spécifié"""
+    getSalonById(id_salon: ID!) : SalonResult
+    """Renvoie l'étudiant correspondant au pseudo spécifié"""
+    getEtudiantById(id_etud: ID!) : EtudiantResult
+}
+
+input QuestionInput {
+    intitule: String!
+    choixUnique: Boolean!
+    reponsesBonnes: [String]!
+    reponsesFausses: [String]!
+    time: Int!
+}
+
+input EnseignantInput {
+    mail : String!
+}
+
+input RepertoireInput {
+    nom: String!,
+    enseignant: EnseignantInput!
+}
+
+input EtudiantInput {
+    pseudo : String!
+    salon : SalonInput!
+}
+
+input SalonInput {
+    codeAcces : Int!
 }
 
 type Mutation {
-
-    #Créations
-    """Crée un nouveau professeur correspondant aux paramètres spécifiés"""
-    createProfesseur(nom: String!, mail: String!, motdepasse: String!) : Professeur
-    """Crée une nouvelle question correspondant aux paramètres spécifiés"""
-    createQuestion(intitule: String!, choixUnique: Boolean!, time: Int!) : Question
-    """Crée un nouveau répertoire correspondant au nom spécifié"""
-    createRepertoire(nom: String!) : Repertoire
-    """Crée un nouvel historique correspondant à la date spécifiée"""
-    createHistorique(id_quest: ID!, date: String!) : Historique
-
-
-    #Modifications
-
-    #   Professeur
-    """Modifie le nom d'un professeur"""
-    updateProfesseurNom(id_prof: ID!, nom: String!) : Professeur
-    """Modifie l'adresse mail d'un professeur"""
-    updateProfesseurMail(id_prof: ID!, mail: String!) : Professeur
-    """Modifie le mot de passe d'un professeur"""
-    updateProfesseurMotDePasse(id_prof: ID!, motdepasse: String!) : Professeur
-    """Ajoute un répertoire dans la liste des répertoires d'un professeur"""
-    ajouterRepertoireProfesseur(id_prof: ID!, id_rep: ID!) : Professeur
-    """Supprimer un répertoire de la liste des répertoires d'un professeur"""
-    supprimerRepertoireProfesseur(id_prof: ID!, id_rep: ID!) : Professeur
+    #   Enseignant
+    """Crée un nouvel enseignant correspondant aux paramètres spécifiés"""
+    createEnseignant(nom: String!, mail: String!, motdepasse: String!) : EnseignantResult
+    """Modifie un enseignant avec le ou les paramètre(s) spécifié(s)"""
+    updateEnseignant(id_ens: ID!, nom: String, mail: String, motdepasse: String, repertoires: [RepertoireInput]) : EnseignantResult
+    """Supprime l'enseignant correspondant à l'id spécifié"""
+    removeEnseignant(id_ens: ID!) : EnseignantResult
 
     #   Question
-    """Modifie l'intitule de la question"""
-    updateQuestionIntitule(id_quest: ID!, intitule: String!) : Question
-    """Modifie le type de la question (True: Choix unique, False: Choix multiple)"""
-    updateQuestionChoixUnique(id_quest: ID!, choixUnique: Boolean!) : Question
-    """Modifie la liste de la (des) bonne(s) réponse(s) à la question"""
-    updateQuestionReponsesBonnes(id_quest: ID!, reponsesBonnes: [String]!) : Question
-    """Modifie la liste de la (des) mauvaise(s) réponse(s) à la question"""
-    updateQuestionReponsesFausses(id_quest: ID!, reponsesFausses: [String]!) : Question
-    """Modifie le temps de réponse de la question"""
-    updateQuestionTime(id_quest: ID!, time: Int) : Question
-    """Modifie le répertoire contenant la question"""
-    updateQuestionRepertoire(id_quest: ID!, id_rep: ID!) : Question
+    """Crée une nouvelle question correspondant aux paramètres spécifiés"""
+    createQuestion(intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
+    """Modifie la question avec le ou les paramètre(s) spécifié(s)"""
+    updateQuestion(id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput) : QuestionResult
+    """Supprime la question correspondant à l'id spécifié"""
+    removeQuestion(id_quest: ID!) : QuestionResult
 
     #   Répertoire
-    """Modifie le nom du répertoire"""
-    updateRepertoireNom(id_rep: ID!, nom: String!) : Repertoire
-    """Ajoute une question dans la liste des questions du répertoire"""
-    ajouterQuestionRepertoire(id_rep: ID!, id_quest: ID!) : Repertoire
-    """Supprime une question de la liste des questions du répertoire"""
-    supprimerQuestionRepertoire(id_rep: ID!, id_quest: ID!) : Repertoire
-    """Modifie le professeur à qui appartient ce répertoire"""
-    updateRepertoireProfesseur(id_rep: ID!, id_prof: ID!) : Repertoire
+    """Crée un nouveau répertoire correspondant aux paramètres spécifiés"""
+    createRepertoire(nom: String!, enseignant: EnseignantInput!) : RepertoireResult
+    """Modifie le répertoire avec le ou les paramètre(s) spécifié(s)"""
+    updateRepertoire(id_rep: ID!, nom: String, questions: [QuestionInput], enseignant: EnseignantInput) : RepertoireResult
+    """Supprime le répertoire correspondant à l'id spécifié"""
+    removeRepertoire(id_rep: ID!) : RepertoireResult
 
     #   Historique
-    """Modifie la date de l'historique"""
-    updateHistoriqueDate(id_quest: ID!, date: String!) : Historique
-
-
-    #Suppressions
-    """Supprime le professeur correspondant à l'id spécifié"""
-    removeProfesseur(id_prof: ID!) : Professeur
-    """Supprime la question correspondant à l'id spécifié"""
-    removeQuestion(id_quest: ID!) : Question
-    """Supprime le répertoire correspondant à l'id spécifié"""
-    removeRepertoire(id_rep: ID!) : Repertoire
+    """Crée un nouvel historique correspondant aux paramètres spécifiés"""
+    createHistorique(question: QuestionInput!, date: String!) : HistoriqueResult
+    """Modifie l'historique avec le ou les paramètre(s) spécifié(s)"""
+    updateHistorique(id_hist: ID!, question: QuestionInput, date: String) : HistoriqueResult
     """Supprime l'historique correspondant à l'id spécifié"""
-    removeHistorique(id_quest: ID!) : Historique
+    removeHistorique(id_hist: ID!) : HistoriqueResult
+
+    #   Salon
+    """Crée un nouveau salon correspondant aux paramètres spécifiés"""
+    createSalon(codeAcces: Int!, enseignant: EnseignantInput!) : SalonResult
+    """Modifie le salon avec le ou les paramètre(s) spécifié(s)"""
+    updateSalon(id_salon: ID!, codeAcces: Int, questionsEnAttente: [QuestionInput], questionsPosees: [QuestionInput], questionCourante: QuestionInput, etudiants: [EtudiantInput], enseignant: EnseignantInput) : SalonResult
+    """Supprime le salon correspondant à l'id spécifié"""
+    removeSalon(id_salon: ID!) : SalonResult
+
+    #   Étudiant
+    """Crée un nouvel étudiant correspondant aux paramètres spécifiés"""
+    createEtudiant(pseudo: String!, salon: SalonInput!) : EtudiantResult
+    """Modifie l'étudiant avec le ou les paramètre(s) spécifié(s)"""
+    updateEtudiant(id_etud: ID!, pseudo: String, salon: SalonInput, bonnesReponses: Int, questionsRepondues: Int) : EtudiantResult
+    """Supprime l'étudiant correspondant à l'id spécifié"""
+    removeEtudiant(id_etud: ID!) : EtudiantResult
 }

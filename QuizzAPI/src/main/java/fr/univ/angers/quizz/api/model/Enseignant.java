@@ -9,32 +9,29 @@ import javax.persistence.*;
 
 import lombok.Data;
 
-
-
 @Data
 @Entity
-@Table(name = "PROFESSEUR")
-public class Professeur implements Serializable {
+@Table(name = "ENSEIGNANT")
+public class Enseignant implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_prof;
+	private int id_ens;
 	private String nom; //Nom + prénom
 	private String mail;
 	private String motdepasse;
 	@OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
-	@JoinColumn(name = "id_prof")
+	@JoinColumn(name = "id_ens")
 	private List<Repertoire> repertoires;
 
-	public Professeur() {}
-	public Professeur(String nom, String mail, String motdepasse) {
+	public Enseignant() {}
+	public Enseignant(String nom, String mail, String motdepasse) {
 		this.nom = nom;
 		this.mail = mail;
 		this.motdepasse = motdepasse;
 	}
 
-	public void setId_prof(int id_prof) {this.id_prof = id_prof;}
-	public int getId_prof() {return id_prof;}
+	public int getId_ens() {return id_ens;}
 
 	public void setNom(String nom) {this.nom = nom;}
 	public String getNom() {return nom;}
@@ -53,4 +50,7 @@ public class Professeur implements Serializable {
 	}
 	public void addRepertoire(Repertoire repertoire) {this.repertoires.add(repertoire);}
 	public void removeRepertoire(Repertoire repertoire) {this.repertoires.remove(repertoire);}
+	public void removeRepertoire(List<Repertoire> repertoires) {
+		for(Repertoire repertoire : repertoires) removeRepertoire(repertoire);
+	}
 }
