@@ -6,6 +6,7 @@ import java.util.List;
 import fr.univ.angers.quizz.api.model.Historique;
 import fr.univ.angers.quizz.api.model.Repertoire;
 import fr.univ.angers.quizz.api.repository.RepertoireRepository;
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -22,10 +23,12 @@ public class ProfesseurDataFetcher {
 	 @Autowired
 	 private RepertoireRepository repertoireRepository;
 
-	 public DataFetcher<List<Professeur>> getAllProduct(){
+
+
+	 public DataFetcher<List<Professeur>> getAllProfesseurs(){
 	    return dataFetchingEnvironment -> professeurRepository.findAll();
 	 }
-	  
+
 	 public DataFetcher<Professeur> getProfesseurByNom(){
 	 	return dataFetchingEnvironment -> professeurRepository.findByNom(dataFetchingEnvironment.getArgument("nom"));
 	 }
