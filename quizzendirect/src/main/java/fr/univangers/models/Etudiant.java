@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 @Entity
 public class Etudiant {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String pseudo;
     private String idSalon;
