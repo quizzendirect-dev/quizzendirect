@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Création d'un salon</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="creationSalon.css"/>
+    <script type="text/javascript" src="creationSalon.js"></script>
+</head>
+<body>
+<div class="left-container">
+    <ul class="repertoires panel-group">
+        <li class="panel panel-primary">
+            <div class="repertoire panel-heading">Répertoire 1</div>
+            <ul class="questions hide panel-body">
+                <li class="question">
+                    <div class="quest">Question 1A</div>
+                    <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
+                </li>
+                <li class="question">
+                    <div class="quest">Question 1B</div>
+                    <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
+                </li>
+                <li class="question">
+                    <div class="quest">Question 1C</div>
+                    <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
+                </li>
+            </ul>
+        </li>
+        <li class="panel panel-success">
+            <div class="repertoire panel-heading">Répertoire 2</div>
+            <ul class="questions hide panel-body">
+                <li class="question">
+                    <div class="quest">Question 2A</div>
+                    <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
+                </li>
+                <li class="question">
+                    <div class="quest">Question 2B</div>
+                    <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
+                </li>
+            </ul>
+        </li>
+        <li class="panel panel-info">
+            <div class="repertoire panel-heading">Répertoire 3</div>
+            <ul class="questions hide panel-body">
+
+            </ul>
+        </li>
+        <li class="panel panel-warning">
+            <div class="repertoire panel-heading">Répertoire 4</div>
+            <ul class="questions hide panel-body">
+
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="right-container sortable">
+    <div>
+        <button class="button-demarrer btn btn-lg btn-primary btn-create disabled">Démarrer le quiz</button>
+    </div>
+    <ul class="selected-questions panel-group">
+        <!--            <li class=\"selected-question\">-->
+        <!--                <div class=\"move-buttons\">-->
+        <!--                    <button class=\"button-up\">Up</button>-->
+        <!--                    <button class=\"button-down\">Down</button>-->
+        <!--                </div>-->
+        <!--                <div class=\"intitule-question\">intituleQuestion</div>-->
+        <!--                <button class="button-supprimer btn btn-lg btn-info btn-block">Supprimer</button>-->
+        <!--            </li>-->
+    </ul>
+</div>
+</body>
+</html>

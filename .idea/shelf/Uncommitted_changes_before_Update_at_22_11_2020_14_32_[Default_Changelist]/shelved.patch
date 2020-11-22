@@ -1,0 +1,79 @@
+Index: quizzendirect/src/main/resources/static/gestionQuestion.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\n$(document).on('click', '.panel-heading span.clickable', function(e){\n    var $this = $(this);\n    if(!$this.hasClass('panel-collapsed')) {\n        $this.parents('.panel').find('.panel-body').slideUp();\n        $this.addClass('panel-collapsed');\n        $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');\n    } else {\n        $this.parents('.panel').find('.panel-body').slideDown();\n        $this.removeClass('panel-collapsed');\n        $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');\n    }\n})\n\n\n\nfunction deletespace(string)\n{\n    let i=0;\n    while(string[i] ==' ') {\n        i++;\n    }\n    return string.substr(i);\n}\n//Création d'un répertoire\n$(document).on('click','#modalRep',function (){\n\n    let value = deletespace($('#NomRepertoire').val().toString());\n    let nomNouveauRep = value.substr(0,1).toUpperCase() + value.substr(1);\n\n    let repexist = false;\n\n   $('h3').each(function (){\n       if($(this).html() == nomNouveauRep) {\n           $('#NomRepertoire').css('border-color','red');\n           $('#NomRepertoire').val(' ');\n           repexist=true;\n       }\n   });\n\n    if(repexist == true){\n        let parent = $('#NomRepertoire').parent();\n        $(parent).append(\"<Label id=\\\"error\\\" style=\\\"color: darkred; font-size:10px;\\\">Nom de repertoire existant : Choississez s\\'en un autre</Label>\");\n    }\n    else\n    {\n        $('#NomRepertoire').css('border-color','black');\n\n        let rep = \"<div class=\\\"col-md-7\\\" id=\\\"nouveauRep\\\">\\n\" +\n            \"            <div class=\\\"panel panel-success\\\">\\n\" +\n            \"                <div class=\\\"panel-heading\\\">\\n\" +\n            \"                    <h3 class=\\\"panel-title\\\">Questions MangoDB</h3>\\n\" +\n            \"                    <span class=\\\"pull-right clickable\\\"><i class=\\\"glyphicon glyphicon-chevron-up\\\"></i></span>\\n\" +\n            \"                </div>\\n\" +\n            \"                <div class=\\\"panel-body\\\" id=\\\"listQuestion\\\">\\n\" +\n            \"                    <button type=\\\"button\\\" class=\\\"btn btn-sm btn-secondary\\\" id=\\\"plusquestion\\\">+ Question</button>\\n\" +\n            \"                </div>\\n\" +\n            \"            </div>\\n\" +\n            \"        </div>\";\n\n        $('.row').append(rep);\n\n        $(\"#nouveauRep h3\").html(nomNouveauRep);\n\n        let cpt = $('.row').children().length;\n        let mod = cpt % 3;\n        if (mod == 2) $(\"#nouveauRep > div\").attr('class', \"panel panel-primary\");\n        else if (mod == 1) $(\"#nouveauRep > div\").attr('class', \"panel panel-success\");\n        else if (mod == 0) $(\"#nouveauRep > div\").attr('class', \"panel panel-warning\");\n\n\n        $(\"#nouveauRep button\").attr(\"data-target\", \"#modalPoll-1\");\n        $(\"#nouveauRep button\").attr(\"data-toggle\", \"modal\");\n        let id_rep = \"id\" + nomNouveauRep;\n        let id_rep_quest = \"question_\" + nomNouveauRep;\n        let id_list_quest = \"list_\" + nomNouveauRep;\n\n        $(\"#nouveauRep\").attr(\"id\", id_rep);\n        $(\"#plusquestion\").attr(\"id\", id_rep_quest);\n        $(\"#listQuestion\").attr(\"id\", id_list_quest);\n\n\n        $(id_rep).val(' ');\n        $('#error').remove();\n\n    }\n});\n\n//Modification du NomduRepertoire lors d'un clique sur +Question\n$(document).on('click','.row button',function () {\n    let id_bouton_cliquer= $(this).attr('id');\n    let tab = id_bouton_cliquer.split(\"_\");\n    let idrep = \"#id\"+tab[1]+\"> div\";\n    let classe = $(idrep).attr('class');\n\n    let parent = $('#NomRepertoiremodal').parent();\n\n    $(\"#NomRepertoiremodal\").html(tab[1]);\n    $(\"#NomRepertoiremodal\").css('text-align','center');\n    $(\"#NomRepertoiremodal\").css('font-size','30px');\n    $(\"#NomRepertoiremodal\").css('margin-top','20px');\n\n    // Changement de la couleur du titre de la modal\n    if(classe == \"panel panel-primary\" )\n       $(parent).css('background-color','#3498db');\n    else if( classe == \"panel panel-success\" )\n       $(parent).css('background-color','#58d68d');\n    else\n       $(parent).css('background-color','#fcf3cf');\n\n   // Initialisation des différentes champs dans la modal\n    $('#enonceQuestion').val(' ');\n    $('#TypeChoix').val('unique');\n    let i = 0;\n    $('input[name=\"group1\"]').each(function () {\n        let label_next = $(this).next();\n        let input_into_the_label = label_next.children();\n        if( i == 2)\n        {\n            $(this).attr('checked','true');\n            input_into_the_label.css('background-color', '#22d0ae');\n        }\n        else {\n            input_into_the_label.css('background-color', 'white');\n        }\n        i++;\n    });\n});\n\n//Ajout des questions à un repertoire\n$(document).on('click','#AjoutQuestion',function () {\n    let enonce = $(\"#enonceQuestion\").val().toString();\n    let question = \"<button type=\\\"button\\\" class=\\\"btn btn-lg btn-info btn-block\\\" >\" + enonce + \"</button>\";\n    let nomRepertoire = $(\"#NomRepertoiremodal\").html();\n    let list_question= \"#list_\"+nomRepertoire;\n\n    $(question).appendTo(list_question);\n\n});\n\n$(document).on('click',\"#TypeChoix\",function ()\n{\n    $choix = $(this).val().toString();\n    if( $choix == \"multiple\") $('.form-check-input').attr('type','checkbox');\n    else\n    {\n        $('.form-check-input').attr('type','radio');\n        let i=0;\n        $('input[name=\"group1\"]').each(function (){\n            let label_next = $(this).next();\n            if( i == 2)\n                $(this).attr('checked','true');\n            else\n                $(this).attr('checked','false');\n\n            i++;\n        })\n    }\n});\n\n//Function qui gère le changement de couleur des reponses : Vert => Bonne reponse ,Rouge => mauvaise réponse\n$(document).on('click','input[name=\"group1\"]',function (){\n    $choix = $('#TypeChoix').val().toString();\n    if( $choix == \"multiple\") {\n        let checked = $('input:checked').map(function (){ return $(this).val();}).get();\n      $('input[name=\"group1\"]').each(function () {\n            let label_next = $(this).next();\n            let input_into_the_label = label_next.children();\n            if (  isChecked(checked,$(this).val()) ) {\n                input_into_the_label.css('background-color', '#22d0ae');\n            }\n            else {\n                $(this).attr('checked', 'false');\n                input_into_the_label.css('background-color', 'red');\n            }\n        });\n    }\n    else\n    {\n         $(this).attr('checked', 'true');\n         let input_selected = $(this);\n        $('input[name=\"group1\"]').each(function () {\n            let label_next = $(this).next();\n            let input_into_the_label = label_next.children();\n            if ($(this).val() == input_selected.val() ) {\n                $(this).attr('checked', 'true');\n                input_into_the_label.css('background-color', '#22d0ae');\n            }\n            else {\n                $(this).attr('checked', 'false');\n                input_into_the_label.css('background-color', 'red');\n            }\n        });\n    }\n});\n\n\nfunction isChecked(checked, value)\n{\n    for(let i=0 ; i < checked.length ; i++) {\n        if( checked[i] == value ) return  true;\n    }\n    return false;\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- quizzendirect/src/main/resources/static/gestionQuestion.js	(revision 05b7f5bf5eae7ee2690a73a5e9dba0cbaf949d13)
++++ quizzendirect/src/main/resources/static/gestionQuestion.js	(date 1605963152964)
+@@ -142,19 +142,11 @@
+ {
+     $choix = $(this).val().toString();
+     if( $choix == "multiple") $('.form-check-input').attr('type','checkbox');
+-    else
+-    {
+-        $('.form-check-input').attr('type','radio');
+-        let i=0;
+-        $('input[name="group1"]').each(function (){
+-            let label_next = $(this).next();
+-            if( i == 2)
+-                $(this).attr('checked','true');
+-            else
+-                $(this).attr('checked','false');
+-
+-            i++;
+-        })
++    else {
++        $('.form-check-input').attr('type', 'radio');
++        $('input[name="group1"]').each(function () {
++            $(this).attr('checked', 'false');
++        });
+     }
+ });
+ 
+@@ -177,23 +169,27 @@
+     }
+     else
+     {
+-         $(this).attr('checked', 'true');
+-         let input_selected = $(this);
+-        $('input[name="group1"]').each(function () {
+-            let label_next = $(this).next();
+-            let input_into_the_label = label_next.children();
+-            if ($(this).val() == input_selected.val() ) {
+-                $(this).attr('checked', 'true');
+-                input_into_the_label.css('background-color', '#22d0ae');
+-            }
+-            else {
+-                $(this).attr('checked', 'false');
+-                input_into_the_label.css('background-color', 'red');
+-            }
+-        });
+-    }
+-});
+-
++        UniqueButton($(this));
++    }
++});
++
++function UniqueButton(obj)
++{
++    obj.attr('checked', 'true');
++    let input_selected = obj;
++    $('input[name="group1"]').each(function () {
++        let label_next = $(this).next();
++        let input_into_the_label = label_next.children();
++        if ($(this).val() == input_selected.val() ) {
++            $(this).attr('checked', 'true');
++            input_into_the_label.css('background-color', '#22d0ae');
++        }
++        else {
++            $(this).attr('checked', 'false');
++            input_into_the_label.css('background-color', 'red');
++        }
++    });
++}
+ 
+ function isChecked(checked, value)
+ {

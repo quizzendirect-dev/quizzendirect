@@ -1,0 +1,134 @@
+.left-container{
+    width: 50%;
+    float: left;
+    margin: 0;
+    padding: 2%;
+}
+
+.hide {
+    display: none;
+}
+
+.repertoires{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.repertoires a{
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+
+.repertoires li{
+    padding: 1%;
+    font-size: 20px;
+}
+
+.repertoire:hover{
+    cursor: pointer;
+}
+
+.questions{
+    list-style-type: none;
+    margin: 1% 0 0;
+    padding: 0;
+}
+
+.questions li{
+    margin-left: 5%;
+    font-size: 18px;
+}
+
+.question{
+    vertical-align: center;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 1%;
+}
+
+.quest{
+    grid-column: 1 / 10;
+    grid-row: 1;
+}
+
+.button-ajouter{
+    float: right;
+    grid-column: 10 / 11;
+    grid-row: 1;
+}
+
+
+
+
+.right-container{
+    float: right;
+    width: 50%;
+    margin: 0;
+    padding: 2%;
+}
+
+.button-demarrer{
+    float: right;
+    padding: 1%;
+    font-size: 18px;
+    margin-bottom: 1%;
+}
+
+.selected-questions{
+    list-style-type: none;
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+
+.selected-questions li{
+    font-size: 18px;
+    padding: 1%;
+    height: auto;
+}
+
+.selected-question{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 1%;
+}
+
+.move-buttons{
+    float: left;
+    margin-right: 1%;
+    grid-column: 1 / 2;
+    grid-row: 1;
+}
+
+.button-up{
+    width: 100%;
+    display: block;
+}
+
+.button-down{
+    width: 100%;
+    display: block;
+}
+
+.intitule-question{
+    grid-column: 2 / 10;
+    grid-row: 1;
+    padding: 1%;
+}
+
+.button-supprimer{
+    float: right;
+    grid-column: 10 / 11;
+    grid-row: 1;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
