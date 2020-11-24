@@ -7,16 +7,11 @@ import java.util.List;
 @Entity
 public class Question {
 
-    public enum Choix {
-        UNIQUE,
-        MULTIPLE
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_quest;
     private String intitule;
-    private Choix type;
+    private boolean choixUnique;
     @ElementCollection
     private List<String> reponsesBonnes;
     @ElementCollection
@@ -27,9 +22,9 @@ public class Question {
     private Repertoire repertoire;
 
     public Question() {}
-    public Question(String intitule, Choix type, List<String> reponsesBonnes, List<String> reponsesFausses, int time){
+    public Question(String intitule, boolean choixUnique, List<String> reponsesBonnes, List<String> reponsesFausses, int time){
         this.intitule = intitule;
-        this.type = type;
+        this.choixUnique = choixUnique;
         this.reponsesBonnes = reponsesBonnes;
         this.reponsesFausses = reponsesFausses;
         this.time = time;
@@ -41,8 +36,8 @@ public class Question {
     public void setIntitule(String intitule) {this.intitule = intitule;}
     public String getIntitule() {return intitule;}
 
-    public void setType(Choix type) {this.type = type;}
-    public Choix getType() {return type;}
+    public void setChoixUnique(boolean choixUnique) {this.choixUnique = choixUnique;}
+    public boolean isChoixUnique() {return choixUnique;}
 
     public void setReponsesBonnes(List<String> reponsesBonnes) {this.reponsesBonnes = reponsesBonnes;}
     public List<String> getReponsesBonnes() {return reponsesBonnes;}

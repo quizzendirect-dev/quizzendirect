@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface RepertoireRepository extends CrudRepository<Repertoire, Integer> {
-    public Repertoire findByNom(String code);
     public List<Repertoire> findAll();
 }

@@ -1,4 +1,3 @@
-
 $(document).on('click', '.panel-heading span.clickable', function(e){
     var $this = $(this);
     if(!$this.hasClass('panel-collapsed')) {
@@ -135,7 +134,6 @@ $(document).on('click','#AjoutQuestion',function () {
     let list_question= "#list_"+nomRepertoire;
 
     $(question).appendTo(list_question);
-
 });
 
 $(document).on('click',"#TypeChoix",function ()
@@ -202,3 +200,6 @@ function isChecked(checked, value)
     }
     return false;
 }
+
+
+console.log(getAllQuestions());

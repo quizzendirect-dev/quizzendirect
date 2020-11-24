@@ -65,13 +65,12 @@ public class CompteController {
         }
         // arrivé là, l'email n'est pas présent dans la bdd, on peut créé un nouvel enseignant
         // création nouvel enseignant
-        Enseignant enseignant = new Enseignant(user.getPrenom(),user.getName(),user.getEmail(),user.getPasswd());
+        Enseignant enseignant = new Enseignant(user.getName(),user.getEmail(),user.getPasswd());
         enseignantService.addEnseignant(enseignant);
 
         // debug console
         System.out.println("\n\n\n###### Test register ######");
         System.out.println("Ens' id : " + enseignant.getId_ens());
-        System.out.println("Ens' Prenom : " + enseignant.getPrenom());
         System.out.println("Ens' Nom : " + enseignant.getNom());
         System.out.println("Ens' mail : " + enseignant.getMail());
         System.out.println("Ens' pass : " + enseignant.getMotdepasse());
@@ -127,7 +126,7 @@ public class CompteController {
             // si l'enseignant correspond à un enseignant déja enregistré
             if (enseignant.getMail().equals(user.getEmail()) && enseignant.getMotdepasse().equals(user.getPasswd())) {
                 // compléter l'object user envoyé depuis la page login avec le prénom et le nom et l'id
-                user.setName(enseignant.getNom()); user.setPrenom(enseignant.getPrenom());
+                user.setName(enseignant.getNom());
                 user.setId(enseignant.getId_ens());
                 // création cookie
                 // userId

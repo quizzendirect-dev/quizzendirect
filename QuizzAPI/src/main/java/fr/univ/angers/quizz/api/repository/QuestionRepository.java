@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends CrudRepository<Question, Integer> {
-    public Question findByIntitule(String code);
     public List<Question> findAll();
 }

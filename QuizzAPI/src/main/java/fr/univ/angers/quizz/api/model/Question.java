@@ -22,8 +22,8 @@ public class Question implements Serializable {
 	@ElementCollection
 	private List<String> reponsesFausses;
 	private int time; //En secondes
-	@OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
-	@JoinColumn(name = "repertoire")
+	@OneToOne()
+	@JoinColumn(name = "id_quest")
 	private Repertoire repertoire;
 
 	public Question() {}
@@ -35,7 +35,6 @@ public class Question implements Serializable {
 		this.time = time;
 	}
 
-	public void setId_quest(int id_quest) {this.id_quest = id_quest;}
 	public int getId_quest() {return id_quest;}
 
 	public void setIntitule(String intitule) {this.intitule = intitule;}
@@ -46,9 +45,13 @@ public class Question implements Serializable {
 
 	public void setReponsesBonnes(List<String> reponsesBonnes) {this.reponsesBonnes = reponsesBonnes;}
 	public List<String> getReponsesBonnes() {return reponsesBonnes;}
+	public void addReponseBonne(String reponseBonne) {this.reponsesBonnes.add(reponseBonne);}
+	public void removeReponseBonne(String reponseBonne) {this.reponsesBonnes.remove(reponseBonne);}
 
 	public void setReponsesFausses(List<String> reponsesFausses) {this.reponsesFausses = reponsesFausses;}
 	public List<String> getReponsesFausses() {return reponsesFausses;}
+	public void addReponseFausse(String reponseFausse) {this.reponsesFausses.add(reponseFausse);}
+	public void removeReponseFausse(String reponseFausse) {this.reponsesFausses.remove(reponseFausse);}
 
 	public void setTime(int time) {this.time = time;}
 	public int getTime() {return time;}
@@ -59,5 +62,4 @@ public class Question implements Serializable {
 	public Repertoire getRepertoire() {
 		return repertoire;
 	}
-
 }

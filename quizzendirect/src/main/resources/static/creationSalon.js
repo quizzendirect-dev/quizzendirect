@@ -11,13 +11,18 @@ $(document).on("click", ".button-ajouter", function() {
         let lastSelectedQuestion = $(document).find(".selected-question").last()
         lastSelectedQuestion.find(".button-down").toggleClass("disabled")
     }
-    $(document).find(".selected-questions").append("<li class=\"selected-question panel panel-primary\"><div class=\"move-buttons\"><button class=\"button-up btn btn-lg btn-info btn-block\"><span class=\"glyphicon glyphicon-chevron-up\"></span></button><button class=\"button-down btn btn-lg btn-info btn-block\"><span class=\"glyphicon glyphicon-chevron-down\"></button></div><div class=\"intitule-question\">" + intituleQuestion + "</div><button class=\"button-supprimer btn btn-lg btn-info btn-block\">Supprimer</button></li>")
+    $(document).find(".selected-questions").append("<li class=\"selected-question panel panel-primary\"><div class=\"move-buttons\"><button class=\"button-up btn btn-lg btn-info btn-block\"><span class=\"glyphicon glyphicon-chevron-up\"></span></button><button class=\"button-down btn btn-lg btn-info btn-block\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button></div><div class=\"intitule-question\">" + intituleQuestion + "</div><div class=\"question-buttons\"><button class=\"button-supprimer btn btn-lg btn-warning btn-block\">Supprimer</button><button class=\"button-lancer btn btn-lg btn-success btn-block disabled\">Lancer</button></div></li>")
     let lastSelectedQuestion = $(document).find(".selected-question").last()
     lastSelectedQuestion.find(".button-down").toggleClass("disabled")
     if($(document).find(".selected-question").length == 1){
         lastSelectedQuestion.find(".button-up").toggleClass("disabled")
     }
-    $(document).find(".button-demarrer").toggleClass("disabled", false)
+    if($(document).find(".button-demarrer").hasClass("used")){
+        lastSelectedQuestion.find(".button-lancer").toggleClass("disabled", false)
+    } else {
+        $(document).find(".button-demarrer").toggleClass("disabled", false)
+    }
+    $(document).find(".button-supprAll").toggleClass("hide", false)
 })
 
 $(document).on("click", ".button-up", function() {
@@ -55,13 +60,36 @@ $(document).on("click", ".button-down", function() {
 })
 
 $(document).on("click", ".button-supprimer", function() {
-    let intitule = $(this).parent().find(".intitule-question").text()
+    let intitule = $(this).parent().parent().find(".intitule-question").text()
     let quest = $(document).find(".quest:contains(" + intitule + ")")
     quest.parent().find(".button-ajouter").css("display", "block")
     $(document).find(".intitule-question:contains(" + intitule + ")").parent().remove()
     updateUpDownButton()
     if($(document).find(".selected-question").length <= 0){
         $(document).find(".button-demarrer").toggleClass("disabled", true)
+        $(document).find(".button-supprAll").toggleClass("hide", true)
+    }
+})
+
+$(document).on("click", ".button-supprAll", function () {
+    while($(document).find(".selected-question").length > 0){
+        let firstSelectedQuestion = $(document).find(".selected-question").first()
+        let intitule = firstSelectedQuestion.find(".intitule-question").text()
+        let quest = $(document).find(".quest:contains(" + intitule + ")")
+        quest.parent().find(".button-ajouter").css("display", "block")
+        firstSelectedQuestion.remove()
+    }
+    $(document).find(".button-demarrer").toggleClass("disabled", true)
+    $(document).find(".button-supprAll").toggleClass("hide", true)
+})
+
+$(document).on("click", ".button-demarrer", function () {
+    $(this).toggleClass("disabled", true)
+    $(this).toggleClass("used", true)
+    $(document).find(".code-acces").toggleClass("hide", false)
+    let selected_question = $(document).find(".selected-question")
+    for(let i = 0; i < selected_question.length; i++){
+        selected_question.eq(i).find(".button-lancer").toggleClass("disabled", false)
     }
 })
 
