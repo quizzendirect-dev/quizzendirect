@@ -7,6 +7,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="callAPI.js" ></script>
 
     <link type="text/css" rel="stylesheet" href="creationSalon.css"/>
     <script type="text/javascript" src="creationSalon.js"></script>
@@ -14,63 +15,48 @@
 <body>
     <div class="left-container">
         <ul class="repertoires panel-group">
-            <li class="panel panel-primary">
-                <div class="repertoire panel-heading">Répertoire 1</div>
-                <ul class="questions hide panel-body">
-                    <li class="question">
-                        <div class="quest">Question 1A</div>
-                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
-                    </li>
-                    <li class="question">
-                        <div class="quest">Question 1B</div>
-                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
-                    </li>
-                    <li class="question">
-                        <div class="quest">Question 1C</div>
-                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
-                    </li>
-                </ul>
-            </li>
-            <li class="panel panel-success">
-                <div class="repertoire panel-heading">Répertoire 2</div>
-                <ul class="questions hide panel-body">
-                    <li class="question">
-                        <div class="quest">Question 2A</div>
-                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
-                    </li>
-                    <li class="question">
-                        <div class="quest">Question 2B</div>
-                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>
-                    </li>
-                </ul>
-            </li>
-            <li class="panel panel-info">
-                <div class="repertoire panel-heading">Répertoire 3</div>
-                <ul class="questions hide panel-body">
-
-                </ul>
-            </li>
-            <li class="panel panel-warning">
-                <div class="repertoire panel-heading">Répertoire 4</div>
-                <ul class="questions hide panel-body">
-
-                </ul>
-            </li>
+<!--            <li class="panel panel-primary">-->
+<!--                <div class="repertoire panel-heading">Répertoire 1</div>-->
+<!--                <ul class="questions hide panel-body">-->
+<!--                    <li class="question">-->
+<!--                        <div class="response-time hide">10</div>-->
+<!--                        <div class="quest">Question 1A</div>-->
+<!--                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>-->
+<!--                    </li>-->
+<!--                    <li class="question">-->
+<!--                        <div class="response-time hide">10</div>-->
+<!--                        <div class="quest">Question 1B</div>-->
+<!--                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>-->
+<!--                    </li>-->
+<!--                    <li class="question">-->
+<!--                        <div class="response-time hide">10</div>-->
+<!--                        <div class="quest">Question 1C</div>-->
+<!--                        <button class="button-ajouter btn btn-lg btn-info btn-block">Ajouter</button>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </li>-->
         </ul>
     </div>
     <div class="vertical-line"></div>
     <div class="right-container sortable">
         <div>
-            <button class="button-demarrer btn btn-lg btn-primary btn-create disabled">Ouvrir le salon</button>
+            <button class="button-demarrer btn btn-lg btn-primary btn-create">Ouvrir le salon</button>
         </div>
-        <div class="code-acces panel panel-success hide">Code d'accès : 1234</div>
+        <div class="code-acces panel panel-success hide"></div>
         <ul class="selected-questions panel-group">
 <!--            <li class="selected-question panel panel-primary">-->
+<!--                <div class="time-line"></div>-->
 <!--                <div class="move-buttons">-->
 <!--                    <button class="button-up btn btn-lg btn-info btn-block"><span class="glyphicon glyphicon-chevron-up"></span></button>-->
 <!--                    <button class="button-down btn btn-lg btn-info btn-block"><span class="glyphicon glyphicon-chevron-down"></span></button>-->
 <!--                </div>-->
-<!--                <div class="intitule-question">intituleQuestion</div>-->
+<!--                <div class="info-question">-->
+<!--                    <div class="intitule-question">intituleQuest</div>-->
+<!--                    <form class="time-info">-->
+<!--                        <label class="time">Temps de réponse :</label>-->
+<!--                        <input class="choose-time" type="text" size="1" id="time" name="time">-->
+<!--                    </form>-->
+<!--                </div>-->
 <!--                <div class="question-buttons">-->
 <!--                    <button class="button-supprimer btn btn-lg btn-warning btn-block">Supprimer</button>-->
 <!--                    <button class="button-lancer btn btn-lg btn-success btn-block disabled">Lancer</button>-->

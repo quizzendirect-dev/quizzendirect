@@ -112,9 +112,20 @@ body{
 }
 
 .selected-question{
+    position: relative;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-gap: 1%;
+    overflow: hidden;
+}
+
+.time-line{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 5px;
+    background: #5dbcd2;
 }
 
 .move-buttons{
@@ -134,10 +145,36 @@ body{
     display: block;
 }
 
-.intitule-question{
+.info-question{
     grid-column: 2 / 10;
     grid-row: 1;
-    padding: 1%;
+    position: relative;
+    overflow: hidden;
+}
+
+.intitule-question{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.time-info{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+}
+
+.time-info label{
+    margin-right: 5px;
+    font-weight: normal;
+}
+
+.time-info input{
+    vertical-align: middle;
 }
 
 .question-buttons{
