@@ -30,7 +30,6 @@ var callAPI = async function (query) {
             method: "POST",
             url: "http://localhost:20020/graphql",
             headers: {'Content-Type': 'application/json'},
-            async : false,
             data: JSON.stringify({
                 query: query
             })

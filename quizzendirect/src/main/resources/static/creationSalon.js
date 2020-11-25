@@ -8,7 +8,7 @@ $(document).ready(function () {
         "       repertoires{" +
         "           nom" +
         "           questions{" +
-        "               intitule" +
+        "               id_quest intitule reponsesBonnes reponsesFausses choixUnique" +
         "               time" +
         "           }" +
         "       }" +
@@ -31,6 +31,7 @@ function afficherRepertoires(data, userId_ens){
                 for(let k = 0; k < data[i].repertoires[j].questions.length; k++){
                     stringRepertoire +=
                         "        <li class=\"question\">" +
+                        "            <input class='id_quest' type='hidden' value='"+data[i].repertoires[j].questions[k].id_quest+"'>"+
                         "            <div class=\"response-time hide\">" + data[i].repertoires[j].questions[k].time + "</div>" +
                         "            <div class=\"quest\">" + data[i].repertoires[j].questions[k].intitule + "</div>" +
                         "            <button class=\"button-ajouter btn btn-lg btn-info btn-block\">Ajouter</button>" +
@@ -66,7 +67,8 @@ $(document).on("click",".repertoire", function() {
 });
 
 $(document).on("click", ".button-ajouter", function() {
-    let intituleQuestion = $(this).parent().find(".quest").text()
+    let intituleQuestion = $(this).parent().find(".quest").text();
+    let id_quest = $(this).parent().find(".id_quest").val();
     $(this).css("display", "none")
     if($(document).find(".selected-question").length > 0){
         let lastSelectedQuestion = $(document).find(".selected-question").last()
@@ -82,6 +84,7 @@ $(document).on("click", ".button-ajouter", function() {
         "        <div class=\"info-question\">" +
         "            <div class=\"intitule-question\">" + intituleQuestion + "</div>" +
         "            <form class=\"time-info\">" +
+        "                <input class=\"id_quest\" type=\"hidden\" value="+id_quest+">"+
         "                <label class=\"time\">Temps de réponse :</label>" +
         "                <input class=\"choose-time\" type=\"text\" size=\"1\" id=\"time\" name=\"time\">" +
         "            </form>" +
@@ -204,6 +207,26 @@ $(document).on("click", ".button-lancer", function () {
         if(timer >= time * 1000) clearInterval(interval)
         timer += 1000
     }, 1000)
+
+    let id_quest = $(this).parent().parent().find(".id_quest").val();
+    let query = "query{  " +
+        "  getQuestionById(id_quest:"+id_quest+")" +
+        "  { " +
+        "    ...on Question{id_quest intitule choixUnique reponsesBonnes reponsesFausses time}\n" +
+        "  }" +
+        "}";
+    const donnees = callAPI(query);
+    donnees.then(object => {
+        var question={
+            'id_quest': object.data.getQuestionById.id_quest,
+            'intitule': object.data.getQuestionById.intitule,
+            'choixUnique': object.data.getQuestionById.choixUnique,
+            'reponsesBonnes': object.data.getQuestionById.reponsesBonnes,
+            'reponsesFausses': object.data.getQuestionById.reponsesFausses,
+            'time': time
+        };
+        sendQuestion(question);
+    });
 })
 
 function updateUpDownButton() {
@@ -228,3 +251,39 @@ function updateUpDownButton() {
         }
     }
 }
+
+var stompClient = null;
+
+function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+};
+
+function connect() {
+    var socket = new SockJS('http://localhost:20020/ws');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/quiz/salon');
+    });
+};
+
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+    }
+    setConnected(false);
+    console.log("Disconnected");
+};
+
+function sendQuestion(question) {
+    stompClient.send("/app/salon", {}, JSON.stringify(question)
+    );
+};
+
+
+$(function () {
+    $( "#connect" ).click(function() { connect(); });
+    $( "#disconnect" ).click(function() { disconnect(); });
+});
