@@ -186,8 +186,9 @@ $(document).on("click", ".button-demarrer", function () {
             alert(object.data.createSalon.message)
             return
         }else{
-            $(this).toggleClass("disabled", true)
+            $(this).toggleClass("hide", true)
             $(this).toggleClass("used", true)
+            $(document).find(".button-fermer").toggleClass("hide", false)
             $(document).find(".code-acces").text("Code d'accès : " + codeAcces)
             $(document).find(".code-acces").toggleClass("hide", false)
             let selected_question = $(document).find(".selected-question")
@@ -196,6 +197,18 @@ $(document).on("click", ".button-demarrer", function () {
             }
         }
     })
+})
+
+$(document).on("click", ".button-fermer", function () {
+    $(this).toggleClass("hide", true)
+    $(document).find(".button-demarrer").toggleClass("hide", false)
+    $(document).find(".button-demarrer").prop('disabled', false)
+    $(document).find(".button-demarrer").toggleClass("used", false)
+    $(document).find(".code-acces").toggleClass("hide", true)
+    let selected_question = $(document).find(".selected-question")
+    for(let i = 0; i < selected_question.length; i++){
+        selected_question.eq(i).find(".button-lancer").toggleClass("disabled", true)
+    }
 })
 
 $(document).on("click", ".button-lancer", function () {
@@ -254,16 +267,10 @@ function updateUpDownButton() {
 
 var stompClient = null;
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-};
-
 function connect() {
     var socket = new SockJS('http://localhost:20020/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/quiz/salon');
     });
@@ -273,7 +280,6 @@ function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
-    setConnected(false);
     console.log("Disconnected");
 };
 
