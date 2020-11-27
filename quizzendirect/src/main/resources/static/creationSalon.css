@@ -6,11 +6,28 @@ body{
     height: 100%
 }
 
+.navbar-nav{
+    list-style-type: none;
+    display: block;
+    width: 100%;
+}
+
+.navbar-nav a{
+    text-decoration: none;
+    color: white;
+}
+
+.navbar-nav li{
+    padding: 1%;
+    font-size: 20px;
+    display: inline;
+}
+
 .left-container{
     width: 50%;
     float: left;
     margin: 0;
-    padding: 2%;
+    padding: 0% 2% 2%;
 }
 
 .hide {
@@ -80,7 +97,7 @@ body{
     float: right;
     width: 50%;
     margin: 0;
-    padding: 2%;
+    padding: 0% 2% 2%;
 }
 
 .code-acces{
@@ -92,6 +109,13 @@ body{
 }
 
 .button-demarrer{
+    float: right;
+    padding: 1%;
+    font-size: 18px;
+    margin-bottom: 1%;
+}
+
+.button-fermer{
     float: right;
     padding: 1%;
     font-size: 18px;
