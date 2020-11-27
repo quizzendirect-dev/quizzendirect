@@ -1,3 +1,6 @@
+
+var codeAcces = "";
+
 $(document).ready(function () {
     let userId_ens = getCookie("userId_ens")
     if(userId_ens == null) return
@@ -164,10 +167,15 @@ $(document).on("click", ".button-supprAll", function () {
 })
 
 $(document).on("click", ".button-demarrer", function () {
-    let codeAcces = ""
+    // ré/initialise le code d'accés (variable global afin d'y avoir accés dans les fonctions websocket )
+    codeAcces="";
     for(let i = 0; i < 4; i++){
         codeAcces += Math.floor((Math.random() * 9) + 1)
     }
+
+    // connecte le websocket avec le code d'access
+    connect(codeAcces);
+
     let query =
         "   mutation {" +
         "       createSalon(codeAcces: " + parseInt(codeAcces) + ", enseignant:{mail:\"" + getCookie("userEmail") + "\"}){" +
@@ -259,13 +267,14 @@ function setConnected(connected) {
     $("#disconnect").prop("disabled", !connected);
 };
 
-function connect() {
+function connect(codeAcces) {
     var socket = new SockJS('http://localhost:20020/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/quiz/salon');
+        // ajout dans l'url le code d'accéss ( variable globale ) qui a été affecté lors de l'ouverture du salon
+        stompClient.subscribe('/quiz/salon/'+codeAcces);
     });
 };
 
@@ -278,12 +287,12 @@ function disconnect() {
 };
 
 function sendQuestion(question) {
-    stompClient.send("/app/salon", {}, JSON.stringify(question)
+    // ajout dans l'url le code d'accéss ( variable globale ) qui a été affecté lors de l'ouverture du salon
+    stompClient.send("/app/salon/"+codeAcces, {}, JSON.stringify(question)
     );
 };
 
 
 $(function () {
-    $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
 });
