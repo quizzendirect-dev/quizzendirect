@@ -9,12 +9,142 @@ $(document).on('click', '.panel-heading span.clickable', function(e){
         $this.removeClass('panel-collapsed');
         $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
     }
+});
+
+$.getScript("callAPI.js",function (){
+});
+
+$(document).ready(function () {
+    let userId_ens = getCookie("userId_ens")
+    if(userId_ens == null) return
+    let query = "{" +
+        "   allEnseignants{" +
+        "       id_ens" +
+        "       repertoires{" +
+        "           nom" +
+        "           questions{" +
+        "               intitule" +
+        "               time" +
+        "           }" +
+        "       }" +
+        "   }" +
+        "}"
+    const donnees = callAPI(query)
+    donnees.then((object) => {
+        afficherRepertoires(object.data.allEnseignants, userId_ens)
+    });
 })
 
+function afficherRepertoires(data, userId_ens){
+    for(let i = 0; i < data.length; i++){
+        console.log(data[i].id_ens);
+        if(data[i].id_ens == userId_ens){
+            for(let j = 0; j < data[i].repertoires.length; j++){
+                ajouterRepertoire(data[i].repertoires[j].nom);
+                for(let k = 0; k < data[i].repertoires[j].questions.length; k++){
+                    ajouteQuestions(data[i].repertoires[j].nom, data[i].repertoires[j].questions[k].intitule );
+                }
+            }
+        }
+    }
+}
 
+function getCookie(name){
+    if(document.cookie.length == 0) return null;
 
-function deletespace(string)
+    var regSepCookie = new RegExp('(; )', 'g');
+    var cookies = document.cookie.split(regSepCookie);
+
+    for(var i = 0; i < cookies.length; i++){
+        if(cookies[i].startsWith(name)){
+            return cookies[i].split("=")[1];
+        }
+    }
+    return null;
+}
+function createRepertoire(nomRepertoire)
 {
+    let email = getCookie("userEmail") ;
+
+    let query = "mutation{\n" +
+        "  createRepertoire(nom: \""+nomRepertoire+"\",enseignant:{mail:\""+email+"\"}){\n" +
+        "  ...on Repertoire\n" +
+        "    {\n" +
+        "      nom:nom \n" +
+        "    } ... on Error{ " +
+        "message " +
+        "}\n" +
+        "  }\n" +
+        "}"
+    const donnee = callAPI(query);
+}
+
+
+function ajouteQuestions(nomRepertoire,enonce)
+{
+    let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
+    let list_question = "#list_" + nomRepertoire;
+
+    $(question).appendTo(list_question);
+}
+
+function updateRepository(id_rep,enonce,choix,questions){
+    let updateRepertoire = "mutation {" +
+        "updateRepertoire(id_rep:"+id_rep+",questions:["+questions+",{intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:[\"A\"],reponsesFausses:[\"B\"],time:10 } ] ){\n" +
+        "    __typename\n" +
+        "  ... on Error{\n" +
+        "    message\n" +
+        "  }\n" +
+        "  }\n" +
+        "}";
+    callAPI(updateRepertoire);
+
+}
+
+function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses)
+{
+    let enregistrementQuestion = "mutation{\n" +
+        "  createQuestion(intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:[\"A\"],reponsesFausses:[\"B\"],time:10){\n" +
+        "    __typename\n" +
+        "  ...on Error{" +
+        "message " +
+        "}" +
+        "}\n" +
+        "}"
+    callAPI(enregistrementQuestion);
+}
+
+function getRepertory(data,userId_ens,nomrepository)
+{
+    for(let i = 0; i < data.length; i++) {
+        if (data[i].id_ens == userId_ens) {
+            for (let j = 0; j < data[i].repertoires.length; j++) {
+                if (data[i].repertoires[j].nom == nomrepository) {
+                    let id_rep = data[i].repertoires[j].id_rep;
+                    let questions = data[i].repertoires[j].questions;
+                    updateRepository(id_rep,enonce,choix,questions);
+                }
+            }
+        }
+    }
+}
+
+//Renvoie true si une question existe , false sinon
+function questionExiste(nomRepertoire,question)  {
+    let list_question = "#list_" + nomRepertoire;
+    let eachbutton = list_question + " button";
+    let exist = false;
+    $(eachbutton).each(function(){
+        if($(this).html() == question) {
+            exist = true;
+        }
+    })
+    return exist;
+}
+
+
+/*************************************************************************************************************************************************/
+function deleteSpace(string) {
     let i=0;
     while(string[i] ==' ') {
         i++;
@@ -24,66 +154,70 @@ function deletespace(string)
 //Création d'un répertoire
 $(document).on('click','#modalRep',function (){
 
-    let value = deletespace($('#NomRepertoire').val().toString());
+    let value = deleteSpace($('#NomRepertoire').val().toString());
     let nomNouveauRep = value.substr(0,1).toUpperCase() + value.substr(1);
-
     let repexist = false;
 
-   $('h3').each(function (){
-       if($(this).html() == nomNouveauRep) {
-           $('#NomRepertoire').css('border-color','red');
-           $('#NomRepertoire').val(' ');
-           repexist=true;
-       }
-   });
-
+    $('h3').each(function (){
+        if($(this).html() == nomNouveauRep) {
+            $('#NomRepertoire').css('border-color','red');
+            $('#NomRepertoire').val(' ');
+            repexist=true;
+        }
+    });
+    //Erreur si creation d'un repertoire existant
     if(repexist == true){
         let parent = $('#NomRepertoire').parent();
-        $(parent).append("<Label id=\"error\" style=\"color: darkred; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
+        $(parent).append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
     }
     else
     {
-        $('#NomRepertoire').css('border-color','black');
-
-        let rep = "<div class=\"col-md-7\" id=\"nouveauRep\">\n" +
-            "            <div class=\"panel panel-success\">\n" +
-            "                <div class=\"panel-heading\">\n" +
-            "                    <h3 class=\"panel-title\">Questions MangoDB</h3>\n" +
-            "                    <span class=\"pull-right clickable\"><i class=\"glyphicon glyphicon-chevron-up\"></i></span>\n" +
-            "                </div>\n" +
-            "                <div class=\"panel-body\" id=\"listQuestion\">\n" +
-            "                    <button type=\"button\" class=\"btn btn-sm btn-secondary\" id=\"plusquestion\">+ Question</button>\n" +
-            "                </div>\n" +
-            "            </div>\n" +
-            "        </div>";
-
-        $('.row').append(rep);
-
-        $("#nouveauRep h3").html(nomNouveauRep);
-
-        let cpt = $('.row').children().length;
-        let mod = cpt % 3;
-        if (mod == 2) $("#nouveauRep > div").attr('class', "panel panel-primary");
-        else if (mod == 1) $("#nouveauRep > div").attr('class', "panel panel-success");
-        else if (mod == 0) $("#nouveauRep > div").attr('class', "panel panel-warning");
-
-
-        $("#nouveauRep button").attr("data-target", "#modalPoll-1");
-        $("#nouveauRep button").attr("data-toggle", "modal");
-        let id_rep = "id" + nomNouveauRep;
-        let id_rep_quest = "question_" + nomNouveauRep;
-        let id_list_quest = "list_" + nomNouveauRep;
-
-        $("#nouveauRep").attr("id", id_rep);
-        $("#plusquestion").attr("id", id_rep_quest);
-        $("#listQuestion").attr("id", id_list_quest);
-
-
-        $(id_rep).val(' ');
+        ajouterRepertoire(nomNouveauRep);
         $('#error').remove();
-
     }
 });
+
+function ajouterRepertoire(nomNouveauRep)
+{
+    $('#NomRepertoire').css('border-color','black');
+
+    let rep = "<div class=\"col-md-7\" id=\"nouveauRep\">\n" +
+        "            <div class=\"panel panel-success\">\n" +
+        "                <div class=\"panel-heading\">\n" +
+        "                    <h3 class=\"panel-title\">Questions MangoDB</h3>\n" +
+        "                    <span class=\"pull-right clickable\"><i class=\"glyphicon glyphicon-chevron-up\"></i></span>\n" +
+        "                </div>\n" +
+        "                <div class=\"panel-body\" id=\"listQuestion\">\n" +
+        "                    <button type=\"button\" class=\"btn btn-sm btn-secondary\" id=\"plusquestion\">+ Question</button>\n" +
+        "                </div>\n" +
+        "            </div>\n" +
+        "        </div>";
+
+    $('.row').append(rep);
+
+    $("#nouveauRep h3").html(nomNouveauRep);
+    createRepertoire(nomNouveauRep);
+
+
+    let cpt = $('.row').children().length;
+    let mod = cpt % 3;
+    if (mod == 2) $("#nouveauRep > div").attr('class', "panel panel-primary");
+    else if (mod == 1) $("#nouveauRep > div").attr('class', "panel panel-success");
+    else if (mod == 0) $("#nouveauRep > div").attr('class', "panel panel-warning");
+
+
+    $("#nouveauRep button").attr("data-target", "#modalPoll-1");
+    $("#nouveauRep button").attr("data-toggle", "modal");
+    let id_rep = "id" + nomNouveauRep;
+    let id_rep_quest = "question_" + nomNouveauRep;
+    let id_list_quest = "list_" + nomNouveauRep;
+
+    $("#nouveauRep").attr("id", id_rep);
+    $("#plusquestion").attr("id", id_rep_quest);
+    $("#listQuestion").attr("id", id_list_quest);
+    $(id_rep).val(' ');
+}
+
 
 //Modification du NomduRepertoire lors d'un clique sur +Question
 $(document).on('click','.row button',function () {
@@ -101,13 +235,13 @@ $(document).on('click','.row button',function () {
 
     // Changement de la couleur du titre de la modal
     if(classe == "panel panel-primary" )
-       $(parent).css('background-color','#3498db');
+        $(parent).css('background-color','#3498db');
     else if( classe == "panel panel-success" )
-       $(parent).css('background-color','#58d68d');
+        $(parent).css('background-color','#58d68d');
     else
-       $(parent).css('background-color','#fcf3cf');
+        $(parent).css('background-color','#fcf3cf');
 
-   // Initialisation des différentes champs dans la modal
+    // Initialisation des différentes champs dans la modal
     $('#enonceQuestion').val(' ');
     $('#TypeChoix').val('unique');
     let i = 0;
@@ -126,16 +260,52 @@ $(document).on('click','.row button',function () {
     });
 });
 
+
 //Ajout des questions à un repertoire
 $(document).on('click','#AjoutQuestion',function () {
-    let enonce = $("#enonceQuestion").val().toString();
-    let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
-    let nomRepertoire = $("#NomRepertoiremodal").html();
-    let list_question= "#list_"+nomRepertoire;
 
-    $(question).appendTo(list_question);
+    let enonce = $("#enonceQuestion").val().toString();
+    let nomRepertoire = $("#NomRepertoiremodal").html();
+    let choix = true;
+    if( $('#TypeChoix').val().toString() == "multiple") choix = false;
+    let questions = " ";
+
+    if( questionExiste(nomRepertoire,enonce) )
+    {
+        alert("Question existe déja ");
+        //$("#enonceQuestion").append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
+    }
+    else {
+
+        enregistrementQuestion(enonce,choix,"[A,B,C]","[D,E]");
+
+        let query ="{\n" +
+            " \tallRepertoires {\n" +
+            " \t  nom\n" +
+            "    id_rep\n" +
+            "    questions {\n" +
+            "      intitule\n" +
+            "      choixUnique\n" +
+            "      time\n" +
+            "    }\n" +
+            " \t}\n" +
+            "}\n "
+        let userId_ens = getCookie("userId_ens")
+
+        const donnee  = callAPI(query);
+        donnee.then((object) =>
+            getRepertory(object.data.allRepertoires,userId_ens));
+
+
+        let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
+
+        let list_question = "#list_" + nomRepertoire;
+        $(question).appendTo(list_question);
+
+    }
 });
 
+//Fonction qui change le type de box pour les réponses : Checkbox où RadioButton
 $(document).on('click',"#TypeChoix",function ()
 {
     $choix = $(this).val().toString();
@@ -161,7 +331,7 @@ $(document).on('click','input[name="group1"]',function (){
     $choix = $('#TypeChoix').val().toString();
     if( $choix == "multiple") {
         let checked = $('input:checked').map(function (){ return $(this).val();}).get();
-      $('input[name="group1"]').each(function () {
+        $('input[name="group1"]').each(function () {
             let label_next = $(this).next();
             let input_into_the_label = label_next.children();
             if (  isChecked(checked,$(this).val()) ) {
@@ -175,8 +345,8 @@ $(document).on('click','input[name="group1"]',function (){
     }
     else
     {
-         $(this).attr('checked', 'true');
-         let input_selected = $(this);
+        $(this).attr('checked', 'true');
+        let input_selected = $(this);
         $('input[name="group1"]').each(function () {
             let label_next = $(this).next();
             let input_into_the_label = label_next.children();
@@ -201,5 +371,3 @@ function isChecked(checked, value)
     return false;
 }
 
-
-console.log(getAllQuestions());
