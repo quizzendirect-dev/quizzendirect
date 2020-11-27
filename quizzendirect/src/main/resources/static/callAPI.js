@@ -1,27 +1,4 @@
 
-
-
-/*
-var callAPI = function (query) {
-            var result = null;
-            $.ajax({
-            method: "POST",
-            url: "http://localhost:20020/graphql",
-            headers: {'Content-Type': 'application/json'},
-            async : false,
-            data: JSON.stringify({
-                query: query
-            })
-        }).done(function(data){
-            result = data.data;
-        })
-        .fail(function(data) {
-            console.log("Ajax Echec");
-        });
-        return result;
-}
-*/
-
 var callAPI = async function (query) {
     let result;
 
@@ -30,7 +7,7 @@ var callAPI = async function (query) {
             method: "POST",
             url: "http://localhost:20020/graphql",
             headers: {'Content-Type': 'application/json'},
-            async : false,
+            async : true,
             data: JSON.stringify({
                 query: query
             })
@@ -43,7 +20,6 @@ var callAPI = async function (query) {
     }
 };
 
-console.log(data.then((data) => console.log(data.data)));
 
 var getAllQuestions = function () {
     var query = '{' +

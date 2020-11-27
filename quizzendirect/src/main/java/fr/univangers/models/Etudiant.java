@@ -1,10 +1,10 @@
 package fr.univangers.models;
 
 import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
 public class Etudiant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
