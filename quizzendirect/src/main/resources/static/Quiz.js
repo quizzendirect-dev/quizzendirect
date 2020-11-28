@@ -7,7 +7,8 @@ var stompClient = null;
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/quiz/salon', function (question) {
+        // ajout du code d'accés selon la variable en get dans l'url
+        stompClient.subscribe('/quiz/salon/'+getQueryVariable("codeAcces"), function (question) {
             getQuestion(JSON.parse(question.body));
         });
     });
@@ -64,3 +65,17 @@ $(function() {
         $("#quiz").fadeOut();
     });
 });
+
+
+
+// fonction qui récupére une variable get pour récupérer le code d'accés entré par l'étudiant
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
