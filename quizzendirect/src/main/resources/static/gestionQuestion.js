@@ -37,12 +37,11 @@ $(document).ready(function () {
 
 function afficherRepertoires(data, userId_ens){
     for(let i = 0; i < data.length; i++){
-        console.log(data[i].id_ens);
         if(data[i].id_ens == userId_ens){
             for(let j = 0; j < data[i].repertoires.length; j++){
                 ajouterRepertoire(data[i].repertoires[j].nom);
                 for(let k = 0; k < data[i].repertoires[j].questions.length; k++){
-                    ajouteQuestions(data[i].repertoires[j].nom, data[i].repertoires[j].questions[k].intitule );
+                    ajouteQuestion(data[i].repertoires[j].nom,     data[i].repertoires[j].questions[k].intitule );
                 }
             }
         }
@@ -80,31 +79,52 @@ function createRepertoire(nomRepertoire)
 }
 
 
-function ajouteQuestions(nomRepertoire,enonce)
+function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausses,time)
 {
-    let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
-    let list_question = "#list_" + nomRepertoire;
 
-    $(question).appendTo(list_question);
+    let query ="mutation{" +
+        "   updateRepertoire(id_rep:"+id_rep+", questions:["+questions+",{intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"}])" +
+        "   {" +
+        "     __typename" +
+        "     ...on Error{" +
+        "       message" +
+        "     }" +
+        "   }" +
+        " }"
+    callAPI(query);
 }
 
-function updateRepository(id_rep,enonce,choix,questions){
-    let updateRepertoire = "mutation {" +
-        "updateRepertoire(id_rep:"+id_rep+",questions:["+questions+",{intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:[\"A\"],reponsesFausses:[\"B\"],time:10 } ] ){\n" +
-        "    __typename\n" +
-        "  ... on Error{\n" +
-        "    message\n" +
-        "  }\n" +
-        "  }\n" +
-        "}";
-    callAPI(updateRepertoire);
-
+function getIdRepertory(data,userId_ens,nomrepository){
+    for(let i = 0; i < data.length; i++){
+        if(data[i].id_ens == userId_ens){
+            for(let j = 0; j < data[i].repertoires.length; j++){
+               if(data[i].repertoires[j].nom == nomrepository ) {
+                   return data[i].repertoires[j].id_rep;
+               }
+            }
+        }
+    }
+    return -1;
 }
 
-function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses)
+function getQuestionByrepertoire(data,userId_ens,nomrepository)
+{
+    for(let i = 0; i < data.length; i++){
+        if(data[i].id_ens == userId_ens){
+            for(let j = 0; j < data[i].repertoires.length; j++){
+                if(data[i].repertoires[j].nom == nomrepository ) {
+                    return data[i].repertoires[j].questions;
+                }
+            }
+        }
+    }
+    return [];
+}
+
+function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time)
 {
     let enregistrementQuestion = "mutation{\n" +
-        "  createQuestion(intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:[\"A\"],reponsesFausses:[\"B\"],time:10){\n" +
+        "  createQuestion(intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"){\n" +
         "    __typename\n" +
         "  ...on Error{" +
         "message " +
@@ -114,20 +134,6 @@ function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses)
     callAPI(enregistrementQuestion);
 }
 
-function getRepertory(data,userId_ens,nomrepository)
-{
-    for(let i = 0; i < data.length; i++) {
-        if (data[i].id_ens == userId_ens) {
-            for (let j = 0; j < data[i].repertoires.length; j++) {
-                if (data[i].repertoires[j].nom == nomrepository) {
-                    let id_rep = data[i].repertoires[j].id_rep;
-                    let questions = data[i].repertoires[j].questions;
-                    updateRepository(id_rep,enonce,choix,questions);
-                }
-            }
-        }
-    }
-}
 
 //Renvoie true si une question existe , false sinon
 function questionExiste(nomRepertoire,question)  {
@@ -143,7 +149,16 @@ function questionExiste(nomRepertoire,question)  {
 }
 
 
-/*************************************************************************************************************************************************/
+/***********************Fonction *******************************/
+//Ajout des questions à un repertoire
+function ajouteQuestion(nomRepertoire,enonce)
+{
+    let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
+    let list_question = "#list_" + nomRepertoire;
+    $(question).appendTo(list_question);
+}
+
+
 function deleteSpace(string) {
     let i=0;
     while(string[i] ==' ') {
@@ -151,13 +166,10 @@ function deleteSpace(string) {
     }
     return string.substr(i);
 }
-//Création d'un répertoire
-$(document).on('click','#modalRep',function (){
 
-    let value = deleteSpace($('#NomRepertoire').val().toString());
-    let nomNouveauRep = value.substr(0,1).toUpperCase() + value.substr(1);
+function ExistRep(nomNouveauRep)
+{
     let repexist = false;
-
     $('h3').each(function (){
         if($(this).html() == nomNouveauRep) {
             $('#NomRepertoire').css('border-color','red');
@@ -165,17 +177,8 @@ $(document).on('click','#modalRep',function (){
             repexist=true;
         }
     });
-    //Erreur si creation d'un repertoire existant
-    if(repexist == true){
-        let parent = $('#NomRepertoire').parent();
-        $(parent).append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
-    }
-    else
-    {
-        ajouterRepertoire(nomNouveauRep);
-        $('#error').remove();
-    }
-});
+    return repexist;
+}
 
 function ajouterRepertoire(nomNouveauRep)
 {
@@ -198,7 +201,6 @@ function ajouterRepertoire(nomNouveauRep)
     $("#nouveauRep h3").html(nomNouveauRep);
     createRepertoire(nomNouveauRep);
 
-
     let cpt = $('.row').children().length;
     let mod = cpt % 3;
     if (mod == 2) $("#nouveauRep > div").attr('class', "panel panel-primary");
@@ -218,6 +220,77 @@ function ajouterRepertoire(nomNouveauRep)
     $(id_rep).val(' ');
 }
 
+function isChecked(checked, value)
+{
+    for(let i=0 ; i < checked.length ; i++) {
+        if( checked[i] == value ) return  true;
+    }
+    return false;
+}
+
+/***********************Gestion evénements clique sur la page *******************************/
+$(document).on('click','#AjoutQuestion',function () {
+    let enonce = $("#enonceQuestion").val().toString();
+    let nomRepertoire = $("#NomRepertoiremodal").html();
+    let choix = true;
+    if( $('#TypeChoix').val().toString() == "multiple") choix = false;
+
+    if( questionExiste(nomRepertoire,enonce) )
+    {
+        alert("Question existe déja ");
+        //$("#enonceQuestion").append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
+    }
+    else {
+        enregistrementQuestion(enonce,choix,[ "\"A\" ,\"B\" "], [" \"C\" "],10);
+        ajouteQuestion(nomRepertoire,enonce);
+
+        let query = "{" +
+            "   allEnseignants{" +
+            "       id_ens" +
+            "       repertoires{" +
+            "           nom" +
+            "           id_rep" +
+            "           questions{" +
+            "                intitule\n" +
+            "                choixUnique\n" +
+            "                reponsesBonnes\n" +
+            "                reponsesFausses\n" +
+            "                time\n" +
+            "           }" +
+            "       }" +
+            "   }" +
+            "}"
+
+        let userId_ens = getCookie("userId_ens");
+        const donnee  = callAPI(query);
+        donnee.then((object) =>{
+            let id_rep = getIdRepertory(object.data.allEnseignants,userId_ens,nomRepertoire);
+            let questions = getQuestionByrepertoire(object.data.allEnseignants,userId_ens,nomRepertoire);
+            console.log(questions);
+            questionadded(id_rep,questions,enonce,choix,[ "\"A\" ,\"B\" "],[" \"C\" "],10);
+        }
+        );
+
+    }
+});
+
+//Création d'un répertoire
+$(document).on('click','#modalRep',function (){
+
+    let value = deleteSpace($('#NomRepertoire').val().toString());
+    let nomNouveauRep = value.substr(0,1).toUpperCase() + value.substr(1);
+
+    //Erreur si creation d'un repertoire existant
+    if(ExistRep(nomNouveauRep)){
+        let parent = $('#NomRepertoire').parent();
+        $(parent).append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
+    }
+    else
+    {
+        ajouterRepertoire(nomNouveauRep);
+        $('#error').remove();
+    }
+});
 
 //Modification du NomduRepertoire lors d'un clique sur +Question
 $(document).on('click','.row button',function () {
@@ -234,12 +307,9 @@ $(document).on('click','.row button',function () {
     $("#NomRepertoiremodal").css('margin-top','20px');
 
     // Changement de la couleur du titre de la modal
-    if(classe == "panel panel-primary" )
-        $(parent).css('background-color','#3498db');
-    else if( classe == "panel panel-success" )
-        $(parent).css('background-color','#58d68d');
-    else
-        $(parent).css('background-color','#fcf3cf');
+    if(classe == "panel panel-primary" ) $(parent).css('background-color','#3498db');
+    else if( classe == "panel panel-success" ) $(parent).css('background-color','#58d68d');
+    else $(parent).css('background-color','#fcf3cf');
 
     // Initialisation des différentes champs dans la modal
     $('#enonceQuestion').val(' ');
@@ -259,52 +329,6 @@ $(document).on('click','.row button',function () {
         i++;
     });
 });
-
-
-//Ajout des questions à un repertoire
-$(document).on('click','#AjoutQuestion',function () {
-
-    let enonce = $("#enonceQuestion").val().toString();
-    let nomRepertoire = $("#NomRepertoiremodal").html();
-    let choix = true;
-    if( $('#TypeChoix').val().toString() == "multiple") choix = false;
-    let questions = " ";
-
-    if( questionExiste(nomRepertoire,enonce) )
-    {
-        alert("Question existe déja ");
-        //$("#enonceQuestion").append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
-    }
-    else {
-
-        enregistrementQuestion(enonce,choix,"[A,B,C]","[D,E]");
-
-        let query ="{\n" +
-            " \tallRepertoires {\n" +
-            " \t  nom\n" +
-            "    id_rep\n" +
-            "    questions {\n" +
-            "      intitule\n" +
-            "      choixUnique\n" +
-            "      time\n" +
-            "    }\n" +
-            " \t}\n" +
-            "}\n "
-        let userId_ens = getCookie("userId_ens")
-
-        const donnee  = callAPI(query);
-        donnee.then((object) =>
-            getRepertory(object.data.allRepertoires,userId_ens));
-
-
-        let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
-
-        let list_question = "#list_" + nomRepertoire;
-        $(question).appendTo(list_question);
-
-    }
-});
-
 //Fonction qui change le type de box pour les réponses : Checkbox où RadioButton
 $(document).on('click',"#TypeChoix",function ()
 {
@@ -325,7 +349,6 @@ $(document).on('click',"#TypeChoix",function ()
         })
     }
 });
-
 //Function qui gère le changement de couleur des reponses : Vert => Bonne reponse ,Rouge => mauvaise réponse
 $(document).on('click','input[name="group1"]',function (){
     $choix = $('#TypeChoix').val().toString();
@@ -363,11 +386,4 @@ $(document).on('click','input[name="group1"]',function (){
 });
 
 
-function isChecked(checked, value)
-{
-    for(let i=0 ; i < checked.length ; i++) {
-        if( checked[i] == value ) return  true;
-    }
-    return false;
-}
 

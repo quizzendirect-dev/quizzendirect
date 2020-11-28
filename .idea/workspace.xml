@@ -20,7 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="23ddb379-9968-4bbc-ac71-fdc053c0f870" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/java/fr/univangers/controller/GestionQuestionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/java/fr/univangers/controller/GestionQuestionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/java/fr/univangers/models/Enseignant.java" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/java/fr/univangers/models/Enseignant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/java/fr/univangers/models/Etudiant.java" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/java/fr/univangers/models/Etudiant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/callAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/callAPI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/gestionQuestion.js" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/gestionQuestion.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +68,7 @@
       <workItem from="1601984941671" duration="5000" />
       <workItem from="1601984957953" duration="38000" />
       <workItem from="1603627673484" duration="64000" />
+      <workItem from="1606319828587" duration="21000" />
     </task>
     <servers />
   </component>
