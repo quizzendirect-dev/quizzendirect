@@ -151,6 +151,8 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.1.6.RELEASE" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.graphql-java-kickstart:voyager-spring-boot-starter:8.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.graphql-java-kickstart:voyager-spring-boot-autoconfigure:8.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.199" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
   </component>

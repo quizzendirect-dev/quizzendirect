@@ -133,6 +133,8 @@
           <element id="library" level="project" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: com.graphql-java-kickstart:voyager-spring-boot-starter:8.0.0" />
+          <element id="library" level="project" name="Maven: com.graphql-java-kickstart:voyager-spring-boot-autoconfigure:8.0.0" />
           <element id="library" level="project" name="Maven: com.h2database:h2:1.4.199" />
         </element>
       </element>

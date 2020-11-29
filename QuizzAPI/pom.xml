@@ -129,6 +129,13 @@
 			<version>8.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>voyager-spring-boot-starter</artifactId>
+			<version>8.0.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
 		<!-- dataBase for GraphiQL -->
 
 		<dependency>

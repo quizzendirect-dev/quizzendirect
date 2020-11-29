@@ -81,9 +81,14 @@ function createRepertoire(nomRepertoire)
 
 function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausses,time)
 {
-
-    let query ="mutation{" +
-        "   updateRepertoire(id_rep:"+id_rep+", questions:["+questions+",{intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"}])" +
+    let query = "mutation{updateRepertoire(id_rep:"+id_rep+", questions:["
+    if(questions.length > 0) {
+        for (let i = 0; i < questions.length; i++) {
+            query += '{intitule:"' + questions[i].intitule + '",choixUnique:' + questions[i].choixUnique + ',reponsesBonnes:[' + questions[i].reponsesBonnes.map(rep => "\"" + rep + "\"") + '],reponsesFausses:[' + questions[i].reponsesFausses.map(rep => "\"" + rep + "\"") + '],time:' + questions[i].time + '}'
+        }
+        query += ","
+    }
+    query += "{intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"}])" +
         "   {" +
         "     __typename" +
         "     ...on Error{" +
@@ -91,6 +96,7 @@ function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausse
         "     }" +
         "   }" +
         " }"
+
     callAPI(query);
 }
 
@@ -131,6 +137,8 @@ function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time)
         "}" +
         "}\n" +
         "}"
+    console.log("question :")
+    console.log(enregistrementQuestion)
     callAPI(enregistrementQuestion);
 }
 
