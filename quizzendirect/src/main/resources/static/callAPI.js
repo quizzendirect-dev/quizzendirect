@@ -42,7 +42,6 @@ var callAPI = async function (query) {
     }
 };
 
-console.log(data.then((data) => console.log(data.data)));
 
 var getAllQuestions = function () {
     var query = '{' +

@@ -13,7 +13,7 @@ $(document).on('click', '.panel-heading span.clickable', function(e){
 
 $.getScript("callAPI.js",function (){
 });
-
+/*******************Fonction pour l'API ********************************/
 $(document).ready(function () {
     let userId_ens = getCookie("userId_ens")
     if(userId_ens == null) return
@@ -34,7 +34,6 @@ $(document).ready(function () {
         afficherRepertoires(object.data.allEnseignants, userId_ens)
     });
 })
-
 function afficherRepertoires(data, userId_ens){
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
@@ -47,7 +46,6 @@ function afficherRepertoires(data, userId_ens){
         }
     }
 }
-
 function getCookie(name){
     if(document.cookie.length == 0) return null;
 
@@ -77,8 +75,6 @@ function createRepertoire(nomRepertoire)
         "}"
     const donnee = callAPI(query);
 }
-
-
 function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausses,time)
 {
     let query = "mutation{updateRepertoire(id_rep:"+id_rep+", questions:["
@@ -99,7 +95,6 @@ function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausse
 
     callAPI(query);
 }
-
 function getIdRepertory(data,userId_ens,nomrepository){
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
@@ -112,7 +107,6 @@ function getIdRepertory(data,userId_ens,nomrepository){
     }
     return -1;
 }
-
 function getQuestionByrepertoire(data,userId_ens,nomrepository)
 {
     for(let i = 0; i < data.length; i++){
@@ -126,7 +120,6 @@ function getQuestionByrepertoire(data,userId_ens,nomrepository)
     }
     return [];
 }
-
 function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time)
 {
     let enregistrementQuestion = "mutation{\n" +
@@ -137,25 +130,25 @@ function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time)
         "}" +
         "}\n" +
         "}"
-    console.log("question :")
-    console.log(enregistrementQuestion)
     callAPI(enregistrementQuestion);
 }
-
-
 //Renvoie true si une question existe , false sinon
-function questionExiste(nomRepertoire,question)  {
-    let list_question = "#list_" + nomRepertoire;
-    let eachbutton = list_question + " button";
+function questionExiste(question)  {
     let exist = false;
-    $(eachbutton).each(function(){
-        if($(this).html() == question) {
-            exist = true;
-        }
+    $('.col-md-7').each(function (){
+        nomRepertoire = $(this).find('h3').html();
+        let list_question = "#list_" + nomRepertoire;
+        let eachbutton = list_question + " button";
+        $(eachbutton).each(function(){
+            if($(this).html() == question) {
+                exist = true;
+            }
+        })
     })
-    return exist;
-}
 
+    return exist;
+
+}
 
 /***********************Fonction *******************************/
 //Ajout des questions à un repertoire
@@ -165,8 +158,6 @@ function ajouteQuestion(nomRepertoire,enonce)
     let list_question = "#list_" + nomRepertoire;
     $(question).appendTo(list_question);
 }
-
-
 function deleteSpace(string) {
     let i=0;
     while(string[i] ==' ') {
@@ -174,7 +165,6 @@ function deleteSpace(string) {
     }
     return string.substr(i);
 }
-
 function ExistRep(nomNouveauRep)
 {
     let repexist = false;
@@ -187,7 +177,6 @@ function ExistRep(nomNouveauRep)
     });
     return repexist;
 }
-
 function ajouterRepertoire(nomNouveauRep)
 {
     $('#NomRepertoire').css('border-color','black');
@@ -227,7 +216,6 @@ function ajouterRepertoire(nomNouveauRep)
     $("#listQuestion").attr("id", id_list_quest);
     $(id_rep).val(' ');
 }
-
 function isChecked(checked, value)
 {
     for(let i=0 ; i < checked.length ; i++) {
@@ -243,7 +231,7 @@ $(document).on('click','#AjoutQuestion',function () {
     let choix = true;
     if( $('#TypeChoix').val().toString() == "multiple") choix = false;
 
-    if( questionExiste(nomRepertoire,enonce) )
+    if( questionExiste(enonce) )
     {
         alert("Question existe déja ");
         //$("#enonceQuestion").append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
