@@ -214,7 +214,7 @@ function ajouterRepertoire(nomNouveauRep)
     $("#nouveauRep").attr("id", id_rep);
     $("#plusquestion").attr("id", id_rep_quest);
     $("#listQuestion").attr("id", id_list_quest);
-    $(id_rep).val(' ');
+    $(id_rep).val('');
 }
 function isChecked(checked, value)
 {
@@ -230,14 +230,33 @@ $(document).on('click','#AjoutQuestion',function () {
     let nomRepertoire = $("#NomRepertoiremodal").html();
     let choix = true;
     if( $('#TypeChoix').val().toString() == "multiple") choix = false;
+    let answerschecked =  $('input:checked').map(function (){ return $(this).val();}).get();
+    console.log("Reponses checked : "+answerschecked);
+    let reponsesFausse = [];
+    let reponsesBonnes = [];
 
+    $('input[name="group1"]' ).each(function ()
+    {
+        let label_next = $(this).next();
+        let input_into_the_label = label_next.children();
+        if( answerschecked.indexOf($(this).val()) != -1 ){
+            if( reponsesBonnes.length == 0 ) reponsesBonnes.push("\""+$(input_into_the_label).val()+"\"") ;
+            else  reponsesBonnes.push("\""+$(input_into_the_label).val()+"\"") ;
+            $(input_into_the_label).val('');
+        }
+        else {
+            if( reponsesFausse.length == 0 ) reponsesFausse.push("\""+$(input_into_the_label).val()+"\"");
+            else reponsesFausse.push("\""+$(input_into_the_label).val()+"\"");
+            $(input_into_the_label).val('');
+        }
+    });
     if( questionExiste(enonce) )
     {
         alert("Question existe déja ");
         //$("#enonceQuestion").append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
     }
     else {
-        enregistrementQuestion(enonce,choix,[ "\"A\" ,\"B\" "], [" \"C\" "],10);
+        enregistrementQuestion(enonce,choix,reponsesBonnes, reponsesFausse,10);
         ajouteQuestion(nomRepertoire,enonce);
 
         let query = "{" +
@@ -263,11 +282,11 @@ $(document).on('click','#AjoutQuestion',function () {
             let id_rep = getIdRepertory(object.data.allEnseignants,userId_ens,nomRepertoire);
             let questions = getQuestionByrepertoire(object.data.allEnseignants,userId_ens,nomRepertoire);
             console.log(questions);
-            questionadded(id_rep,questions,enonce,choix,[ "\"A\" ,\"B\" "],[" \"C\" "],10);
+            questionadded(id_rep,questions,enonce,choix,reponsesBonnes,reponsesFausse,10);
         }
         );
-
     }
+
 });
 
 //Création d'un répertoire
@@ -285,6 +304,7 @@ $(document).on('click','#modalRep',function (){
     {
         ajouterRepertoire(nomNouveauRep);
         $('#error').remove();
+        $('#NomRepertoire').val('');
     }
 });
 
