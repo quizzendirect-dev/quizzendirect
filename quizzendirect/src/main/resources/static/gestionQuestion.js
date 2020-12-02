@@ -298,14 +298,15 @@ $(document).on('click','#modalRep',function (){
     //Erreur si creation d'un repertoire existant
     if(ExistRep(nomNouveauRep)){
         let parent = $('#NomRepertoire').parent();
-        $(parent).append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
+        $(parent).append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de répertoire existant : Choisissez-en un autre</Label>");
     }
     else
     {
         ajouterRepertoire(nomNouveauRep);
         $('#error').remove();
-        $('#NomRepertoire').val('');
     }
+    $('#NomRepertoire').val('');
+
 });
 
 //Modification du NomduRepertoire lors d'un clique sur +Question
