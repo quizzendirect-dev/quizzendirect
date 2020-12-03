@@ -13,6 +13,20 @@ $(document).on('click', '.panel-heading span.clickable', function(e){
 
 $.getScript("callAPI.js",function (){
 });
+function getCookie(name){
+    if(document.cookie.length == 0) return null;
+
+    var regSepCookie = new RegExp('(; )', 'g');
+    var cookies = document.cookie.split(regSepCookie);
+
+    for(var i = 0; i < cookies.length; i++){
+        if(cookies[i].startsWith(name)){
+            return cookies[i].split("=")[1];
+        }
+    }
+    return null;
+}
+
 /*******************Fonction pour l'API ********************************/
 $(document).ready(function () {
     let userId_ens = getCookie("userId_ens")
@@ -45,19 +59,6 @@ function afficherRepertoires(data, userId_ens){
             }
         }
     }
-}
-function getCookie(name){
-    if(document.cookie.length == 0) return null;
-
-    var regSepCookie = new RegExp('(; )', 'g');
-    var cookies = document.cookie.split(regSepCookie);
-
-    for(var i = 0; i < cookies.length; i++){
-        if(cookies[i].startsWith(name)){
-            return cookies[i].split("=")[1];
-        }
-    }
-    return null;
 }
 function createRepertoire(nomRepertoire)
 {
@@ -154,10 +155,11 @@ function questionExiste(question)  {
 //Ajout des questions à un repertoire
 function ajouteQuestion(nomRepertoire,enonce)
 {
+    console.log(nomRepertoire);
     let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
     let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
-    console.log("AjoutQuestion list :" + list_question);
     $(question).appendTo(list_question);
+
 }
 function deleteSpace(string) {
     let i=0;
@@ -181,7 +183,6 @@ function ExistRep(nomNouveauRep)
 function ajouterRepertoire(nomNouveauRep)
 {
     $('#NomRepertoire').css('border-color','black');
-
     let rep = "<div class=\"col-md-7\" id=\"nouveauRep\">\n" +
         "            <div class=\"panel panel-success\">\n" +
         "                <div class=\"panel-heading\">\n" +
@@ -236,6 +237,7 @@ $(document).on('click','#AjoutQuestion',function () {
     let reponsesFausse = [];
     let reponsesBonnes = [];
 
+    //Fonction qui remplie le tableau de reponsesBonnes et Fausse en fonction des réponses sélectionnées
     $('input[name="group1"]' ).each(function ()
     {
         let label_next = $(this).next();
@@ -251,10 +253,10 @@ $(document).on('click','#AjoutQuestion',function () {
             $(input_into_the_label).val('');
         }
     });
+
     if( questionExiste(enonce) )
     {
-        alert("Question existe déja ");
-        //$("#enonceQuestion").append("<Label id=\"error\" style=\"color: #8b0000; font-size:10px;\">Nom de repertoire existant : Choississez s\'en un autre</Label>");
+        alert("Question éxiste déjà dans un répertoire ");
     }
     else {
         enregistrementQuestion(enonce,choix,reponsesBonnes, reponsesFausse,10);
