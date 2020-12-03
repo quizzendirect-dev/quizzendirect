@@ -107,22 +107,17 @@ public class CompteController {
         return "hubGestion";
     }
 */
+
+    /*
     @PostMapping("/login")
     public String logIn(@ModelAttribute User user, Model model, HttpServletResponse response) {
 
-        // debug console
-        /*System.out.println("\n\n\n###### Test login ######");
-        System.out.println("Prenom : " + user.getPrenom());
-        System.out.println("Name : " + user.getName());
-        System.out.println("Email : " + user.getEmail());
-        System.out.println("Password : " + user.getPasswd());*/
+
 
         ArrayList<Enseignant> enseignants = enseignantService.getAllEnseignants();
 
         for (Enseignant enseignant : enseignants) {
-            /*System.out.println("enseignant : \n");
-            System.out.println(enseignant.getMail()+"\n");
-            System.out.println(enseignant.getMotdepasse()+"\n");*/
+
             // si l'enseignant correspond à un enseignant déja enregistré
             if (enseignant.getMail().equals(user.getEmail()) && enseignant.getMotdepasse().equals(user.getPasswd())) {
                 // compléter l'object user envoyé depuis la page login avec le prénom et le nom et l'id
@@ -161,5 +156,5 @@ public class CompteController {
         // il faudrait signaler qu'une erreur a eu lieu
         model.addAttribute("errorLogin","L'email ou le mot de passe ne sont pas valides.");
         return "comptePage";
-    }
+    }*/
 }

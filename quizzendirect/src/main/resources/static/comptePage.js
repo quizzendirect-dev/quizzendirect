@@ -113,13 +113,11 @@ $(function() {
 
 
     });
-    /*
+
         // Quand l'enseignant clique sur le boutton pour se connecter
         document.getElementById("login-submit").addEventListener("click", function (e) {
-            console.log("tes");
 
             e.preventDefault();
-            console.log("test");
             // on récupére les informations saisies
             var email_connexion = document.getElementById("login-email");
             var email_connexion_value = email_connexion.value;
@@ -131,6 +129,8 @@ $(function() {
                 "  allEnseignants{" +
                 "    id_ens" +
                 "    mail" +
+                "    motdepasse" +
+                "    nom" +
                 "  }" +
                 "}";
             const donnees_ens = callAPI(query_allEns)
@@ -141,9 +141,8 @@ $(function() {
                     // si on trouve que le mail existe
                     if(object0.data.allEnseignants[i].mail == email_connexion_value){
                         enseignantExist = true;
-                        if (object0.data.allEnseignants[i].password == mdp_email_value) {
+                        if (object0.data.allEnseignants[i].motdepasse == mdp_email_value) {
                             mdpTrue = true;
-
                             // si l email et le mot de passe correspondent, on connecte l'enseignant et on crée les cookies/sessions
                             document.cookie="userName= "+object0.data.allEnseignants[i].nom;
                             document.cookie="userEmail=" + email_connexion_value;
@@ -153,7 +152,7 @@ $(function() {
                     }
                 }
                 // On gére les erreurs
-                if ((enseignantExist == true) && (mdpTrue = false)) {
+                if ((enseignantExist == true) && (mdpTrue == false)) {
                     alert("Le mot de passe ne correspondant pas au mail saisis");
                 }
                 if (enseignantExist == false) {
@@ -163,7 +162,7 @@ $(function() {
 
         })
          });
-    */
+
 
 });
 
