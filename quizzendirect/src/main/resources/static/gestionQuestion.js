@@ -38,6 +38,7 @@ function afficherRepertoires(data, userId_ens){
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
             for(let j = 0; j < data[i].repertoires.length; j++){
+                console.log("Affichage du rep : "+data[i].repertoires[j].nom);
                 ajouterRepertoire(data[i].repertoires[j].nom);
                 for(let k = 0; k < data[i].repertoires[j].questions.length; k++){
                     ajouteQuestion(data[i].repertoires[j].nom,     data[i].repertoires[j].questions[k].intitule );
@@ -99,7 +100,9 @@ function getIdRepertory(data,userId_ens,nomrepository){
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
             for(let j = 0; j < data[i].repertoires.length; j++){
-               if(data[i].repertoires[j].nom == nomrepository ) {
+                console.log("nom du repertoire " + data[i].repertoires[j].nom.replace(/\s+/,''));
+                console.log("Repertoire rechercher "+nomrepository);
+               if(data[i].repertoires[j].nom.replace(/\s+/,'') == nomrepository) {
                    return data[i].repertoires[j].id_rep;
                }
             }
@@ -112,7 +115,7 @@ function getQuestionByrepertoire(data,userId_ens,nomrepository)
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
             for(let j = 0; j < data[i].repertoires.length; j++){
-                if(data[i].repertoires[j].nom == nomrepository ) {
+                if(data[i].repertoires[j].nom.replace(/\s+/,'') == nomrepository ) {
                     return data[i].repertoires[j].questions;
                 }
             }
@@ -137,7 +140,7 @@ function questionExiste(question)  {
     let exist = false;
     $('.col-md-7').each(function (){
         nomRepertoire = $(this).find('h3').html();
-        let list_question = "#list_" + nomRepertoire;
+        let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
         let eachbutton = list_question + " button";
         $(eachbutton).each(function(){
             if($(this).html() == question) {
@@ -155,7 +158,7 @@ function questionExiste(question)  {
 function ajouteQuestion(nomRepertoire,enonce)
 {
     let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
-    let list_question = "#list_" + nomRepertoire;
+    let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
     $(question).appendTo(list_question);
 }
 function deleteSpace(string) {
@@ -207,9 +210,10 @@ function ajouterRepertoire(nomNouveauRep)
 
     $("#nouveauRep button").attr("data-target", "#modalPoll-1");
     $("#nouveauRep button").attr("data-toggle", "modal");
-    let id_rep = "id" + nomNouveauRep;
-    let id_rep_quest = "question_" + nomNouveauRep;
-    let id_list_quest = "list_" + nomNouveauRep;
+    let repositoryname = nomNouveauRep.replace(/\s+/,'');
+    let id_rep = "id" + repositoryname;
+    let id_rep_quest = "question_" + repositoryname;
+    let id_list_quest = "list_" + repositoryname;
 
     $("#nouveauRep").attr("id", id_rep);
     $("#plusquestion").attr("id", id_rep_quest);
