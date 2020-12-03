@@ -50,7 +50,7 @@ public class CompteController {
             return "comptePage";
         }
     }
-
+/*
     @PostMapping("/register")
     public String register(@ModelAttribute User user, Model model,HttpServletResponse response) {
 
@@ -106,7 +106,7 @@ public class CompteController {
         model.addAttribute("userName", user.getName());
         return "hubGestion";
     }
-
+*/
     @PostMapping("/login")
     public String logIn(@ModelAttribute User user, Model model, HttpServletResponse response) {
 
