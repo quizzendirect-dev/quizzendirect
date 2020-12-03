@@ -324,9 +324,10 @@ $(document).on('click','.row button',function () {
     $("#NomRepertoiremodal").css('margin-top','20px');
 
     // Changement de la couleur du titre de la modal
-    if(classe == "panel panel-primary" ) $(parent).css('background-color','#3498db');
-    else if( classe == "panel panel-success" ) $(parent).css('background-color','#58d68d');
-    else $(parent).css('background-color','#fcf3cf');
+    if( classe == "panel panel-success" ) $(parent).css('background-color','#58d68d');
+    else if( classe == "panel panel-warning" )$(parent).css('background-color','#fcf3cf');
+    else  $(parent).css('background-color','#3498db');
+
 
     // Initialisation des différentes champs dans la modal
     $('#enonceQuestion').val(' ');
