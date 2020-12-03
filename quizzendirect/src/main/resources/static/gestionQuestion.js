@@ -38,7 +38,6 @@ function afficherRepertoires(data, userId_ens){
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
             for(let j = 0; j < data[i].repertoires.length; j++){
-                console.log("Affichage du rep : "+data[i].repertoires[j].nom);
                 ajouterRepertoire(data[i].repertoires[j].nom);
                 for(let k = 0; k < data[i].repertoires[j].questions.length; k++){
                     ajouteQuestion(data[i].repertoires[j].nom,     data[i].repertoires[j].questions[k].intitule );
@@ -100,8 +99,6 @@ function getIdRepertory(data,userId_ens,nomrepository){
     for(let i = 0; i < data.length; i++){
         if(data[i].id_ens == userId_ens){
             for(let j = 0; j < data[i].repertoires.length; j++){
-                console.log("nom du repertoire " + data[i].repertoires[j].nom.replace(/\s+/,''));
-                console.log("Repertoire rechercher "+nomrepository);
                if(data[i].repertoires[j].nom.replace(/\s+/,'') == nomrepository) {
                    return data[i].repertoires[j].id_rep;
                }
@@ -159,6 +156,7 @@ function ajouteQuestion(nomRepertoire,enonce)
 {
     let question = "<button type=\"button\" class=\"btn btn-lg btn-info btn-block\" >" + enonce + "</button>";
     let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
+    console.log("AjoutQuestion list :" + list_question);
     $(question).appendTo(list_question);
 }
 function deleteSpace(string) {
@@ -235,7 +233,6 @@ $(document).on('click','#AjoutQuestion',function () {
     let choix = true;
     if( $('#TypeChoix').val().toString() == "multiple") choix = false;
     let answerschecked =  $('input:checked').map(function (){ return $(this).val();}).get();
-    console.log("Reponses checked : "+answerschecked);
     let reponsesFausse = [];
     let reponsesBonnes = [];
 
@@ -285,7 +282,6 @@ $(document).on('click','#AjoutQuestion',function () {
         donnee.then((object) =>{
             let id_rep = getIdRepertory(object.data.allEnseignants,userId_ens,nomRepertoire);
             let questions = getQuestionByrepertoire(object.data.allEnseignants,userId_ens,nomRepertoire);
-            console.log(questions);
             questionadded(id_rep,questions,enonce,choix,reponsesBonnes,reponsesFausse,10);
         }
         );
