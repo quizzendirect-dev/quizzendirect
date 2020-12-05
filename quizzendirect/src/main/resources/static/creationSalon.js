@@ -219,13 +219,25 @@ $(document).on("click", ".button-fermer", function () {
     }
 })
 
+function updateLancerButton(disabled){
+    let selected_question = $(document).find(".selected-question")
+    for(let i = 0; i < selected_question.length; i++){
+        selected_question.eq(i).find(".button-lancer").toggleClass("disabled", disabled)
+    }
+    $(document).find(".button-fermer").prop('disabled', disabled)
+}
+
 $(document).on("click", ".button-lancer", function () {
+    updateLancerButton(true)
     let time = $(this).parent().parent().find(".choose-time").val()
     let timer = 0
     let time_line = $(this).parent().parent().find(".time-line")
     let interval = setInterval(function(){
         time_line.css("width", (timer / 1000) * 100 / time + "%")
-        if(timer >= time * 1000) clearInterval(interval)
+        if(timer >= time * 1000){
+            updateLancerButton(false)
+            clearInterval(interval)
+        }
         timer += 1000
     }, 1000)
 
