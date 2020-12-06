@@ -129,3 +129,12 @@
 .login-help{
     font-size: 12px;
 }
+
+button
+{
+    display: inline-block;
+}
+
+.btn-repertoire button {
+    display: inline-block;
+}
