@@ -1,7 +1,5 @@
 package fr.univangers;
 
-import fr.univangers.models.Salon;
-import fr.univangers.websocket.MyWebSocketClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

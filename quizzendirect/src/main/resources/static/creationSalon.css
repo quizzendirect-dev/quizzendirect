@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 html{
     height: 100%;
 }
@@ -8,12 +6,28 @@ body{
     height: 100%
 }
 
->>>>>>> 4af19833f1af8de115b82acaf47cdbeb723647cd
+.navbar-nav{
+    list-style-type: none;
+    display: block;
+    width: 100%;
+}
+
+.navbar-nav a{
+    text-decoration: none;
+    color: white;
+}
+
+.navbar-nav li{
+    padding: 1%;
+    font-size: 20px;
+    display: inline;
+}
+
 .left-container{
     width: 50%;
     float: left;
     margin: 0;
-    padding: 2%;
+    padding: 0% 2% 2%;
 }
 
 .hide {
@@ -70,10 +84,6 @@ body{
     grid-row: 1;
 }
 
-<<<<<<< HEAD
-
-
-=======
 .vertical-line{
     border-left: 2px solid #5dbcd2;
     height: 100%;
@@ -82,17 +92,14 @@ body{
     margin-left: -1px;
     top: 0;
 }
->>>>>>> 4af19833f1af8de115b82acaf47cdbeb723647cd
 
 .right-container{
     float: right;
     width: 50%;
     margin: 0;
-    padding: 2%;
+    padding: 0% 2% 2%;
 }
 
-<<<<<<< HEAD
-=======
 .code-acces{
     float: right;
     padding: 1%;
@@ -101,8 +108,14 @@ body{
     margin-right: 1%;
 }
 
->>>>>>> 4af19833f1af8de115b82acaf47cdbeb723647cd
 .button-demarrer{
+    float: right;
+    padding: 1%;
+    font-size: 18px;
+    margin-bottom: 1%;
+}
+
+.button-fermer{
     float: right;
     padding: 1%;
     font-size: 18px;
@@ -123,9 +136,20 @@ body{
 }
 
 .selected-question{
+    position: relative;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-gap: 1%;
+    overflow: hidden;
+}
+
+.time-line{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 5px;
+    background: #5dbcd2;
 }
 
 .move-buttons{
@@ -145,24 +169,44 @@ body{
     display: block;
 }
 
-.intitule-question{
+.info-question{
     grid-column: 2 / 10;
     grid-row: 1;
-    padding: 1%;
+    position: relative;
+    overflow: hidden;
 }
 
-<<<<<<< HEAD
-.button-supprimer{
-=======
+.intitule-question{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.time-info{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+}
+
+.time-info label{
+    margin-right: 5px;
+    font-weight: normal;
+}
+
+.time-info input{
+    vertical-align: middle;
+}
+
 .question-buttons{
->>>>>>> 4af19833f1af8de115b82acaf47cdbeb723647cd
     float: right;
     grid-column: 10 / 11;
     grid-row: 1;
 }
 
-<<<<<<< HEAD
-=======
 .button-supprimer{
     width: 100%;
     display: block;
@@ -180,7 +224,6 @@ body{
     margin-top: 1%;
 }
 
->>>>>>> 4af19833f1af8de115b82acaf47cdbeb723647cd
 .disabled {
     pointer-events: none;
     cursor: not-allowed;
@@ -189,7 +232,3 @@ body{
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 4af19833f1af8de115b82acaf47cdbeb723647cd

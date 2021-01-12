@@ -194,3 +194,6 @@ type Mutation {
     """Supprime l'étudiant correspondant à l'id spécifié"""
     removeEtudiant(id_etud: ID!) : EtudiantResult
 }
+
+
+

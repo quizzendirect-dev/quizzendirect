@@ -21,6 +21,11 @@
   <component name="ChangeListManager">
     <list default="true" id="23ddb379-9968-4bbc-ac71-fdc053c0f870" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/gestionQuestion.css" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/gestionQuestion.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/gestionQuestion.js" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/gestionQuestion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/index1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/static/index2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/quizzendirect/src/main/resources/templates/GestionQuestions.html" beforeDir="false" afterPath="$PROJECT_DIR$/quizzendirect/src/main/resources/templates/GestionQuestions.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +42,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$APPLICATION_HOME_DIR$/plugins/maven/lib/maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1haRZkoZ7ZLRyAc9VEus4ry3ptC" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -48,6 +60,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/quizzendirect" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -64,6 +77,12 @@
       <workItem from="1601984941671" duration="5000" />
       <workItem from="1601984957953" duration="38000" />
       <workItem from="1603627673484" duration="64000" />
+      <workItem from="1606319828587" duration="21000" />
+      <workItem from="1606597204716" duration="27000" />
+      <workItem from="1606597245899" duration="49000" />
+      <workItem from="1607013336745" duration="21000" />
+      <workItem from="1607251435988" duration="1041000" />
+      <workItem from="1607253662857" duration="33000" />
     </task>
     <servers />
   </component>
@@ -83,17 +102,23 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="405" y="185" width="1133" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603627684995">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state x="405" y="213" width="1133" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607253654352">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="405" y="184" width="1133" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601913928889" />
     <state x="405" y="185" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1048@0.0.1920.1048" timestamp="1603627684995" />
+    <state x="405" y="213" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1607253654351" />
     <state x="456" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/65.24.1855.1056@65.24.1855.1056" timestamp="1600247356234" />
-    <state x="740" y="285" width="424" height="491" key="FileChooserDialogImpl" timestamp="1603627735148">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state x="679" y="346" width="525" height="424" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1607253653501">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="679" y="346" width="525" height="424" key="#com.intellij.ide.util.TreeClassChooserDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1607253653501" />
+    <state x="740" y="313" width="424" height="491" key="FileChooserDialogImpl" timestamp="1607253609657">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="740" y="283" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1601913910408" />
     <state x="740" y="285" width="424" height="491" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1603627735148" />
+    <state x="740" y="313" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1607253609657" />
     <state x="780" y="311" key="FileChooserDialogImpl/65.24.1855.1056@65.24.1855.1056" timestamp="1601984990731" />
     <state x="461" y="164" key="SettingsEditor" timestamp="1601913947330">
       <screen x="0" y="0" width="1920" height="1040" />

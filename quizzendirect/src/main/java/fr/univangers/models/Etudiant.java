@@ -1,7 +1,13 @@
 package fr.univangers.models;
 
 import javax.persistence.Entity;
+<<<<<<< HEAD
 import javax.persistence.*;
+=======
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+>>>>>>> branche_callAPI
 
 @Entity
 public class Etudiant {
