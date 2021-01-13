@@ -40,7 +40,9 @@ function sendQuestion() {
                 'choixUnique': false,
                 'reponsesBonnes': [],
                 'reponsesFausses': [],
-                'time': 15
+                'time': 15,
+                'nbBonneReponse': 0,
+                'nbMauvaiseReponse': 0
             }
         )
     );

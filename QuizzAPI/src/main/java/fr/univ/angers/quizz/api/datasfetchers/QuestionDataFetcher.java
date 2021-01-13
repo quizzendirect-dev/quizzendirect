@@ -109,6 +109,13 @@ public class QuestionDataFetcher {
                 if(((int) dataFetchingEnvironment.getArgument("time")) <= 0) return new Error("updateQuestion", "INVALID_ARG", "Erreur : Le temps de réponse à la question que vous avez saisi : '" + dataFetchingEnvironment.getArgument("time") +  "' secondes, n'est pas correct.");
                 question.get().setTime(dataFetchingEnvironment.getArgument("time"));
             }
+            if(dataFetchingEnvironment.containsArgument("nbBonneReponse")) {
+                question.get().setNbBonneReponse(dataFetchingEnvironment.getArgument("nbBonneReponse"));
+            }
+            if(dataFetchingEnvironment.containsArgument("nbMauvaiseReponse")) {
+                question.get().setNbMauvaiseReponse(dataFetchingEnvironment.getArgument("nbMauvaiseReponse"));
+            }
+
             if(dataFetchingEnvironment.containsArgument("repertoire")) {
                 // On ajoute les nouveaux répertoires
                 Map<String, Object> repertoireInput = dataFetchingEnvironment.getArgument("repertoire");

@@ -1,5 +1,6 @@
 /* WebSocket */
 var stompClient = null;
+var laquestion = null;
 
 /* Connecte le webSocket dés l'arrivée de la page */
 (function connect() {
@@ -17,6 +18,7 @@ var stompClient = null;
 
 function getQuestion(question) {
 
+    laquestion = question;
     /* Cache le chargement et affiche la question */
     $('#loadbar').hide();
     $("#quiz").fadeIn();
@@ -61,12 +63,36 @@ $(function() {
 
     /* Quand un étudiant clique sur une réponse, le chargement s'affiche */
     $("label").click(function(){
+        sendReponse();
         $('#loadbar').show();
         $("#quiz").fadeOut();
     });
 });
 
+function sendReponse(){
+    if(laquestion!=null){
+        //TODO ajouter IF() ELSE
+        if(laquestion.id_quest){
+            let query = "mutation{\n" +
+                "  updateQuestion(nbBonneReponse: 1,id_quest:"+laquestion.id_quest+"){\n" +
+                "  ...on Repertoire\n" +
+                "    {\n" +
+                "      id_quest \n" +
+                "    } ... on Error{ " +
+                "message " +
+                "}\n" +
+                "  }\n" +
+                "}"
+            const donnee = callAPI(query);
 
+        }
+        else {
+
+        }
+        callAPI(query);
+    }
+
+}
 
 // fonction qui récupére une variable get pour récupérer le code d'accés entré par l'étudiant
 function getQueryVariable(variable)

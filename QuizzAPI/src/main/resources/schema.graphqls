@@ -13,6 +13,10 @@ type Question {
 	time : Int
     """Répertoire dans lequel est contenue la question"""
 	repertoire : Repertoire
+    """nombre de bonne reponse à la question"""
+    nbBonneReponse : Int
+    """nombre de mauvaise reponse à la question"""
+    nbMauvaiseReponse : Int
 }
 
 type Repertoire {
@@ -125,6 +129,8 @@ input QuestionInput {
     reponsesBonnes: [String]!
     reponsesFausses: [String]!
     time: Int!
+    nbBonneReponse : Int
+    nbMauvaiseReponse : Int
 }
 
 input EnseignantInput {
@@ -158,7 +164,7 @@ type Mutation {
     """Crée une nouvelle question correspondant aux paramètres spécifiés"""
     createQuestion(intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
     """Modifie la question avec le ou les paramètre(s) spécifié(s)"""
-    updateQuestion(id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput) : QuestionResult
+    updateQuestion(id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput, nbMauvaiseReponse: Int, nbBonneReponse:Int) : QuestionResult
     """Supprime la question correspondant à l'id spécifié"""
     removeQuestion(id_quest: ID!) : QuestionResult
 

@@ -25,6 +25,8 @@ public class Question implements Serializable {
 	@OneToOne()
 	@JoinColumn(name = "id_quest")
 	private Repertoire repertoire;
+	private int nbBonneReponse;
+	private int nbMauvaiseReponse;
 
 	public Question() {}
 	public Question(String intitule, boolean choixUnique, List<String> reponsesBonnes, List<String> reponsesFausses, int time){
@@ -61,5 +63,27 @@ public class Question implements Serializable {
 	}
 	public Repertoire getRepertoire() {
 		return repertoire;
+	}
+
+	public int getNbBonneReponse() {
+		return nbBonneReponse;
+	}
+
+	public void setNbBonneReponse(int nbBonneReponse) {
+		if(nbBonneReponse<=0) {
+			this.nbBonneReponse = 0;
+		}
+		else{
+			this.nbBonneReponse = this.nbBonneReponse+nbBonneReponse;
+		}
+	}
+
+	public int getNbMauvaiseReponse() {
+		return nbMauvaiseReponse;
+	}
+
+	public void setNbMauvaiseReponse(int nbMauvaiseReponse) {
+		if (nbMauvaiseReponse<=0) this.nbMauvaiseReponse = 0;
+		else this.nbMauvaiseReponse = this.nbMauvaiseReponse+nbMauvaiseReponse;
 	}
 }
