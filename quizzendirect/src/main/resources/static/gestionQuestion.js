@@ -118,6 +118,38 @@ function getQuestionByrepertoire(data,userId_ens,nomrepository) {
     }
     return [];
 }
+
+function getRepertoireByQuestionIntitule(data, enonce) {
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].questions.length; j++) {
+            if (data[i].questions[j].intitule == enonce) {
+                return data[i];
+            }
+        }
+    }
+    return;
+}
+
+function getQuestionByEnonce(data, enonce) {
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].questions.length; j++) {
+            if (data[i].questions[j].intitule == enonce) {
+                return data[i].questions[j];
+            }
+        }
+    }
+    return;
+}
+
+function getQuestionById(data, id) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id_quest == id) {
+            return data[i];
+        }
+    }
+    return;
+}
+
 function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time) {
     let enregistrementQuestion = "mutation{\n" +
         "  createQuestion(intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"){\n" +
@@ -139,6 +171,7 @@ function getIdQuestion(data,intitule) {
     }
     return -1;
 }
+
 function supprimeelement(id_quest) {
     let query = "mutation{\n" +
         "  removeQuestion(id_quest:"+id_quest+"){\n" +
@@ -168,11 +201,35 @@ function questionExiste(question)  {
 /***********************Fonction *******************************/
 //Ajout des questions à un repertoire
 function ajouteQuestion(nomRepertoire,enonce) {
-    let question = "<div class=\"btn-repertoire\" style='margin-top: 2px;'><button type=\"button\" class=\"btn btn-lg btn-info btn-block\" style=\"width: 79%\">" + enonce + "</button> \ " +
-        "<button class='btn btn-danger' id='sup' style='width: 20%; height: 45px;'>supprimer</button></div>";
-    let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
-    $(question).appendTo(list_question);
+    let query = "{\n" +
+        "   allRepertoires {" +
+        "       nom\n" +
+        "       questions {\n" +
+        "           id_quest\n" +
+        "           intitule\n" +
+        "           choixUnique\n" +
+        "           reponsesBonnes\n" +
+        "           reponsesFausses\n" +
+        "           repertoire {" +
+        "               nom" +
+        "           }\n" +
+        "       }\n" +
+        "   }\n" +
+        "}"
+    const donnee = callAPI(query);
+    donnee.then(object => {
+        let repertoire = getRepertoireByQuestionIntitule(object.data.allRepertoires, enonce);
+        let question = getQuestionByEnonce(object.data.allRepertoires, enonce)
+        const nom = repertoire.nom.replace(/\s+/,'');
+        console.log('ModifierQuestion_'+question.id_quest+'_'+nom);
+        let button = "<div class=\"btn-repertoire\"  style='margin-top: 2px;'><button id='ModifierQuestion_"+question.id_quest+"_"+nom+"' type=\"button\" class=\"btn btn-lg btn-info btn-block\" data-toggle='modal' data-target='#modalPoll-1' style=\"width: 79%\">" + enonce + "</button> \ " +
+            "<button class='btn btn-danger' id='sup' style='width: 20%; height: 45px;'>supprimer</button></div>";
+        let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
+
+        $(button).appendTo(list_question);
+    })
 }
+
 function deleteSpace(string) {
     let i=0;
     while(string[i] ==' ') {
@@ -222,9 +279,8 @@ function ajouterRepertoire(nomNouveauRep) {
 
     let repositoryname = nomNouveauRep.replace(/\s+/,'');
     let id_rep = "id" + repositoryname.toString();
-    let id_rep_quest = "question_" + repositoryname.toString();
+    let id_rep_quest = "AjouterQuestion_" + repositoryname.toString();
     let id_list_quest = "list_" + repositoryname.toString();
-
 
     $("#nouveauRep").attr("id", id_rep);
     $("#plusquestion").attr("id", id_rep_quest);
@@ -254,13 +310,15 @@ function isGoodForm(){
         let input_into_the_label = label_next.children();
         if( $(input_into_the_label.val()) == '') {
             isgood = false;
-            console.log("Champs : " + $(input_into_the_label.val()) )
+            //console.log("Champs : " + $(input_into_the_label.val()) )
         }
     });
     return isgood;
 }
+
 /***********************Gestion evénements clique sur la page *******************************/
 $(document).on('click','#AjoutQuestion',function () {
+
     let enonce = $("#enonceQuestion").val().toString();
     let nomRepertoire = $("#NomRepertoiremodal").html();
     let choix = true;
@@ -270,7 +328,7 @@ $(document).on('click','#AjoutQuestion',function () {
     let reponsesBonnes = [];
 
         if (questionExiste(enonce)) {
-            alert("Question éxiste déjà dans un répertoire ");
+            alert("Question existe déjà dans un répertoire ");
         }
         else if(!isGoodForm()){
             alert("Formulaire mal rempli ! ");
@@ -287,6 +345,7 @@ $(document).on('click','#AjoutQuestion',function () {
                 $(input_into_the_label).val('');
             });
             enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10);
+            console.log(nomRepertoire)
             ajouteQuestion(nomRepertoire, enonce);
 
             let query = "{" +
@@ -312,12 +371,74 @@ $(document).on('click','#AjoutQuestion',function () {
                     let id_rep = getIdRepertory(object.data.allEnseignants, userId_ens, nomRepertoire);
                     let questions = getQuestionByrepertoire(object.data.allEnseignants, userId_ens, nomRepertoire);
                     questionadded(id_rep, questions, enonce, choix, reponsesBonnes, reponsesFausse, 10);
+                    $('#modalPoll-1').modal('hide');
                 }
             );
         }
 
-
 });
+
+$(document).on('click','#ModifierQuestion',function () {
+    let enonce = $("#enonceQuestion").val().toString();
+    let choix = true;
+    if( $('#TypeChoix').val().toString() === "multiple") choix = false;
+
+    let answerschecked =  $('input:checked').map(function (){ return $(this).val();}).get();
+    let reponsesFausse = [];
+    let reponsesBonnes = [];
+
+    if(!isGoodForm()){
+        alert("Formulaire mal rempli ! ");
+    } else {
+        //Fonction qui rempli le tableau de reponsesBonnes et Fausse en fonction des réponses sélectionnées
+        $('input[name="group1"]').each(function () {
+            let label_next = $(this).next();
+            let input_into_the_label = label_next.children();
+            if (answerschecked.indexOf($(this).val()) !== -1) {
+                reponsesBonnes.push("\"" + $(input_into_the_label).val() + "\"");
+            } else {
+                reponsesFausse.push("\"" + $(input_into_the_label).val() + "\"");
+            }
+            $(input_into_the_label).val('');
+        });
+
+        let idQuest = $('#ModifierQuestion').attr('name');
+        let updateQuery = "mutation{\n" +
+            "  updateQuestion\n" +
+            "  (id_quest: " + idQuest + ",\n" +
+            "  \tintitule: \"" + enonce + "\",\n" +
+            "    choixUnique: "+ choix +",\n" +
+            "    reponsesBonnes: [\n";
+        reponsesBonnes.forEach(reponse =>
+            updateQuery += "      "+reponse+ "\n"
+        )
+
+        updateQuery += "    ],\n" +
+            "    reponsesFausses: [\n";
+        reponsesFausse.forEach(reponse =>
+            updateQuery += "      "+reponse +"\n"
+        )
+
+        updateQuery += "    ]\n" +
+            "  ){\n" +
+            "    ...on Question{\n" +
+            "    \tid_quest\n" +
+            "    }\n" +
+            "    ... on Error{\n" +
+            "      \tmessage\n" +
+            "    }\n" +
+            "\t}\n" +
+            "}"
+
+        callAPI(updateQuery);
+
+        let nomRepertoire = $('#NomRepertoiremodal')[0].innerHTML;
+        const id = 'ModifierQuestion_'+idQuest+'_'+nomRepertoire.replace(/\s+/,'');
+        $('#'+id)[0].innerHTML = enonce;
+        $('#modalPoll-1').modal('hide');
+    }
+});
+
 //Création d'un répertoire
 $(document).on('click','#modalRep',function (){
 
@@ -342,48 +463,90 @@ $(document).on('click','#modalRep',function (){
     $('#NomRepertoire').val('');
 
 });
-//Modification du NomduRepertoire lors d'un clique sur +Question
+
+//Récupération des données lors de l'ouverture de la modale des questions (création ou modification)
 $(document).on('click','.row button',function () {
     let id_bouton_cliquer= $(this).attr('id');
     let tab = id_bouton_cliquer.split("_");
-    let idrep = "#id"+tab[1]+"> div";
+
+    let idrep = "#id" + tab[1] + "> div";
     let classe = $(idrep).attr('class');
 
     let parent = $('#NomRepertoiremodal').parent();
 
-    $("#NomRepertoiremodal").html(tab[1]);
-    $("#NomRepertoiremodal").css('text-align','center');
-    $("#NomRepertoiremodal").css('font-size','30px');
-    $("#NomRepertoiremodal").css('margin-top','20px');
+    $("#NomRepertoiremodal").html(tab[2]);
+    $("#NomRepertoiremodal").css('text-align', 'center');
+    $("#NomRepertoiremodal").css('font-size', '30px');
+    $("#NomRepertoiremodal").css('margin-top', '20px');
 
     // Changement de la couleur du titre de la modal
-    if( classe == "panel panel-success" ) $(parent).css('background-color','#58d68d');
-    else if( classe == "panel panel-warning" )$(parent).css('background-color','#fcf3cf');
-    else  $(parent).css('background-color','#3498db');
+    if (classe == "panel panel-success") $(parent).css('background-color', '#58d68d');
+    else if (classe == "panel panel-warning") $(parent).css('background-color', '#fcf3cf');
+    else $(parent).css('background-color', '#3498db');
+    if (tab[0] == "AjouterQuestion") {
+        $('#ModifierQuestion').hide();
+        $('#AjoutQuestion').show();
+        // Initialisation des différents champs dans la modale
+        $('#enonceQuestion').val('');
+        $('#TypeChoix').val('unique');
+        $('#TypeChoix').click();
+        let i = 0;
+        $('input[name="group1"]').each(function () {
+            let label_next = $(this).next();
+            let input_into_the_label = label_next.children();
+            input_into_the_label.val('');
+            $(this).prop('checked', false);
+            if (i==2) {
+                $(this).prop('checked', true);
+                input_into_the_label.css('background-color', '#22d0ae');
+            } else {
+                input_into_the_label.css('background-color', 'white');
+            }
+            i++;
+        });
+    } else if (tab[0] == "ModifierQuestion") {
+        $('#AjoutQuestion').hide();
+        $('#ModifierQuestion').show();
+
+        let query = "{\n" +
+            "  allQuestions{\n" +
+            "    id_quest\n" +
+            "    intitule\n" +
+            "    choixUnique\n" +
+            "    reponsesBonnes\n" +
+            "    reponsesFausses\n" +
+            "  }\n" +
+            "}"
+
+        const donnee = callAPI(query);
+        donnee.then((object) => {
+            let question = getQuestionById(object.data.allQuestions, tab[1]);
+            $('#ModifierQuestion').attr('name', question.id_quest);
+            $('#enonceQuestion').val(question.intitule);
+            question.choixUnique ? $('#TypeChoix').val('unique') : $('#TypeChoix').val('multiple');
+            $('#TypeChoix').click();
+            let numberOfGoodAnswers = question.reponsesBonnes.length;
+            for (let j=1; j<=numberOfGoodAnswers; j++) {
+                $('#Choix'+j).val(question.reponsesBonnes[j-1]);
+                $('#radio-'+j+'79').prop('checked', true);
+            }
+            for (let k=numberOfGoodAnswers+1; k<=4; k++) {
+                $('#Choix'+k).val(question.reponsesFausses[4-k]);
+                $('#radio-'+k+'79').prop('checked', false);
+            }
+        });
 
 
-    // Initialisation des différentes champs dans la modal
-    $('#enonceQuestion').val(' ');
-    $('#TypeChoix').val('unique');
-    let i = 0;
-    $('input[name="group1"]').each(function () {
-        let label_next = $(this).next();
-        let input_into_the_label = label_next.children();
-        if( i == 2)
-        {
-            $(this).attr('checked','true');
-            input_into_the_label.css('background-color', '#22d0ae');
-        }
-        else {
-            input_into_the_label.css('background-color', 'white');
-        }
-        i++;
-    });
+
+    }
 });
+
 //Fonction qui change le type de box pour les réponses : Checkbox où RadioButton
 $(document).on('click',"#TypeChoix",function () {
     $choix = $(this).val().toString();
-    if( $choix == "multiple") $('.form-check-input').attr('type','checkbox');
+    if( $choix == "multiple") {
+        $('.form-check-input').attr('type','checkbox');
+    }
     else
     {
         $('.form-check-input').attr('type','radio');
@@ -448,10 +611,8 @@ $(document).on('click','.btn.btn-danger', function (){
     const donnee = callAPI(query);
     donnee.then((object) => {
         let id = getIdQuestion(object.data.allQuestions, IntituleQuestion);
-        console.log("Id question :"+ id);
         supprimeelement(id);
-        }
-    );
+    });
     parent.remove();
 } )
 
