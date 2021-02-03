@@ -82,6 +82,7 @@ public class GraphQLProvider {
       return RuntimeWiring.newRuntimeWiring()
               .type("Query", typeWiring-> typeWiring
 
+                      .dataFetcher("EnseignantVerification", enseignantDataFetcher.getEnseignantVerification())
                       .dataFetcher("allEnseignants", enseignantDataFetcher.getAllEnseignant())
                       .dataFetcher("allQuestions", questionDataFetcher.getAllQuestion())
                       .dataFetcher("allRepertoires", repertoireDataFetcher.getAllRepertoire())

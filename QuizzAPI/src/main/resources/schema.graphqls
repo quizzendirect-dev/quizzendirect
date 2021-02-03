@@ -97,7 +97,9 @@ union SalonResult = Salon | Error
 union EtudiantResult = Etudiant | Error
 
 type Query {
-    """Renvoie l'enseigant selon son email et so token"""
+    """Renvoie l'enseigant selon son email et le mdp"""
+    EnseignantVerification(mail: String!, mdp : String!) : Enseignant
+    """Renvoie l'enseigant selon son email et son token"""
     EnseignantByMail(mail: String!, token : String!) : Enseignant
     """Renvoie un mail d'enseignant si ce mail exist deja"""
     getMailProf(mail: String!) : String
@@ -106,7 +108,7 @@ type Query {
     """Renvoie la liste de toutes les questions"""
     allQuestions : [Question]
     """Renvoie la liste de tous les répertoires"""
-    allRepertoires : [Repertoire]
+    allRepertoires(token : String!) : [Repertoire]
     """Renvoie la liste de tous les historiques"""
     allHistoriques : [Historique]
     """Renvoie la liste de tous les salons"""

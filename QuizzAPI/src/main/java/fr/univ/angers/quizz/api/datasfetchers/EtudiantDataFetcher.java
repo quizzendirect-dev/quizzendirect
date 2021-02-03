@@ -100,6 +100,17 @@ public class EtudiantDataFetcher {
         };
     }
 
+    public DataFetcher<Object> sendReponse(){
+        return dataFetchingEnvironment -> {
+            Optional<Etudiant> etudiant = etudiantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_etud")));
+            if(!etudiant.isPresent()) return new Error("updateEtudiant",  "NOT_FOUND", "Erreur : Aucun étudiant correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_etud")) +  "' n'a été trouvé.");
+
+
+            etudiantRepository.save(etudiant.get());
+            return etudiant;
+        };
+    }
+
     public DataFetcher<Object> removeEtudiant(){
         return dataFetchingEnvironment -> {
             // On vérifie que l'étudiant existe

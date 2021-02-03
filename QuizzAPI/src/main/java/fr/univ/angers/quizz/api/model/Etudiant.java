@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,6 +21,8 @@ public class Etudiant implements Serializable {
     private Salon salon;
     private int bonnesReponses = 0; //Pour les statistiques
     private int questionsRepondues = 0;
+    @OneToMany
+    private List<Question> questionRepondue;
 
     public Etudiant(){}
     public Etudiant(String pseudo, Salon salon){

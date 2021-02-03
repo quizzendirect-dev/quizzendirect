@@ -49,6 +49,20 @@ public class EnseignantDataFetcher {
         };
     }
 
+    public DataFetcher<Object> getEnseignantVerification() {
+        return dataFetchingEnvironment -> {
+            Enseignant enseignant = enseignantRepository.findByMail(dataFetchingEnvironment.getArgument("mail"));
+            if (enseignant != null) {
+                if (dataFetchingEnvironment.getArgument("mdp").equals(enseignant.getMotdepasse())) {
+                    return enseignant;
+                } else return new Error("removeEnseignant", "MDPMAIL",
+                        "Error : PASSWORD OR MAIL INCORRECT");
+            }
+            return new Enseignant();
+        };
+    }
+
+
     public DataFetcher<Object> getMailEnseignant() {
         return dataFetchingEnvironment -> {
             Enseignant enseignant = enseignantRepository.findByMail(dataFetchingEnvironment.getArgument("mail"));
@@ -59,14 +73,14 @@ public class EnseignantDataFetcher {
         };
     }
 
+
     public DataFetcher<Object> getEnseignant() {
         return dataFetchingEnvironment -> {
             Enseignant enseignant = enseignantRepository.findByMail(dataFetchingEnvironment.getArgument("mail"));
             if (enseignant != null) {
                 if (parseJWT(dataFetchingEnvironment.getArgument("token"), enseignant)) {
                     return enseignant;
-                }
-                else return new Error("removeEnseignant", "TOKEN",
+                } else return new Error("removeEnseignant", "TOKEN",
                         "Error : TOKEN");
             }
             return new Enseignant();
@@ -76,6 +90,8 @@ public class EnseignantDataFetcher {
     public DataFetcher<Object> getEnseignantById() {
         return dataFetchingEnvironment -> {
             Optional<Enseignant> enseignant = enseignantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_ens")));
+            String token = dataFetchingEnvironment.getArgument("token");
+            System.out.println(token);
             if (enseignant.isPresent())
                 if (parseJWT(dataFetchingEnvironment.getArgument("token"), enseignant.get()))
                     return enseignant.get();
