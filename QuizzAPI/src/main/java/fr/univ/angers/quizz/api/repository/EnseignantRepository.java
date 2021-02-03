@@ -15,6 +15,6 @@ public interface EnseignantRepository extends CrudRepository<Enseignant, Integer
      */
     @Override
     public List<Enseignant> findAll();
-
+    Enseignant findByMail(String mail);
 }
 

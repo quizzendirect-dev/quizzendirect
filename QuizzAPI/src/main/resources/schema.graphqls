@@ -2,17 +2,17 @@ type Question {
     """Id unique de la question"""
     id_quest : ID!
     """Intitulé de la question"""
-	intitule : String
+    intitule : String
     """Vrai si la question est à choix unique, faux sinon"""
-	choixUnique : Boolean
+    choixUnique : Boolean
     """Liste de la (des) bonne(s) réponse(s) à la question"""
-	reponsesBonnes : [String]
+    reponsesBonnes : [String]
     """Liste de la (des) mauvaise(s) réponse(s) à la question"""
-	reponsesFausses : [String]
+    reponsesFausses : [String]
     """Temps de réponse autorisé pour répondre à la question (en secondes)"""
-	time : Int
+    time : Int
     """Répertoire dans lequel est contenue la question"""
-	repertoire : Repertoire
+    repertoire : Repertoire
     """nombre de bonne reponse à la question"""
     nbBonneReponse : Int
     """nombre de mauvaise reponse à la question"""
@@ -34,13 +34,13 @@ type Enseignant {
     """Id unique de l'enseignant"""
     id_ens : ID!
     """Nom de l'enseignant"""
-	nom : String
+    nom : String
     """Adresse mail de l'enseignant"""
-	mail : String
+    mail : String
     """Mot de passe de l'enseignant"""
-	motdepasse : String
+    motdepasse : String
     """Liste des différents répertoires de l'enseignant"""
-	repertoires : [Repertoire]
+    repertoires : [Repertoire]
 }
 
 type Historique {
@@ -97,6 +97,10 @@ union SalonResult = Salon | Error
 union EtudiantResult = Etudiant | Error
 
 type Query {
+    """Renvoie l'enseigant selon son email et so token"""
+    EnseignantByMail(mail: String!, token : String!) : Enseignant
+    """Renvoie un mail d'enseignant si ce mail exist deja"""
+    getMailProf(mail: String!) : String
     """Renvoie la liste de tous les enseignants"""
     allEnseignants : [Enseignant]
     """Renvoie la liste de toutes les questions"""
@@ -110,17 +114,19 @@ type Query {
     """Renvoie la liste de tous les étudiants"""
     allEtudiants : [Etudiant]
     """Renvoie le enseignant correspondant au nom spécifié"""
-    getEnseignantById(id_ens: ID!) : EnseignantResult
+    getEnseignantById(token : String!, id_ens: ID!) : EnseignantResult
     """Renvoie la question correspondant à l'intitulé spécifié"""
     getQuestionById(id_quest: ID!) : QuestionResult
     """Renvoie le répertoire correspondant au nom spécifié"""
-    getRepertoireById(id_rep: ID!) : RepertoireResult
+    getRepertoireById(token : String!, id_rep: ID!) : RepertoireResult
     """Renvoie l'historique correspondant à la date spécifiée"""
     getHistoriqueById(id_hist: ID!) : HistoriqueResult
     """Renvoie le salon correspondant au code d'accès spécifié"""
-    getSalonById(id_salon: ID!) : SalonResult
+    getSalonById(token : String!, id_salon: ID!) : SalonResult
     """Renvoie l'étudiant correspondant au pseudo spécifié"""
     getEtudiantById(id_etud: ID!) : EtudiantResult
+    """Token d'indentité"""
+    getToken(ens_Id : ID!, mdp: String): String
 }
 
 input QuestionInput {
@@ -156,37 +162,37 @@ type Mutation {
     """Crée un nouvel enseignant correspondant aux paramètres spécifiés"""
     createEnseignant(nom: String!, mail: String!, motdepasse: String!) : EnseignantResult
     """Modifie un enseignant avec le ou les paramètre(s) spécifié(s)"""
-    updateEnseignant(id_ens: ID!, nom: String, mail: String, motdepasse: String, repertoires: [RepertoireInput]) : EnseignantResult
+    updateEnseignant(token : String!, id_ens: ID!, nom: String, mail: String, motdepasse: String, repertoires: [RepertoireInput]) : EnseignantResult
     """Supprime l'enseignant correspondant à l'id spécifié"""
-    removeEnseignant(id_ens: ID!) : EnseignantResult
+    removeEnseignant(token : String!,id_ens: ID!) : EnseignantResult
 
     #   Question
     """Crée une nouvelle question correspondant aux paramètres spécifiés"""
-    createQuestion(intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
+    createQuestion(token : String!, intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
     """Modifie la question avec le ou les paramètre(s) spécifié(s)"""
-    updateQuestion(id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput, nbMauvaiseReponse: Int, nbBonneReponse:Int) : QuestionResult
+    updateQuestion(token : String!, id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput, nbMauvaiseReponse: Int, nbBonneReponse:Int) : QuestionResult
     """Supprime la question correspondant à l'id spécifié"""
-    removeQuestion(id_quest: ID!) : QuestionResult
+    removeQuestion(token : String!, id_quest: ID!) : QuestionResult
 
     #   Répertoire
     """Crée un nouveau répertoire correspondant aux paramètres spécifiés"""
-    createRepertoire(nom: String!, enseignant: EnseignantInput!) : RepertoireResult
+    createRepertoire(token : String!,nom: String!, enseignant: EnseignantInput!) : RepertoireResult
     """Modifie le répertoire avec le ou les paramètre(s) spécifié(s)"""
-    updateRepertoire(id_rep: ID!, nom: String, questions: [QuestionInput], enseignant: EnseignantInput) : RepertoireResult
+    updateRepertoire(token : String!, id_rep: ID!, nom: String, questions: [QuestionInput], enseignant: EnseignantInput) : RepertoireResult
     """Supprime le répertoire correspondant à l'id spécifié"""
-    removeRepertoire(id_rep: ID!) : RepertoireResult
+    removeRepertoire(token : String!, id_rep: ID!) : RepertoireResult
 
     #   Historique
     """Crée un nouvel historique correspondant aux paramètres spécifiés"""
     createHistorique(question: QuestionInput!, date: String!) : HistoriqueResult
     """Modifie l'historique avec le ou les paramètre(s) spécifié(s)"""
-    updateHistorique(id_hist: ID!, question: QuestionInput, date: String) : HistoriqueResult
+    updateHistorique(token : String!, id_hist: ID!, question: QuestionInput, date: String) : HistoriqueResult
     """Supprime l'historique correspondant à l'id spécifié"""
-    removeHistorique(id_hist: ID!) : HistoriqueResult
+    removeHistorique(token : String!, id_hist: ID!) : HistoriqueResult
 
     #   Salon
     """Crée un nouveau salon correspondant aux paramètres spécifiés"""
-    createSalon(codeAcces: Int!, enseignant: EnseignantInput!) : SalonResult
+    createSalon(token : String!, codeAcces: Int!, enseignant: EnseignantInput!) : SalonResult
     """Modifie le salon avec le ou les paramètre(s) spécifié(s)"""
     updateSalon(id_salon: ID!, codeAcces: Int, questionsEnAttente: [QuestionInput], questionsPosees: [QuestionInput], questionCourante: QuestionInput, etudiants: [EtudiantInput], enseignant: EnseignantInput) : SalonResult
     """Supprime le salon correspondant à l'id spécifié"""

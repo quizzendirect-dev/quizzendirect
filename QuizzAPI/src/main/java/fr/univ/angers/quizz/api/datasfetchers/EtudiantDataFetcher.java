@@ -24,7 +24,7 @@ public class EtudiantDataFetcher {
     @Autowired
     private SalonRepository salonRepository;
 
-    public DataFetcher<List<Etudiant>> getAllProduct(){
+    public DataFetcher<List<Etudiant>> getAllEtudiant(){
         return dataFetchingEnvironment -> etudiantRepository.findAll();
     }
 

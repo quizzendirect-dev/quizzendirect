@@ -82,18 +82,21 @@ public class GraphQLProvider {
       return RuntimeWiring.newRuntimeWiring()
               .type("Query", typeWiring-> typeWiring
 
-                      .dataFetcher("allEnseignants", enseignantDataFetcher.getAllProduct())
-                      .dataFetcher("allQuestions", questionDataFetcher.getAllProduct())
-                      .dataFetcher("allRepertoires", repertoireDataFetcher.getAllProduct())
-                      .dataFetcher("allHistoriques", historiqueDataFetcher.getAllProduct())
-                      .dataFetcher("allSalons", salonDataFetcher.getAllProduct())
-                      .dataFetcher("allEtudiants", etudiantDataFetcher.getAllProduct())
+                      .dataFetcher("allEnseignants", enseignantDataFetcher.getAllEnseignant())
+                      .dataFetcher("allQuestions", questionDataFetcher.getAllQuestion())
+                      .dataFetcher("allRepertoires", repertoireDataFetcher.getAllRepertoire())
+                      .dataFetcher("allHistoriques", historiqueDataFetcher.getAllHistorique())
+                      .dataFetcher("allSalons", salonDataFetcher.getAllSalon())
+                      .dataFetcher("allEtudiants", etudiantDataFetcher.getAllEtudiant())
                       .dataFetcher("getEnseignantById", enseignantDataFetcher.getEnseignantById())
                       .dataFetcher("getQuestionById", questionDataFetcher.getQuestionById())
                       .dataFetcher("getRepertoireById", repertoireDataFetcher.getRepertoireById())
                       .dataFetcher("getHistoriqueById", historiqueDataFetcher.getHistoriqueById())
                       .dataFetcher("getSalonById", salonDataFetcher.getSalonById())
                       .dataFetcher("getEtudiantById", etudiantDataFetcher.getEtudiantById())
+                      .dataFetcher("getToken", enseignantDataFetcher.getToken())
+                      .dataFetcher("EnseignantByMail", enseignantDataFetcher.getEnseignant())
+                      .dataFetcher("getMailProf", enseignantDataFetcher.getMailEnseignant())
               )
               .type("Mutation", typeWiring-> typeWiring
                       //    Enseignant
