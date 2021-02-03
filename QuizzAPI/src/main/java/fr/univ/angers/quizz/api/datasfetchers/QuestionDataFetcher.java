@@ -41,6 +41,14 @@ public class QuestionDataFetcher {
         };
     }
 
+    public DataFetcher<Object> getQuestionByIntitule(){
+        return dataFetchingEnvironment -> {
+            Question question = questionRepository.findQuestionByIntitule(dataFetchingEnvironment.getArgument("intitule"));
+            if (question != null) return question;
+            return new Question();
+        };
+    }
+
     public DataFetcher<Object> createQuestion() {
         return dataFetchingEnvironment -> {
             // On vérifie que toutes les données passées en paramètres sont valides

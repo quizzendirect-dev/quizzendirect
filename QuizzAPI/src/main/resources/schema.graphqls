@@ -129,6 +129,8 @@ type Query {
     getEtudiantById(id_etud: ID!) : EtudiantResult
     """Token d'indentité"""
     getToken(ens_Id : ID!, mdp: String): String
+
+    getQuestionByIntitule(intitule : String!) : Question
 }
 
 input QuestionInput {
