@@ -208,25 +208,13 @@ function questionExiste(question)  {
 function ajouteQuestion(nomRepertoire,enonce) {
     let token = getCookie("token")
     let query = "{\n" +
-        "   allRepertoires(token : \""+ token +"\" ){" +
-        "       nom\n" +
-        "       questions {\n" +
-        "           id_quest\n" +
-        "           intitule\n" +
-        "           choixUnique\n" +
-        "           reponsesBonnes\n" +
-        "           reponsesFausses\n" +
-        "           repertoire {" +
-        "               nom" +
-        "           }\n" +
-        "       }\n" +
+        "   getQuestionByIntitule(intitule : \""+ enonce +"\" ){" +
+        "       id_quest\n" +
         "   }\n" +
         "}"
     const donnee = callAPI(query);
     donnee.then(object => {
-        //let repertoire = getRepertoireByQuestionIntitule(object.data.allRepertoires, enonce);
-        let question = getQuestionByEnonce(object.data.allRepertoires, enonce)
-        //const nom = repertoire.nom.replace(/\s+/,'');
+        let question = object.data.getQuestionByIntitule
         let button = "<div class=\"btn-repertoire\"  style='margin-top: 2px;'><button id='ModifierQuestion_"+question.id_quest+"_"+nomRepertoire+"' type=\"button\" class=\"btn btn-lg btn-info btn-block\" data-toggle='modal' data-target='#modalPoll-1' style=\"width: 79%\">" + enonce + "</button> \ " +
             "<button class='btn btn-danger' id='sup' style='width: 20%; height: 45px;'>supprimer</button></div>";
         let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
@@ -517,18 +505,21 @@ $(document).on('click','.row button',function () {
         $('#ModifierQuestion').show();
 
         let query = "{\n" +
-            "  allQuestions{\n" +
+            "  getQuestionById(id_quest : " + tab[1] +"){       \n" +
+            "    ... on Question{\n" +
             "    id_quest\n" +
             "    intitule\n" +
             "    choixUnique\n" +
             "    reponsesBonnes\n" +
             "    reponsesFausses\n" +
             "  }\n" +
+            "  }\n" +
             "}"
 
         const donnee = callAPI(query);
         donnee.then((object) => {
-            let question = getQuestionById(object.data.allQuestions, tab[1]);
+            let question = object.data.getQuestionById;
+            console.log(question)
             $('#ModifierQuestion').attr('name', question.id_quest);
             $('#enonceQuestion').val(question.intitule);
             question.choixUnique ? $('#TypeChoix').val('unique') : $('#TypeChoix').val('multiple');
