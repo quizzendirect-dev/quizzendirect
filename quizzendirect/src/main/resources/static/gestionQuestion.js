@@ -30,9 +30,11 @@ function getCookie(name){
 /*******************Fonction pour l'API ********************************/
 $(document).ready(function () {
     let userId_ens = getCookie("userId_ens")
+    let token = getCookie("token")
     if(userId_ens == null) return
     let query = "{" +
-        "   allEnseignants{" +
+        "   getEnseignantById(token : \""+ token +"\",  id_ens : \""+userId_ens+"\" ){" +
+        "... on Enseignant{" +
         "       id_ens" +
         "       repertoires{" +
         "           nom" +
@@ -42,29 +44,29 @@ $(document).ready(function () {
         "           }" +
         "       }" +
         "   }" +
+        "}" +
         "}"
     const donnees = callAPI(query)
     donnees.then((object) => {
-        afficherRepertoires(object.data.allEnseignants, userId_ens)
+
+        afficherRepertoires(object.data.getEnseignantById, userId_ens)
     });
 })
 function afficherRepertoires(data, userId_ens){
-    for(let i = 0; i < data.length; i++){
-        if(data[i].id_ens == userId_ens){
-            for(let j = 0; j < data[i].repertoires.length; j++){
-                ajouterRepertoire(data[i].repertoires[j].nom);
-                for(let k = 0; k < data[i].repertoires[j].questions.length; k++){
-                    ajouteQuestion(data[i].repertoires[j].nom,     data[i].repertoires[j].questions[k].intitule );
+        if(data.id_ens == userId_ens){
+            for(let j = 0; j < data.repertoires.length; j++){
+                ajouterRepertoire(data.repertoires[j].nom);
+                for(let k = 0; k < data.repertoires[j].questions.length; k++){
+                    ajouteQuestion(data.repertoires[j].nom,     data.repertoires[j].questions[k].intitule );
                 }
             }
         }
-    }
 }
 function createRepertoire(nomRepertoire) {
     let email = getCookie("userEmail") ;
-
+    let token = getCookie("token")
     let query = "mutation{\n" +
-        "  createRepertoire(nom: \""+nomRepertoire+"\",enseignant:{mail:\""+email+"\"}){\n" +
+        "  createRepertoire(token : \""+token +"\", nom: \""+nomRepertoire+"\",enseignant:{mail:\""+email+"\"}){\n" +
         "  ...on Repertoire\n" +
         "    {\n" +
         "      nom:nom \n" +
@@ -76,7 +78,8 @@ function createRepertoire(nomRepertoire) {
     const donnee = callAPI(query);
 }
 function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausses,time) {
-    let query = "mutation{updateRepertoire(id_rep:"+id_rep+", questions:["
+    let token = getCookie("token")
+    let query = "mutation{updateRepertoire(token : \""+ token +"\" , id_rep:"+id_rep+", questions:["
     if(questions.length > 0) {
         for (let i = 0; i < questions.length; i++) {
             query += '{intitule:"' + questions[i].intitule + '",choixUnique:' + questions[i].choixUnique + ',reponsesBonnes:[' + questions[i].reponsesBonnes.map(rep => "\"" + rep + "\"") + '],reponsesFausses:[' + questions[i].reponsesFausses.map(rep => "\"" + rep + "\"") + '],time:' + questions[i].time + '}'
@@ -95,27 +98,26 @@ function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausse
     callAPI(query);
 }
 function getIdRepertory(data,userId_ens,nomrepository){
-    for(let i = 0; i < data.length; i++){
-        if(data[i].id_ens == userId_ens){
-            for(let j = 0; j < data[i].repertoires.length; j++){
-               if(data[i].repertoires[j].nom.replace(/\s+/,'') == nomrepository) {
-                   return data[i].repertoires[j].id_rep;
+
+        if(data.id_ens == userId_ens){
+            for(let j = 0; j < data.repertoires.length; j++){
+               if(data.repertoires[j].nom.replace(/\s+/,'') == nomrepository) {
+                   return data.repertoires[j].id_rep;
                }
             }
         }
-    }
     return -1;
 }
 function getQuestionByrepertoire(data,userId_ens,nomrepository) {
-    for(let i = 0; i < data.length; i++){
-        if(data[i].id_ens == userId_ens){
-            for(let j = 0; j < data[i].repertoires.length; j++){
-                if(data[i].repertoires[j].nom.replace(/\s+/,'') == nomrepository ) {
-                    return data[i].repertoires[j].questions;
+
+        if(data.id_ens == userId_ens){
+            for(let j = 0; j < data.repertoires.length; j++){
+                if(data.repertoires[j].nom.replace(/\s+/,'') == nomrepository ) {
+                    return data.repertoires[j].questions;
                 }
             }
         }
-    }
+
     return [];
 }
 
@@ -151,8 +153,9 @@ function getQuestionById(data, id) {
 }
 
 function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time) {
+    let token = getCookie("token")
     let enregistrementQuestion = "mutation{\n" +
-        "  createQuestion(intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"){\n" +
+        "  createQuestion(token : \""+ token +"\" , intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"){\n" +
         "    __typename\n" +
         "  ...on Error{" +
         "message " +
@@ -173,8 +176,9 @@ function getIdQuestion(data,intitule) {
 }
 
 function supprimeelement(id_quest) {
+    let token = getCookie("token")
     let query = "mutation{\n" +
-        "  removeQuestion(id_quest:"+id_quest+"){\n" +
+        "  removeQuestion(token : \""+ token +"\" , id_quest:"+id_quest+"){\n" +
         "    __typename\n" +
         "  }\n" +
         "}\n";
@@ -201,8 +205,9 @@ function questionExiste(question)  {
 /***********************Fonction *******************************/
 //Ajout des questions à un repertoire
 function ajouteQuestion(nomRepertoire,enonce) {
+    let token = getCookie("token")
     let query = "{\n" +
-        "   allRepertoires {" +
+        "   allRepertoires(token : \""+ token +"\" ){" +
         "       nom\n" +
         "       questions {\n" +
         "           id_quest\n" +
@@ -218,10 +223,10 @@ function ajouteQuestion(nomRepertoire,enonce) {
         "}"
     const donnee = callAPI(query);
     donnee.then(object => {
+
         let repertoire = getRepertoireByQuestionIntitule(object.data.allRepertoires, enonce);
         let question = getQuestionByEnonce(object.data.allRepertoires, enonce)
         const nom = repertoire.nom.replace(/\s+/,'');
-        console.log('ModifierQuestion_'+question.id_quest+'_'+nom);
         let button = "<div class=\"btn-repertoire\"  style='margin-top: 2px;'><button id='ModifierQuestion_"+question.id_quest+"_"+nom+"' type=\"button\" class=\"btn btn-lg btn-info btn-block\" data-toggle='modal' data-target='#modalPoll-1' style=\"width: 79%\">" + enonce + "</button> \ " +
             "<button class='btn btn-danger' id='sup' style='width: 20%; height: 45px;'>supprimer</button></div>";
         let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
@@ -347,29 +352,31 @@ $(document).on('click','#AjoutQuestion',function () {
             enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10);
             console.log(nomRepertoire)
             ajouteQuestion(nomRepertoire, enonce);
-
+            let token = getCookie("token");
+            let userId_ens = getCookie("userId_ens")
             let query = "{" +
-                "   allEnseignants{" +
-                "       id_ens" +
-                "       repertoires{" +
-                "           nom" +
-                "           id_rep" +
-                "           questions{" +
+                "   getEnseignantById(token : \""+ token +"\",  id_ens : \""+userId_ens+"\" ){" +
+                "          ... on Enseignant{" +
+                "           id_ens" +
+                "           repertoires{" +
+                "               nom" +
+                "               id_rep" +
+                "               questions{" +
                 "                intitule\n" +
                 "                choixUnique\n" +
                 "                reponsesBonnes\n" +
                 "                reponsesFausses\n" +
-                "                time\n" +
+                "                    time\n" +
+                "               }" +
                 "           }" +
                 "       }" +
                 "   }" +
                 "}"
 
-            let userId_ens = getCookie("userId_ens");
             const donnee = callAPI(query);
             donnee.then((object) => {
-                    let id_rep = getIdRepertory(object.data.allEnseignants, userId_ens, nomRepertoire);
-                    let questions = getQuestionByrepertoire(object.data.allEnseignants, userId_ens, nomRepertoire);
+                    let id_rep = getIdRepertory(object.data.getEnseignantById, userId_ens, nomRepertoire);
+                    let questions = getQuestionByrepertoire(object.data.getEnseignantById, userId_ens, nomRepertoire);
                     questionadded(id_rep, questions, enonce, choix, reponsesBonnes, reponsesFausse, 10);
                     $('#modalPoll-1').modal('hide');
                 }
@@ -402,10 +409,11 @@ $(document).on('click','#ModifierQuestion',function () {
             $(input_into_the_label).val('');
         });
 
+        let token = getCookie("token")
         let idQuest = $('#ModifierQuestion').attr('name');
         let updateQuery = "mutation{\n" +
             "  updateQuestion\n" +
-            "  (id_quest: " + idQuest + ",\n" +
+            "  (token : \""+ token +"\" , id_quest: " + idQuest + ",\n" +
             "  \tintitule: \"" + enonce + "\",\n" +
             "    choixUnique: "+ choix +",\n" +
             "    reponsesBonnes: [\n";

@@ -63,6 +63,7 @@ $(function() {
 
     /* Quand un étudiant clique sur une réponse, le chargement s'affiche */
     $("label").click(function(){
+        alert()
         sendReponse();
         $('#loadbar').show();
         $("#quiz").fadeOut();
@@ -104,4 +105,18 @@ function getQueryVariable(variable)
         if(pair[0] == variable){return pair[1];}
     }
     return(false);
+}
+
+function getCookie(name) {
+    if (document.cookie.length == 0) return null;
+
+    var regSepCookie = new RegExp('(; )', 'g');
+    var cookies = document.cookie.split(regSepCookie);
+
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].startsWith(name)) {
+            return cookies[i].split("=")[1];
+        }
+    }
+    return null;
 }

@@ -1,5 +1,7 @@
-$(function () {
 
+
+
+$(function () {
     // Pour gérer le visuel login/sign in
     $('#login-form-link, #login-form-link2').click(function (e) {
         $("#login-form").delay(100).fadeIn(100);
@@ -15,6 +17,8 @@ $(function () {
         $(this).addClass('active');
         e.preventDefault();
     });
+
+
     // Quand l'enseignant clique sur le boutton pour créer un compte
     document.getElementById("register-submit").addEventListener("click", function (e) {
 
@@ -38,77 +42,66 @@ $(function () {
         }
 
         // on impose que le mot de passe ait une longueur supérieur a 6 caractères
-        if (mdp1_value.length < 6) {
-            e.preventDefault();
-            alert("Le mot de passe doit contenir au minimum 6 caractéres");
-        }
         else {
-            // on vérifie que les 2 mots de passes entrés sont égaux
-            if (mdp1_value != mdp2_value) {
+            if (mdp1_value.length < 6) {
                 e.preventDefault();
-                alert("Les mots de passe ne correspondent pas");
+                alert("Le mot de passe doit contenir au minimum 6 caractéres");
             } else {
-                // On recupére tous les enseignants avec un appel à l'API
-                let nom_value_mutation = nom_value.toString();
-                let email_value_mutation = email_value.toString();
-                let mpd1_value_mutation = mdp1_value.toString();
+                // on vérifie que les 2 mots de passes entrés sont égaux
+                if (mdp1_value != mdp2_value) {
+                    e.preventDefault();
+                    alert("Les mots de passe ne correspondent pas");
+                } else {
+                    // On recupére tous les enseignants avec un appel à l'API
+                    let nom_value_mutation = nom_value.toString();
+                    let email_value_mutation = email_value.toString();
+                    var mpd1_value_mutation = sha256(mdp1_value.toString());
 
-                let query_allEns = "{" +
-                    "  allEnseignants{" +
-                    "    id_ens" +
-                    "    mail" +
-                    "  }" +
-                    "}";
-                const donnees_ens = callAPI(query_allEns)
-                donnees_ens.then((object0) => {
-                    var enseignantExist = false;
-                    for (let i = 0; i < object0.data.allEnseignants.length; i++) {
-                        // si on trouve que le mail existe déjà
-                        if (object0.data.allEnseignants[i].mail == email_value) {
+                    let query_allEns = "{" +
+                        "  getMailProf( mail : \"" + email_value_mutation + "\")" +
+                        "}";
+                    const donnees_ens = callAPI(query_allEns)
+                    donnees_ens.then((object0) => {
+                        var enseignantExist = false;
+                        if (object0.data.getMailProf == email_value) {
                             enseignantExist = true;
                         }
-                    }
-                    // si l email n'existe pas, on crée l'enseignant et les cookies/sessions
-                    if (enseignantExist == false) {
-                        let mutation = "mutation{ createEnseignant(nom:\"" + nom_value_mutation + "\"" +
-                            "  mail:\"" + email_value_mutation + "\"" +
-                            "  motdepasse:\"" + mpd1_value_mutation + "\")" +
-                            "  {" +
-                            "            __typename ...on Error {message}" +
-                            "  }" +
-                            "}";
-
-
-                        const donnees = callAPI(mutation);
-                        donnees.then((object) => {
-                            document.cookie = "userName= " + nom_value_mutation;
-                            document.cookie = "userEmail=" + email_value_mutation;
-                            document.cookie = "userPrenom=" + prenom_value;
-
-                            let query_allEnseignants = "{" +
-                                "  allEnseignants{" +
-                                "    id_ens" +
-                                "    mail" +
+                        mpd1_value_mutation = mdpCrypto
+                        // si l email n'existe pas, on crée l'enseignant et les cookies/sessions
+                        if (enseignantExist == false) {
+                            let mutation = "mutation{ createEnseignant(nom:\"" + nom_value_mutation + "\"" +
+                                "  mail:\"" + email_value_mutation + "\"" +
+                                "  motdepasse:\"" + mpd1_value_mutation + "\")" +
+                                "  {" +
+                                "            ... on Enseignant{ id_ens }" +
                                 "  }" +
                                 "}";
-                            const donnees_ens = callAPI(query_allEnseignants)
-                            donnees_ens.then((object2) => {
-                                creationCookieID(object2.data.allEnseignants, email_value_mutation);
-                                window.location.href = "connection";
-                            });
+                            const donnees = callAPI(mutation);
+                            donnees.then((objectcreatEns) => {
+                                var id_ens = objectcreatEns.data.createEnseignant.id_ens
+                                let tokenQuery = "query{ getToken(ens_Id : " + id_ens + "," +
+                                    "  mdp:\"" + mpd1_value_mutation + "\")" +
+                                    "}";
+                                var token = callAPI(tokenQuery);
 
+                                token.then((object) => {
+                                    document.cookie = "token= " + object.data.getToken;
+                                    document.cookie = "userName= " + nom_value_mutation;
+                                    document.cookie = "userEmail=" + email_value_mutation;
+                                    document.cookie = "userId_ens=" + objectcreatEns.data.createEnseignant.id_ens;
+                                    window.location.href = "connection";
+                                })
 
-                        });
-                    }
-                    // sinon on notifie que cet enseignant existe déjà avec une alerte
-                    else {
-                        alert("Le mail de cet enseignant existe déjà.");
-                    }
-                })
+                            })
+                        }
+                        // sinon on notifie que cet enseignant existe déjà avec une alerte
+                        else {
+                            alert("Cet enseignant existe déjà.");
+                        }
+                    })
+                }
             }
         }
-
-
     });
 
     // Quand l'enseignant clique sur le boutton pour se connecter
@@ -119,38 +112,66 @@ $(function () {
         var email_connexion = document.getElementById("login-email");
         var email_connexion_value = email_connexion.value;
         var mdp_email = document.getElementById("login-password");
-        var mdp_email_value = mdp_email.value;
+        sha256(mdp_email.value);
+        mail = email_connexion_value
+        mdpValue = mdp_email.value
+        if (mdpCrypto != undefined) {
+            doConnection()
+        }
+        else inDoConnect = true;
+    });
 
-        // on fait appel à l'API pour récupérer tous les enseignants
-        let query_allEns = "{" +
-            "  allEnseignants{" +
-            "    id_ens" +
-            "    mail" +
-            "    motdepasse" +
-            "    nom" +
-            "  }" +
-            "}";
-        const donnees_ens = callAPI(query_allEns)
+
+});
+var mdpCrypto;
+var mail;
+var mdpValue;
+var inDoConnect=false;
+
+function doConnection() {
+
+    // on fait appel à l'API pour récupérer tous les enseignants
+    let query_Ens = "{" +
+        "  EnseignantVerification(mail : \"" + mail + "\", mdp : \"" + mdpCrypto + "\"){" +
+        "    id_ens" +
+        "    mail" +
+        "    motdepasse" +
+        "    nom" +
+        "  }" +
+        "}";
+
+    const donnees_ens = callAPI(query_Ens)
+    if (mdpCrypto != undefined)
         donnees_ens.then((object0) => {
+
             var enseignantExist = false;
             var mdpTrue = false;
-            for (let i = 0; i < object0.data.allEnseignants.length; i++) {
-                // si on trouve que le mail existe
-                if (object0.data.allEnseignants[i].mail == email_connexion_value) {
-                    enseignantExist = true;
-                    if (object0.data.allEnseignants[i].motdepasse == mdp_email_value) {
-                        mdpTrue = true;
-                        // si l email et le mot de passe correspondent, on connecte l'enseignant et on crée les cookies/sessions
-                        document.cookie = "userName= " + object0.data.allEnseignants[i].nom;
-                        document.cookie = "userEmail=" + email_connexion_value;
-                        document.cookie = "userId_ens=" + object0.data.allEnseignants[i].id_ens;
+            // si on trouve que le mail existe
+            if (object0.data.EnseignantVerification.mail == mail) {
+                enseignantExist = true;
+                if (object0.data.EnseignantVerification.motdepasse == mdpCrypto) {
+                    mdpTrue = true;
+                    var id_ens = object0.data.EnseignantVerification.id_ens
+                    var nom_user = object0.data.EnseignantVerification.nom
+                    var user_mail = object0.data.EnseignantVerification.mail
+                    let query_token = "{" +
+                        "  getToken(ens_Id : \"" + id_ens + "\", mdp : \"" + mdpCrypto + "\")}";
+
+                    var token = callAPI(query_token);
+
+                    token.then((object) => {
+                        document.cookie = "token= " + object.data.getToken;
+                        document.cookie = "userName= " + nom_user;
+                        document.cookie = "userEmail=" + user_mail;
+                        document.cookie = "userId_ens=" + id_ens;
                         window.location.href = "connection";
-                    }
+                    })
                 }
             }
+
             // On gére les erreurs
             if ((enseignantExist == true) && (mdpTrue == false)) {
-                alert("Le mot de passe ne correspondant pas au mail saisis");
+                alert("Le mot de passe ou le mail son mauvais.");
             }
             if (enseignantExist == false) {
                 alert("Cet enseignant n'existe pas");
@@ -158,17 +179,34 @@ $(function () {
 
 
         })
+}
+
+function sha256(str) {
+    // We transform the string into an arraybuffer.
+    var buffer = new TextEncoder("utf-8").encode(str);
+    var tmp;
+    crypto.subtle.digest("SHA-256", buffer).then(function (hash) {
+        mdpCrypto = hex(hash);
+        if(inDoConnect) doConnection()
     });
+    return mdpCrypto
 
+}
 
-});
-
-
-// fonction pour créer la cookie ID de l'enseignant qui sera utile dans d'autre pages
-function creationCookieID(data, userEmail) {
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].mail == userEmail) {
-            document.cookie = "userId_ens = " + data[i].id_ens;
-        }
+function hex(buffer) {
+    var hexCodes = [];
+    var view = new DataView(buffer);
+    for (var i = 0; i < view.byteLength; i += 4) {
+        // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
+        var value = view.getUint32(i)
+        // toString(16) will give the hex representation of the number without padding
+        var stringValue = value.toString(16)
+        // We use concatenation and slice for padding
+        var padding = '00000000'
+        var paddedValue = (padding + stringValue).slice(-padding.length)
+        hexCodes.push(paddedValue);
     }
+
+    // Join all the hex strings into one
+    return hexCodes.join("");
 }
