@@ -47,11 +47,12 @@ $(document).ready(function () {
         "}" +
         "}"
     const donnees = callAPI(query)
+    console.log(query)
     donnees.then((object) => {
-
         afficherRepertoires(object.data.getEnseignantById, userId_ens)
     });
 })
+
 function afficherRepertoires(data, userId_ens){
         if(data.id_ens == userId_ens){
             for(let j = 0; j < data.repertoires.length; j++){
@@ -223,11 +224,10 @@ function ajouteQuestion(nomRepertoire,enonce) {
         "}"
     const donnee = callAPI(query);
     donnee.then(object => {
-
-        let repertoire = getRepertoireByQuestionIntitule(object.data.allRepertoires, enonce);
+        //let repertoire = getRepertoireByQuestionIntitule(object.data.allRepertoires, enonce);
         let question = getQuestionByEnonce(object.data.allRepertoires, enonce)
-        const nom = repertoire.nom.replace(/\s+/,'');
-        let button = "<div class=\"btn-repertoire\"  style='margin-top: 2px;'><button id='ModifierQuestion_"+question.id_quest+"_"+nom+"' type=\"button\" class=\"btn btn-lg btn-info btn-block\" data-toggle='modal' data-target='#modalPoll-1' style=\"width: 79%\">" + enonce + "</button> \ " +
+        //const nom = repertoire.nom.replace(/\s+/,'');
+        let button = "<div class=\"btn-repertoire\"  style='margin-top: 2px;'><button id='ModifierQuestion_"+question.id_quest+"_"+nomRepertoire+"' type=\"button\" class=\"btn btn-lg btn-info btn-block\" data-toggle='modal' data-target='#modalPoll-1' style=\"width: 79%\">" + enonce + "</button> \ " +
             "<button class='btn btn-danger' id='sup' style='width: 20%; height: 45px;'>supprimer</button></div>";
         let list_question = "#list_" + nomRepertoire.replace(/\s+/,'');
 
@@ -307,6 +307,7 @@ function nomRepCorrect(nomNouveauRep) {
     }
     return correct;
 }
+
 function isGoodForm(){
     let isgood = true;
     if( $("#enonceQuestion").val().toString() == ''){ console.log("Probleme dans le titre enoncer ") ; isgood=false; }
@@ -325,7 +326,6 @@ function isGoodForm(){
 $(document).on('click','#AjoutQuestion',function () {
 
     let enonce = $("#enonceQuestion").val().toString();
-    let nomRepertoire = $("#NomRepertoiremodal").html();
     let choix = true;
     if( $('#TypeChoix').val().toString() == "multiple") choix = false;
     let answerschecked =  $('input:checked').map(function (){ return $(this).val();}).get();
@@ -340,6 +340,7 @@ $(document).on('click','#AjoutQuestion',function () {
         }else {
             //Fonction qui remplie le tableau de reponsesBonnes et Fausse en fonction des réponses sélectionnées
             $('input[name="group1"]').each(function () {
+
                 let label_next = $(this).next();
                 let input_into_the_label = label_next.children();
                 if (answerschecked.indexOf($(this).val()) != -1) {
@@ -350,7 +351,6 @@ $(document).on('click','#AjoutQuestion',function () {
                 $(input_into_the_label).val('');
             });
             enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10);
-            console.log(nomRepertoire)
             ajouteQuestion(nomRepertoire, enonce);
             let token = getCookie("token");
             let userId_ens = getCookie("userId_ens")
