@@ -84,7 +84,6 @@ $(function () {
                                     "}";
                                 var token = callAPI(tokenQuery);
                                 token.then((object) => {
-                                    alert(object.data.getToken)
                                     document.cookie = "token= " + object.data.getToken;
                                     document.cookie = "userName= " + nom_value_mutation;
                                     document.cookie = "userEmail=" + email_value_mutation;
