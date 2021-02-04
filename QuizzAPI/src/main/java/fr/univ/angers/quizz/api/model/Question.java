@@ -3,6 +3,7 @@ package fr.univ.angers.quizz.api.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -25,8 +26,10 @@ public class Question implements Serializable {
 	@OneToOne()
 	@JoinColumn(name = "id_quest")
 	private Repertoire repertoire;
-	private int nbBonneReponse;
-	private int nbMauvaiseReponse;
+	@ElementCollection
+	private List<Integer> nbBonneReponse;
+	@ElementCollection
+	private List<Integer> nbMauvaiseReponse;
 
 	public Question() {}
 	public Question(String intitule, boolean choixUnique, List<String> reponsesBonnes, List<String> reponsesFausses, int time){
@@ -35,6 +38,7 @@ public class Question implements Serializable {
 		this.reponsesBonnes = reponsesBonnes;
 		this.reponsesFausses = reponsesFausses;
 		this.time = time;
+		List<Integer> intergerLists = new ArrayList();
 	}
 
 	public int getId_quest() {return id_quest;}
@@ -65,25 +69,20 @@ public class Question implements Serializable {
 		return repertoire;
 	}
 
-	public int getNbBonneReponse() {
+	public List<Integer> getNbBonneReponse() {
 		return nbBonneReponse;
 	}
 
-	public void setNbBonneReponse(int nbBonneReponse) {
-		if(nbBonneReponse<=0) {
-			this.nbBonneReponse = 0;
-		}
-		else{
-			this.nbBonneReponse = this.nbBonneReponse+nbBonneReponse;
-		}
+	public void setNbBonneReponse(List<Integer> nbBonneReponse) {
+			this.nbBonneReponse = nbBonneReponse;
 	}
 
-	public int getNbMauvaiseReponse() {
+	public List<Integer> getNbMauvaiseReponse() {
 		return nbMauvaiseReponse;
 	}
 
-	public void setNbMauvaiseReponse(int nbMauvaiseReponse) {
-		if (nbMauvaiseReponse<=0) this.nbMauvaiseReponse = 0;
-		else this.nbMauvaiseReponse = this.nbMauvaiseReponse+nbMauvaiseReponse;
+	public void setNbMauvaiseReponse(List<Integer> nbMauvaiseReponse) {
+
+		this.nbMauvaiseReponse = this.nbMauvaiseReponse;
 	}
 }

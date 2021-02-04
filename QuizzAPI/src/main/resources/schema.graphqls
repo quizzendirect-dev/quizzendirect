@@ -171,6 +171,7 @@ type Mutation {
     removeEnseignant(token : String!,id_ens: ID!) : EnseignantResult
 
     #   Question
+    updateReponse(reponse : String!, BonneReponse : Int ,id_quest : ID! , MauvaiseReponse : String  ) : Question
     """Crée une nouvelle question correspondant aux paramètres spécifiés"""
     createQuestion(token : String!, intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
     """Modifie la question avec le ou les paramètre(s) spécifié(s)"""

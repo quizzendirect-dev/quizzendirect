@@ -41,7 +41,7 @@ public class QuestionDataFetcher {
         };
     }
 
-    public DataFetcher<Object> getQuestionByIntitule(){
+    public DataFetcher<Object> getQuestionByIntitule() {
         return dataFetchingEnvironment -> {
             Question question = questionRepository.findQuestionByIntitule(dataFetchingEnvironment.getArgument("intitule"));
             if (question != null) return question;
@@ -91,6 +91,59 @@ public class QuestionDataFetcher {
         };
     }
 
+    public DataFetcher<Object> updateReponse() {
+        return dataFetchingEnvironment -> {
+            Optional<Question> question = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
+            if (!question.isPresent())
+                return new Error("updateQuestion", "NOT_FOUND", "Erreur : Aucune question correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")) + "' n'a été trouvée.");
+            if (dataFetchingEnvironment.containsArgument("BonneReponse")) {
+                if (question.get().getNbBonneReponse() != null) {
+                    List<Integer> reponseTableau = question.get().getNbBonneReponse();
+                    for (int i = 0; i < question.get().getReponsesBonnes().size(); i++) {
+                        if (question.get().getReponsesBonnes().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
+                            reponseTableau.set(i, reponseTableau.get(i) + 1);
+                        }
+                    }
+                    question.get().setNbBonneReponse(reponseTableau);
+                } else {
+                    List<Integer> reponseTableau = new ArrayList<>();
+                    for (int i = 0; i < question.get().getReponsesBonnes().size(); i++) {
+                        if (question.get().getReponsesBonnes().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
+                            reponseTableau.add(1);
+                        } else reponseTableau.add(0);
+                    }
+                    question.get().setNbBonneReponse(reponseTableau);
+                }
+                questionRepository.save(question.get());
+                System.out.println("question bonne");
+                return question;
+            }
+            if (dataFetchingEnvironment.containsArgument("MauvaiseReponse")) {
+                if (question.get().getNbMauvaiseReponse() != null) {
+                    List<Integer> reponseTableau = question.get().getNbMauvaiseReponse();
+                    for (int i = 0; i < question.get().getReponsesFausses().size(); i++) {
+                        if (question.get().getReponsesFausses().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
+                            reponseTableau.set(i, reponseTableau.get(i) + 1);
+                        }
+                    }
+                    question.get().setNbMauvaiseReponse(reponseTableau);
+                } else {
+                    List<Integer> reponseTableau = new ArrayList<>();
+                    for (int i = 0; i < question.get().getReponsesFausses().size(); i++) {
+                        if (question.get().getReponsesFausses().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
+                            reponseTableau.add(1);
+                        } else reponseTableau.add(0);
+                    }
+                    question.get().setNbMauvaiseReponse(reponseTableau);
+                }
+                questionRepository.save(question.get());
+                System.out.println("question fausse");
+                return question;
+            }
+            System.out.println("question vide");
+            return new Question();
+        };
+    }
 
     public DataFetcher<Object> updateQuestion() {
         return dataFetchingEnvironment -> {

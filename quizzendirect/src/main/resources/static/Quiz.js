@@ -9,7 +9,7 @@ var laquestion = null;
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         // ajout du code d'accés selon la variable en get dans l'url
-        stompClient.subscribe('/quiz/salon/'+getQueryVariable("codeAcces"), function (question) {
+        stompClient.subscribe('/quiz/salon/' + getQueryVariable("codeAcces"), function (question) {
             getQuestion(JSON.parse(question.body));
         });
     });
@@ -33,17 +33,19 @@ function getQuestion(question) {
     propositions.sort(() => Math.random() - 0.5);
 
     /* Remplis les propositions des questions */
-    for (var i = 0; i < propositions.length ; i++) {
-        $("#proposition" + (i+1) + "").html(propositions[i]);
+    for (var i = 0; i < propositions.length; i++) {
+        $("#proposition" + (i + 1) + "").html(propositions[i]);
     }
 
     /* décrémente le timer */
     var time = question.time;
+
     function sleep(ms) {
-        return new Promise (resolve => setTimeout(resolve,ms));
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
+
     async function reduceTime() {
-        while (time!=0) {
+        while (time != 0) {
             await sleep(1000);
             $("#timer").html(time);
             time--;
@@ -52,59 +54,79 @@ function getQuestion(question) {
         $("#quiz").fadeOut();
 
     }
+
     reduceTime();
 }
 
 /* Au chargement */
-$(function() {
+$(function () {
     /* Au démarrage, en attente d'une question */
     $('#loadbar').show();
     $("#quiz").fadeOut();
 
     /* Quand un étudiant clique sur une réponse, le chargement s'affiche */
-    $("label").click(function(){
-        alert()
-        sendReponse();
+    $("label").click(function () {
+        var reponseValue = $(this).children(4)[2].innerHTML
+        console.log(reponseValue)
+        sendReponse(reponseValue);
         $('#loadbar').show();
         $("#quiz").fadeOut();
     });
 });
 
-function sendReponse(){
-    if(laquestion!=null){
+function sendReponse(reponseVal) {
+    if (laquestion != null) {
         //TODO ajouter IF() ELSE
-        if(laquestion.id_quest){
+        if (reponseIsGood(laquestion.reponsesBonnes, reponseVal)) {
             let query = "mutation{\n" +
-                "  updateQuestion(nbBonneReponse: 1,id_quest:"+laquestion.id_quest+"){\n" +
-                "  ...on Repertoire\n" +
-                "    {\n" +
-                "      id_quest \n" +
-                "    } ... on Error{ " +
-                "message " +
-                "}\n" +
+                "  updateReponse(reponse : \""+ reponseVal +"\" , BonneReponse: 1 , id_quest: " + laquestion.id_quest + " ){\n" +
+                "id_quest" +
                 "  }\n" +
                 "}"
+            console.log(query)
             const donnee = callAPI(query);
+            console.log(donnee.data.updateReponse.id_quest)
 
         }
         else {
+            let query = "mutation{\n" +
+                "  updateReponse(reponse : \""+ reponseVal +"\" , MauvaiseReponse: 1 , id_quest:" + laquestion.id_quest + "){\n" +
+                "id_quest" +
+                "  }\n" +
+                "}"
+            console.log(query)
+            const donnee = callAPI(query);
+            console.log(donnee.data.updateReponse.id_quest)
 
         }
-        callAPI(query);
+
     }
 
 }
 
+function reponseIsGood(listeReponsesBonnes, reponseVal){
+    for(var i = 0 ; i<listeReponsesBonnes.length ; i++){
+        if(reponseVal === listeReponsesBonnes[i]){
+            return true
+        }
+    }
+    return false
+}
+
+$.getScript("callAPI.js", function () {
+});
+
 // fonction qui récupére une variable get pour récupérer le code d'accés entré par l'étudiant
-function getQueryVariable(variable)
-{
+function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
+    for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split("=");
-        if(pair[0] == variable){return pair[1];}
+        if (pair[0] == variable) {
+            return pair[1];
+        }
     }
-    return(false);
+    return (false);
 }
 
 function getCookie(name) {
