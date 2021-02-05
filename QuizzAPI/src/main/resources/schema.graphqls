@@ -176,7 +176,7 @@ type Mutation {
     #   Question
     updateReponse(reponse : String!, id_quest : ID! ) : QuestionResult
     """Crée une nouvelle question correspondant aux paramètres spécifiés"""
-    createQuestion(token : String!, intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
+    createQuestion(token : String!, intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int! , nomRepertoire : String) : QuestionResult
     """Modifie la question avec le ou les paramètre(s) spécifié(s)"""
     updateQuestion(token : String!, id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput) : QuestionResult
     """Supprime la question correspondant à l'id spécifié"""
