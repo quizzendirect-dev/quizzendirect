@@ -95,10 +95,7 @@ function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausse
         '     }' +
         '   }' +
         ' }'
-    console.log(query)
-    alert(query)
     const donnee =  callAPI(query);
-    alert(donnee.data)
 }
 function getIdRepertory(data,userId_ens,nomrepository){
 
