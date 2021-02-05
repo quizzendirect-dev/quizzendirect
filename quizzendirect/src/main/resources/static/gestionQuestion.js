@@ -316,7 +316,6 @@ $(document).on('click','#AjoutQuestion',function () {
             } else {
                 reponsesFausse.push("\"" + manageDoubleQuote(input_into_the_label) + "\"");
             }
-            $(input_into_the_label).val('');
         });
         enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10, nomRepertoire);
         ajouteQuestion(nomRepertoire, enonce);
