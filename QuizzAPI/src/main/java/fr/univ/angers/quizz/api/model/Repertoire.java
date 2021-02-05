@@ -16,7 +16,7 @@ public class Repertoire implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_rep;
     private String nom;
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "id_rep")
     private List<Question> questions;
     @OneToOne
