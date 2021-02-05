@@ -79,24 +79,23 @@ function createRepertoire(nomRepertoire) {
     const donnee = callAPI(query);
 }
 function questionadded(id_rep,questions,enonce,choix,reponseBonnes,reponseFausses,time) {
-
     let token = getCookie("token")
     let query = "mutation{updateRepertoire(token : \""+ token +"\" , id_rep:"+id_rep+", questions:["
     if(questions.length > 0) {
         for (let i = 0; i < questions.length; i++) {
-            query += '{intitule:"' + questions[i].intitule + '",choixUnique:' + questions[i].choixUnique + ',reponsesBonnes:[' + questions[i].reponsesBonnes.map(rep => "\"" + rep + "\"") + '],reponsesFausses:[' + questions[i].reponsesFausses.map(rep => "\"" + rep + "\"") + '],time:' + questions[i].time + '}'
+            query += '{intitule:"' + manageDoubleQuote(questions[i].intitule) + '",choixUnique:' + questions[i].choixUnique + ',reponsesBonnes:[' + questions[i].reponsesBonnes.map(rep => "\"" + manageDoubleQuote(rep) + "\"") + '],reponsesFausses:[' + questions[i].reponsesFausses.map(rep => "\"" + manageDoubleQuote(rep) + "\"") + '],time:' + questions[i].time + '}'
         }
         query += ","
     }
-    query += "{intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"}])" +
-        "   {" +
-        "     __typename" +
-        "     ...on Error{" +
-        "       message" +
-        "     }" +
-        "   }" +
-        " }"
-
+    query += '{intitule:\"' + manageDoubleQuote(enonce) + '",choixUnique:'+choix+',reponsesBonnes:['+reponseBonnes.map(rep => "\"" +manageDoubleQuote(rep) + "\"" )+'],reponsesFausses:['+reponseFausses.map(rep => "\"" + manageDoubleQuote(rep) + "\"")+'],time:'+ time + '}])' +
+        '   {' +
+        '     __typename' +
+        '     ...on Error{' +
+        '       message' +
+        '     }' +
+        '   }' +
+        ' }'
+    console.log(query)
     alert(query)
     const donnee =  callAPI(query);
     alert(donnee.data)
@@ -112,6 +111,7 @@ function getIdRepertory(data,userId_ens,nomrepository){
         }
     return -1;
 }
+
 function getQuestionByrepertoire(data,userId_ens,nomrepository) {
 
     if(data.id_ens == userId_ens){
@@ -125,10 +125,10 @@ function getQuestionByrepertoire(data,userId_ens,nomrepository) {
     return [];
 }
 
-function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time) {
+function enregistrementQuestion(enonce,choix,reponseBonnes,reponseFausses,time, nomRepertoire) {
     let token = getCookie("token")
     let enregistrementQuestion = "mutation{\n" +
-        "  createQuestion(token : \""+ token +"\" , intitule:\"" + enonce + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"){\n" +
+        "  createQuestion(token : \""+ token +"\" , nomRepertoire: \""+ nomRepertoire+"\" intitule:\"" + manageDoubleQuote(enonce) + "\",choixUnique:"+choix+",reponsesBonnes:["+reponseBonnes+"],reponsesFausses:["+reponseFausses+"],time:"+time+"){\n" +
         "    __typename\n" +
         "  ...on Error{" +
         "message " +
@@ -178,12 +178,11 @@ function questionExiste(question)  {
 /***********************Fonction *******************************/
 //Ajout des questions à un repertoire
 function ajouteQuestion(nomRepertoire,enonce) {
-    let token = getCookie("token")
-    let query = "{\n" +
-        "   getQuestionByIntitule(intitule : \""+ enonce +"\" ){" +
-        "       id_quest\n" +
-        "   }\n" +
-        "}"
+    let query = '{\n' +
+        '   getQuestionByIntitule(intitule : "'+ manageDoubleQuote(enonce) +'" ){' +
+        '       id_quest\n' +
+        '   }\n' +
+        '}'
     const donnee = callAPI(query);
     donnee.then(object => {
         let question = object.data.getQuestionByIntitule
@@ -272,12 +271,24 @@ function isGoodForm(){
     if( $("#enonceQuestion").val().toString() == ''){ isgood=false; }
     $('input[name="group1"]').each(function () {
         let label_next = $(this).next();
-        let input_into_the_label = label_next.children();
-        if( $(input_into_the_label.val()) == '') {
-            isgood = false;
+        let input_into_the_label = label_next.children().val().toString();
+        if (input_into_the_label == '') {
+                isgood = false;
         }
     });
     return isgood;
+}
+
+function manageTabDoubleQuote(tabToManage) {
+    result = [];
+    tabToManage.forEach(str => {
+        result.push(manageDoubleQuote(str))
+    })
+    return result
+}
+
+function manageDoubleQuote(stringToManage) {
+    return stringToManage.replaceAll('"', '\\\"')
 }
 
 /***********************Gestion evénements clique sur la page *******************************/
@@ -299,15 +310,15 @@ $(document).on('click','#AjoutQuestion',function () {
         $('input[name="group1"]').each(function () {
 
             let label_next = $(this).next();
-            let input_into_the_label = label_next.children();
+            let input_into_the_label = label_next.children().val().toString();
             if (answerschecked.indexOf($(this).val()) != -1) {
-                reponsesBonnes.push("\"" + $(input_into_the_label).val() + "\"");
+                reponsesBonnes.push("\"" + manageDoubleQuote(input_into_the_label) + "\"");
             } else {
-                reponsesFausse.push("\"" + $(input_into_the_label).val() + "\"");
+                reponsesFausse.push("\"" + manageDoubleQuote(input_into_the_label) + "\"");
             }
             $(input_into_the_label).val('');
         });
-        enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10);
+        enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10, nomRepertoire);
         ajouteQuestion(nomRepertoire, enonce);
         let token = getCookie("token");
         let userId_ens = getCookie("userId_ens")
@@ -357,13 +368,12 @@ $(document).on('click','#ModifierQuestion',function () {
         //Fonction qui rempli le tableau de reponsesBonnes et Fausse en fonction des réponses sélectionnées
         $('input[name="group1"]').each(function () {
             let label_next = $(this).next();
-            let input_into_the_label = label_next.children();
+            let input_into_the_label = label_next.children().val().toString();
             if (answerschecked.indexOf($(this).val()) !== -1) {
-                reponsesBonnes.push("\"" + $(input_into_the_label).val() + "\"");
+                reponsesBonnes.push("\"" + input_into_the_label + "\"");
             } else {
-                reponsesFausse.push("\"" + $(input_into_the_label).val() + "\"");
+                reponsesFausse.push("\"" + input_into_the_label + "\"");
             }
-            $(input_into_the_label).val('');
         });
 
         let token = getCookie("token")
