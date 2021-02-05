@@ -217,6 +217,11 @@ body{
     display: block;
 }
 
+.button-stat{
+    width: 100%;
+    display: block;
+}
+
 .button-supprAll{
     float: right;
     padding: 1%;

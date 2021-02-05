@@ -95,7 +95,7 @@ $(document).on("click", ".button-ajouter", function () {
         "        <div class=\"question-buttons\">" +
         "            <button class=\"button-supprimer btn btn-lg btn-warning btn-block\">Supprimer</button>" +
         "            <button class=\"button-lancer btn btn-lg btn-success btn-block disabled\">Lancer</button>" +
-        "              <button class=\"button-lancer btn btn-lg btn-success btn-block disabled\">Stats</button>" +
+        "              <button class=\"button-stat btn btn-lg btn-info btn-block disabled\">Stats</button>" +
         "        </div>" +
         "    </li>"
     $(document).find(".selected-questions").append(stringQuestion)
