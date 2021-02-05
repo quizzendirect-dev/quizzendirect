@@ -279,16 +279,8 @@ function isGoodForm(){
     return isgood;
 }
 
-function manageTabDoubleQuote(tabToManage) {
-    result = [];
-    tabToManage.forEach(str => {
-        result.push(manageDoubleQuote(str))
-    })
-    return result
-}
-
 function manageDoubleQuote(stringToManage) {
-    return stringToManage.replaceAll('"', '\\\"')
+    return stringToManage.replaceAll("\\", "\\\\").replaceAll('"', '\\\"')
 }
 
 /***********************Gestion evénements clique sur la page *******************************/
