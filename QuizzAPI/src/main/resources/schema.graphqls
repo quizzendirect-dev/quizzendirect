@@ -13,11 +13,13 @@ type Question {
     time : Int
     """Répertoire dans lequel est contenue la question"""
     repertoire : Repertoire
-    """nombre de bonne reponse à la question"""
-    nbBonneReponse : Int
-    """nombre de mauvaise reponse à la question"""
-    nbMauvaiseReponse : Int
+    """nombre reponse repondue à la question"""
+    nbReponse : [Int]
+    """reponse de la question"""
+    reponse : [String]
 }
+
+
 
 type Repertoire {
     """Id unique du répertoire"""
@@ -100,7 +102,7 @@ type Query {
     """Renvoie l'enseigant selon son email et le mdp"""
     EnseignantVerification(mail: String!, mdp : String!) : Enseignant
     """Renvoie l'enseigant selon son email et son token"""
-    EnseignantByMail(mail: String!, token : String!) : Enseignant
+    EnseignantByMail(mail: String!, token : String!) : EnseignantResult
     """Renvoie un mail d'enseignant si ce mail exist deja"""
     getMailProf(mail: String!) : String
     """Renvoie la liste de tous les enseignants"""
@@ -130,6 +132,7 @@ type Query {
     """Token d'indentité"""
     getToken(ens_Id : ID!, mdp: String): String
 
+    verifToken(token : String!) : Boolean
     getQuestionByIntitule(intitule : String!) : Question
 }
 
@@ -171,11 +174,11 @@ type Mutation {
     removeEnseignant(token : String!,id_ens: ID!) : EnseignantResult
 
     #   Question
-    updateReponse(reponse : String!, BonneReponse : Int ,id_quest : ID! , MauvaiseReponse : String  ) : Question
+    updateReponse(reponse : String!, id_quest : ID! ) : QuestionResult
     """Crée une nouvelle question correspondant aux paramètres spécifiés"""
     createQuestion(token : String!, intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int!) : QuestionResult
     """Modifie la question avec le ou les paramètre(s) spécifié(s)"""
-    updateQuestion(token : String!, id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput, nbMauvaiseReponse: Int, nbBonneReponse:Int) : QuestionResult
+    updateQuestion(token : String!, id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput) : QuestionResult
     """Supprime la question correspondant à l'id spécifié"""
     removeQuestion(token : String!, id_quest: ID!) : QuestionResult
 

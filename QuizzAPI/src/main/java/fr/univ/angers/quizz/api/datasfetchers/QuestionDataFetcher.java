@@ -4,6 +4,7 @@ import fr.univ.angers.quizz.api.model.Enseignant;
 import fr.univ.angers.quizz.api.model.Error;
 import fr.univ.angers.quizz.api.model.Question;
 import fr.univ.angers.quizz.api.model.Repertoire;
+import fr.univ.angers.quizz.api.repository.EnseignantRepository;
 import fr.univ.angers.quizz.api.repository.QuestionRepository;
 import fr.univ.angers.quizz.api.repository.RepertoireRepository;
 import graphql.schema.DataFetcher;
@@ -24,9 +25,12 @@ public class QuestionDataFetcher {
     private String apiKey;
 
     @Autowired
+    private EnseignantRepository enseignantRepository;
+    @Autowired
     private QuestionRepository questionRepository;
     @Autowired
     private RepertoireRepository repertoireRepository;
+    int idEns;
 
     public DataFetcher<List<Question>> getAllQuestion() {
         return dataFetchingEnvironment -> questionRepository.findAll();
@@ -61,20 +65,28 @@ public class QuestionDataFetcher {
                     return new Error("createQuestion", "INVALID_ARG", "Erreur : Vous devez saisir au minimum 2 réponses possibles.");
                 if ((((List<String>) dataFetchingEnvironment.getArgument("reponsesBonnes")).size() + ((List<String>) dataFetchingEnvironment.getArgument("reponsesFausses")).size()) > 4)
                     return new Error("createQuestion", "INVALID_ARG", "Erreur : Vous devez saisir au maximum 4 réponses possibles.");
+
                 List<String> reponses = new ArrayList<>();
                 reponses.addAll(dataFetchingEnvironment.getArgument("reponsesBonnes"));
                 reponses.addAll(dataFetchingEnvironment.getArgument("reponsesFausses"));
+                // On vérifie que la question n'existe pas déjà
+                List<Repertoire> repertoires = enseignantRepository.findById(idEns).get().getRepertoires();
+                Repertoire repertoire = null;
+                for (Repertoire rep: repertoires) {
+                    if(rep.getNom().equals(dataFetchingEnvironment.getArgument("nomRepertoire"))) repertoire = rep;
+                }
                 for (int i = 0; i < reponses.size() - 1; i++) {
                     for (int j = i + 1; j < reponses.size(); j++) {
                         if (reponses.get(i).equals(reponses.get(j)))
                             return new Error("createQuestion", "INVALID_ARG", "Erreur : Vous avez saisi plusieurs réponses identiques.");
                     }
                 }
+
                 if (((int) dataFetchingEnvironment.getArgument("time")) <= 0)
                     return new Error("createQuestion", "INVALID_ARG", "Erreur : Le temps de réponse à la question que vous avez saisi : '" + dataFetchingEnvironment.getArgument("time") + "' secondes, n'est pas correct.");
 
-                // On vérifie que la question n'existe pas déjà
-                List<Question> questions = questionRepository.findAll();
+
+                List<Question> questions = repertoire.getQuestions();
                 for (Question question : questions) {
                     if (dataFetchingEnvironment.getArgument("intitule").equals(question.getIntitule()) && dataFetchingEnvironment.getArgument("choixUnique").equals(question.isChoixUnique()) && dataFetchingEnvironment.getArgument("reponsesBonnes").equals(question.getReponsesBonnes()) && dataFetchingEnvironment.getArgument("reponsesFausses").equals(question.getReponsesFausses()) && dataFetchingEnvironment.getArgument("time").equals(question.getTime()))
                         return new Error("createQuestion", "ALREADY_EXISTS", "Erreur : Cette question existe déjà.");
@@ -82,8 +94,11 @@ public class QuestionDataFetcher {
 
                 // On crée la nouvelle question
                 Question nouvelleQuestion = new Question(dataFetchingEnvironment.getArgument("intitule"), dataFetchingEnvironment.getArgument("choixUnique"), dataFetchingEnvironment.getArgument("reponsesBonnes"), dataFetchingEnvironment.getArgument("reponsesFausses"), dataFetchingEnvironment.getArgument("time"));
+                questions.add(nouvelleQuestion);
+                repertoire.setQuestions(questions);
+
                 // Sauvegarde dans la base de données
-                questionRepository.save(nouvelleQuestion);
+                repertoireRepository.save(repertoire);
                 return nouvelleQuestion;
             }
             return new Error("removeEnseignant", "TOKEN",
@@ -96,52 +111,11 @@ public class QuestionDataFetcher {
             Optional<Question> question = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
             if (!question.isPresent())
                 return new Error("updateQuestion", "NOT_FOUND", "Erreur : Aucune question correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")) + "' n'a été trouvée.");
-            if (dataFetchingEnvironment.containsArgument("BonneReponse")) {
-                if (question.get().getNbBonneReponse() != null) {
-                    List<Integer> reponseTableau = question.get().getNbBonneReponse();
-                    for (int i = 0; i < question.get().getReponsesBonnes().size(); i++) {
-                        if (question.get().getReponsesBonnes().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
-                            reponseTableau.set(i, reponseTableau.get(i) + 1);
-                        }
-                    }
-                    question.get().setNbBonneReponse(reponseTableau);
-                } else {
-                    List<Integer> reponseTableau = new ArrayList<>();
-                    for (int i = 0; i < question.get().getReponsesBonnes().size(); i++) {
-                        if (question.get().getReponsesBonnes().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
-                            reponseTableau.add(1);
-                        } else reponseTableau.add(0);
-                    }
-                    question.get().setNbBonneReponse(reponseTableau);
-                }
-                questionRepository.save(question.get());
-                System.out.println("question bonne");
-                return question;
-            }
-            if (dataFetchingEnvironment.containsArgument("MauvaiseReponse")) {
-                if (question.get().getNbMauvaiseReponse() != null) {
-                    List<Integer> reponseTableau = question.get().getNbMauvaiseReponse();
-                    for (int i = 0; i < question.get().getReponsesFausses().size(); i++) {
-                        if (question.get().getReponsesFausses().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
-                            reponseTableau.set(i, reponseTableau.get(i) + 1);
-                        }
-                    }
-                    question.get().setNbMauvaiseReponse(reponseTableau);
-                } else {
-                    List<Integer> reponseTableau = new ArrayList<>();
-                    for (int i = 0; i < question.get().getReponsesFausses().size(); i++) {
-                        if (question.get().getReponsesFausses().get(i).equals(dataFetchingEnvironment.getArgument("reponse"))) {
-                            reponseTableau.add(1);
-                        } else reponseTableau.add(0);
-                    }
-                    question.get().setNbMauvaiseReponse(reponseTableau);
-                }
-                questionRepository.save(question.get());
-                System.out.println("question fausse");
-                return question;
-            }
-            System.out.println("question vide");
-            return new Question();
+            String reponse = dataFetchingEnvironment.getArgument("reponse");
+            question.get().setNbReponse(reponse);
+            questionRepository.save(question.get());
+            System.out.println(question.get().getNbReponse());
+            return question.get();
         };
     }
 
@@ -196,12 +170,6 @@ public class QuestionDataFetcher {
                         return new Error("updateQuestion", "INVALID_ARG", "Erreur : Le temps de réponse à la question que vous avez saisi : '" + dataFetchingEnvironment.getArgument("time") + "' secondes, n'est pas correct.");
                     question.get().setTime(dataFetchingEnvironment.getArgument("time"));
                 }
-                if (dataFetchingEnvironment.containsArgument("nbBonneReponse")) {
-                    question.get().setNbBonneReponse(dataFetchingEnvironment.getArgument("nbBonneReponse"));
-                }
-                if (dataFetchingEnvironment.containsArgument("nbMauvaiseReponse")) {
-                    question.get().setNbMauvaiseReponse(dataFetchingEnvironment.getArgument("nbMauvaiseReponse"));
-                }
 
                 if (dataFetchingEnvironment.containsArgument("repertoire")) {
                     // On ajoute les nouveaux répertoires
@@ -248,9 +216,9 @@ public class QuestionDataFetcher {
         Claims claims = Jwts.parser()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(apiKey))
                 .parseClaimsJws(jwt).getBody();
+        idEns = Integer.parseInt(claims.getId());
         Date datenow = new Date(System.currentTimeMillis());
         if (claims.getExpiration().after(datenow)) {
-            System.out.println("Expiration: " + claims.getExpiration());
             if (claims.getIssuer().equals("api")) return true;
         }
         return false;

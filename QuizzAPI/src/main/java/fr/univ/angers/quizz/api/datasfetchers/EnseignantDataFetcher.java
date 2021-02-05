@@ -40,7 +40,7 @@ public class EnseignantDataFetcher {
             if (enseignant.isPresent()) {
                 if (enseignant.get().getMotdepasse().equals(dataFetchingEnvironment.getArgument("mdp"))) {
                     String jwt = createJWT(String.valueOf(enseignant.get().getId_ens()), "api", enseignant.get().getNom(), 3600000);
-                    System.out.println(parseJWT(jwt, enseignant.get()));
+
                     return jwt;
                 }
 
@@ -91,7 +91,6 @@ public class EnseignantDataFetcher {
         return dataFetchingEnvironment -> {
             Optional<Enseignant> enseignant = enseignantRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_ens")));
             String token = dataFetchingEnvironment.getArgument("token");
-            System.out.println(token);
             if (enseignant.isPresent())
                 if (parseJWT(dataFetchingEnvironment.getArgument("token"), enseignant.get()))
                     return enseignant.get();
@@ -99,6 +98,13 @@ public class EnseignantDataFetcher {
                         "Error : TOKEN");
             // Enseignant non trouvé
             return new Error("getEnseignantById", "NOT_FOUND", "Erreur : Aucun enseignant correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_ens")) + "' n'a été trouvé.");
+        };
+    }
+
+    public DataFetcher<Object> checkToken(){
+        return dataFetchingEnvironment -> {
+
+            return checkJWT(dataFetchingEnvironment.getArgument("token"));
         };
     }
 
@@ -260,11 +266,21 @@ public class EnseignantDataFetcher {
             if (claims.getSubject().equals(enseignant.getNom())) {
                 Date datenow = new Date(System.currentTimeMillis());
                 if (claims.getExpiration().after(datenow)) {
-                    System.out.println("Expiration: " + claims.getExpiration());
                     return true;
                 }
             }
         }
+        return false;
+    }
+
+    private boolean checkJWT(String jwt) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(apiKey))
+                .parseClaimsJws(jwt).getBody();
+                Date datenow = new Date(System.currentTimeMillis());
+                if (claims.getExpiration().after(datenow)) {
+                    return true;
+                }
         return false;
     }
 }

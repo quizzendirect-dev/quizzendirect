@@ -34,7 +34,8 @@ function getQuestion(question) {
 
     /* Remplis les propositions des questions */
     for (var i = 0; i < propositions.length; i++) {
-        $("#proposition" + (i + 1) + "").html(propositions[i]);
+        if (propositions[i] != "")
+            $("#proposition" + (i + 1) + "").html(propositions[i]);
     }
 
     /* décrémente le timer */
@@ -67,7 +68,6 @@ $(function () {
     /* Quand un étudiant clique sur une réponse, le chargement s'affiche */
     $("label").click(function () {
         var reponseValue = $(this).children(4)[2].innerHTML
-        console.log(reponseValue)
         sendReponse(reponseValue);
         $('#loadbar').show();
         $("#quiz").fadeOut();
@@ -77,36 +77,22 @@ $(function () {
 function sendReponse(reponseVal) {
     if (laquestion != null) {
         //TODO ajouter IF() ELSE
-        if (reponseIsGood(laquestion.reponsesBonnes, reponseVal)) {
-            let query = "mutation{\n" +
-                "  updateReponse(reponse : \""+ reponseVal +"\" , BonneReponse: 1 , id_quest: " + laquestion.id_quest + " ){\n" +
-                "id_quest" +
-                "  }\n" +
-                "}"
-            console.log(query)
-            const donnee = callAPI(query);
-            console.log(donnee.data.updateReponse.id_quest)
-
-        }
-        else {
-            let query = "mutation{\n" +
-                "  updateReponse(reponse : \""+ reponseVal +"\" , MauvaiseReponse: 1 , id_quest:" + laquestion.id_quest + "){\n" +
-                "id_quest" +
-                "  }\n" +
-                "}"
-            console.log(query)
-            const donnee = callAPI(query);
-            console.log(donnee.data.updateReponse.id_quest)
-
-        }
-
+        let query = "mutation{\n" +
+            "  updateReponse(reponse : \"" + reponseVal + "\" , id_quest: " + laquestion.id_quest + " ){\n" +
+            "  ... on Question {\n" +
+            "    id_quest\n" +
+            "  }" +
+            "  }\n" +
+            "}"
+        console.log(query)
+        const donnee = callAPI(query);
     }
 
 }
 
-function reponseIsGood(listeReponsesBonnes, reponseVal){
-    for(var i = 0 ; i<listeReponsesBonnes.length ; i++){
-        if(reponseVal === listeReponsesBonnes[i]){
+function reponseIsGood(listeReponsesBonnes, reponseVal) {
+    for (var i = 0; i < listeReponsesBonnes.length; i++) {
+        if (reponseVal === listeReponsesBonnes[i]) {
             return true
         }
     }

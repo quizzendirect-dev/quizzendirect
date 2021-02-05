@@ -157,7 +157,6 @@ public class HistoriqueDataFetcher {
                 .parseClaimsJws(jwt).getBody();
         Date datenow = new Date(System.currentTimeMillis());
         if (claims.getExpiration().after(datenow)) {
-            System.out.println("Expiration: " + claims.getExpiration());
             if(claims.getIssuer().equals("api")) return true;
         }
         return false;

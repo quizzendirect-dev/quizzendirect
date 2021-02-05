@@ -6,7 +6,7 @@ $(document).ready(function () {
     if (token == null) return
 
     let query = "{" +
-        "   getEnseignantById(token : \"" + token + "\" , id_ens : "+ userId_ens+"){" +
+        "   getEnseignantById(token : \"" + token + "\" , id_ens : " + userId_ens + "){" +
         "... on Enseignant{" +
         "       id_ens" +
         "       repertoires{" +
@@ -26,27 +26,27 @@ $(document).ready(function () {
 })
 
 function afficherRepertoires(data, userId_ens) {
-        if (data.id_ens == userId_ens) {
-            for (let j = 0; j < data.repertoires.length; j++) {
-                let stringRepertoire =
-                    "   <li class=\"panel panel-primary\">" +
-                    "        <div class=\"repertoire panel-heading\">" + data.repertoires[j].nom + "</div>" +
-                    "        <ul class=\"questions hide panel-body\">"
-                for (let k = 0; k < data.repertoires[j].questions.length; k++) {
-                    stringRepertoire +=
-                        "        <li class=\"question\">" +
-                        "            <input class='id_quest' type='hidden' value='" + data.repertoires[j].questions[k].id_quest + "'>" +
-                        "            <div class=\"response-time hide\">" + data.repertoires[j].questions[k].time + "</div>" +
-                        "            <div class=\"quest\">" + data.repertoires[j].questions[k].intitule + "</div>" +
-                        "            <button class=\"button-ajouter btn btn-lg btn-info btn-block\">Ajouter</button>" +
-                        "        </li>"
-                }
+    if (data.id_ens == userId_ens) {
+        for (let j = 0; j < data.repertoires.length; j++) {
+            let stringRepertoire =
+                "   <li class=\"panel panel-primary\">" +
+                "        <div class=\"repertoire panel-heading\">" + data.repertoires[j].nom + "</div>" +
+                "        <ul class=\"questions hide panel-body\">"
+            for (let k = 0; k < data.repertoires[j].questions.length; k++) {
                 stringRepertoire +=
-                    "        </ul>" +
-                    "    </li>"
-                $(document).find(".repertoires").append(stringRepertoire)
+                    "        <li class=\"question\">" +
+                    "            <input class='id_quest' type='hidden' value='" + data.repertoires[j].questions[k].id_quest + "'>" +
+                    "            <div class=\"response-time hide\">" + data.repertoires[j].questions[k].time + "</div>" +
+                    "            <div class=\"quest\">" + data.repertoires[j].questions[k].intitule + "</div>" +
+                    "            <button class=\"button-ajouter btn btn-lg btn-info btn-block\">Ajouter</button>" +
+                    "        </li>"
             }
+            stringRepertoire +=
+                "        </ul>" +
+                "    </li>"
+            $(document).find(".repertoires").append(stringRepertoire)
         }
+    }
 }
 
 function getCookie(name) {
@@ -95,6 +95,7 @@ $(document).on("click", ".button-ajouter", function () {
         "        <div class=\"question-buttons\">" +
         "            <button class=\"button-supprimer btn btn-lg btn-warning btn-block\">Supprimer</button>" +
         "            <button class=\"button-lancer btn btn-lg btn-success btn-block disabled\">Lancer</button>" +
+        "              <button class=\"button-lancer btn btn-lg btn-success btn-block disabled\">Stats</button>" +
         "        </div>" +
         "    </li>"
     $(document).find(".selected-questions").append(stringQuestion)
@@ -178,7 +179,7 @@ $(document).on("click", ".button-demarrer", function () {
 
     let query =
         "   mutation {" +
-        "       createSalon(token : \""+ token +"\" codeAcces: " + parseInt(codeAcces) + ", enseignant:{mail:\"" + getCookie("userEmail") + "\"}){" +
+        "       createSalon(token : \"" + token + "\" codeAcces: " + parseInt(codeAcces) + ", enseignant:{mail:\"" + getCookie("userEmail") + "\"}){" +
         "           type: __typename" +
         "           ... on Salon {" +
         "               id_salon" +
@@ -225,6 +226,7 @@ function updateLancerButton(disabled) {
         selected_question.eq(i).find(".button-lancer").toggleClass("disabled", disabled)
     }
     $(document).find(".button-fermer").prop('disabled', disabled)
+    $(document).find(".button-stat").toggleClass("disabled", false);
 }
 
 $(document).on("click", ".button-lancer", function () {
@@ -261,6 +263,34 @@ $(document).on("click", ".button-lancer", function () {
         sendQuestion(question);
     });
 })
+
+$(document).on("click", ".button-stat", function () {
+    let id_quest = $(this).parent().parent().find(".id_quest").val();
+    let query = "query{  " +
+        "  getQuestionById(id_quest:" + id_quest + ")" +
+        "  { " +
+        "    ...on Question{id_quest intitule choixUnique reponsesBonnes reponsesFausses reponse nbReponse}\n" +
+        "  }" +
+        "}";
+    const donnees = callAPI(query);
+    donnees.then(object => {
+        var question = {
+            'id_quest': object.data.getQuestionById.id_quest,
+            'intitule': object.data.getQuestionById.intitule,
+            'choixUnique': object.data.getQuestionById.choixUnique,
+            'reponsesBonnes': object.data.getQuestionById.reponsesBonnes,
+            'reponsesFausses': object.data.getQuestionById.reponsesFausses,
+            'reponse' : object.data.getQuestionById.reponse,
+            'nbReponse' : object.data.getQuestionById.reponse,
+            'time': time
+        };
+        alertStat(question);
+    });
+})
+
+function alertStat(question){
+
+}
 
 function updateUpDownButton() {
     let selected_question = $(document).find(".selected-question")

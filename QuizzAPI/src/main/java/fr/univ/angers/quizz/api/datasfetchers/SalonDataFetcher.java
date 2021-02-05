@@ -274,7 +274,6 @@ public class SalonDataFetcher {
             if (claims.getSubject().equals(enseignant.getNom())) {
                 Date datenow = new Date(System.currentTimeMillis());
                 if (claims.getExpiration().after(datenow)) {
-                    System.out.println("Expiration: " + claims.getExpiration());
                     return true;
                 }
             }

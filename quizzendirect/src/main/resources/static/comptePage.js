@@ -73,11 +73,19 @@ $(function () {
                                 "  mail:\"" + email_value_mutation + "\"" +
                                 "  motdepasse:\"" + mpd1_value_mutation + "\")" +
                                 "  {" +
-                                "            ... on Enseignant{ id_ens }" +
+                                "            ... on Enseignant{ " +
+                                "                   id_ens " +
+                                "                   nom" +
+                                "                   mail" +
+                                "   }" +
                                 "  }" +
                                 "}";
+                            console.log(mutation)
                             const donnees = callAPI(mutation);
                             donnees.then((objectcreatEns) => {
+                                document.cookie = "userName= " + objectcreatEns.data.createEnseignant.nom
+                                document.cookie = "userEmail=" + objectcreatEns.data.createEnseignant.mail
+                                document.cookie = "userId_ens=" + objectcreatEns.data.createEnseignant.id_ens;
                                 var id_ens = objectcreatEns.data.createEnseignant.id_ens
                                 let tokenQuery = "query{ getToken(ens_Id : " + id_ens + "," +
                                     "  mdp:\"" + mpd1_value_mutation + "\")" +
@@ -85,9 +93,7 @@ $(function () {
                                 var token = callAPI(tokenQuery);
                                 token.then((object) => {
                                     document.cookie = "token= " + object.data.getToken;
-                                    document.cookie = "userName= " + nom_value_mutation;
-                                    document.cookie = "userEmail=" + email_value_mutation;
-                                    document.cookie = "userId_ens=" + objectcreatEns.data.createEnseignant.id_ens;
+                                    verifyCookie()
                                     window.location.href = "connection";
                                 })
 
@@ -163,6 +169,7 @@ function doConnection() {
                         document.cookie = "userName= " + nom_user;
                         document.cookie = "userEmail=" + user_mail;
                         document.cookie = "userId_ens=" + id_ens;
+                        verifyCookie()
                         window.location.href = "connection";
                     })
                 }

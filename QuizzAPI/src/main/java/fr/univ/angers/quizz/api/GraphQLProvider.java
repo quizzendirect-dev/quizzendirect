@@ -81,7 +81,8 @@ public class GraphQLProvider {
       };
       return RuntimeWiring.newRuntimeWiring()
               .type("Query", typeWiring-> typeWiring
-                      .dataFetcher("updateReponse", questionDataFetcher.updateReponse())
+
+                      .dataFetcher("verifToken", enseignantDataFetcher.checkToken())
                       .dataFetcher("getQuestionByIntitule", questionDataFetcher.getQuestionByIntitule())
                       .dataFetcher("EnseignantVerification", enseignantDataFetcher.getEnseignantVerification())
                       .dataFetcher("allEnseignants", enseignantDataFetcher.getAllEnseignant())
@@ -105,7 +106,7 @@ public class GraphQLProvider {
                       .dataFetcher("createEnseignant", enseignantDataFetcher.createEnseignant())
                       .dataFetcher("updateEnseignant", enseignantDataFetcher.updateEnseignant())
                       .dataFetcher("removeEnseignant", enseignantDataFetcher.removeEnseignant())
-
+                      .dataFetcher("updateReponse", questionDataFetcher.updateReponse())
                       //    Question
                       .dataFetcher("createQuestion", questionDataFetcher.createQuestion())
                       .dataFetcher("updateQuestion", questionDataFetcher.updateQuestion())

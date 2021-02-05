@@ -35,6 +35,13 @@ var callAPI = async function (query) {
             })
 
         });
+       /* console.log("query")
+        console.log(query)
+        console.log("ERROR = "+result.data.error)
+        alert(result)
+        if(result.data.error ==undefined)
+        window.location.href = "/";*/
+
         return result;
     }
     catch(error) {
@@ -57,7 +64,27 @@ var getAllQuestions = function () {
     return data;
 }
 
+function verifyCookie(){
+    console.log("cookie token "+getCookie("token") )
+    console.log("cookie nom"+ getCookie("userName") )
+    console.log("cookie userEmail" + getCookie("userEmail"))
+    console.log("cookie userId_ens"+getCookie("userId_ens"))
+}
 
+
+function getCookie(name) {
+    if (document.cookie.length == 0) return null;
+
+    var regSepCookie = new RegExp('(; )', 'g');
+    var cookies = document.cookie.split(regSepCookie);
+
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].startsWith(name)) {
+            return cookies[i].split("=")[1];
+        }
+    }
+    return null;
+}
 /********** REMARQUE **************/
 /* Pour accéder aux données (avec l'API) :
 1) Ajouter la balise <script src="CHEMIN/callAPI.js" ></script> dans le fichier html

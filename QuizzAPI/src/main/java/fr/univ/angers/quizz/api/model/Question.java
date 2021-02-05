@@ -4,7 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -13,76 +15,125 @@ import javax.persistence.*;
 @Table(name = "QUESTION")
 public class Question implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_quest;
-	private String intitule;
-	private boolean choixUnique;
-	@ElementCollection
-	private List<String> reponsesBonnes;
-	@ElementCollection
-	private List<String> reponsesFausses;
-	private int time; //En secondes
-	@OneToOne()
-	@JoinColumn(name = "id_quest")
-	private Repertoire repertoire;
-	@ElementCollection
-	private List<Integer> nbBonneReponse;
-	@ElementCollection
-	private List<Integer> nbMauvaiseReponse;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_quest;
+    private String intitule;
+    private boolean choixUnique;
+    @ElementCollection
+    private List<String> reponsesBonnes;
+    @ElementCollection
+    private List<String> reponsesFausses;
+    private int time; //En secondes
+    @OneToOne()
+    @JoinColumn(name = "id_quest")
+    private Repertoire repertoire;
+    @ElementCollection
+    private List<String> reponses;
+    @ElementCollection
+    private List<Integer> nbReponse;
 
-	public Question() {}
-	public Question(String intitule, boolean choixUnique, List<String> reponsesBonnes, List<String> reponsesFausses, int time){
-		this.intitule = intitule;
-		this.choixUnique = choixUnique;
-		this.reponsesBonnes = reponsesBonnes;
-		this.reponsesFausses = reponsesFausses;
-		this.time = time;
-		List<Integer> intergerLists = new ArrayList();
-	}
+    public Question() {
+    }
 
-	public int getId_quest() {return id_quest;}
 
-	public void setIntitule(String intitule) {this.intitule = intitule;}
-	public String getIntitule() {return intitule;}
+    public Question(String intitule, boolean choixUnique, List<String> reponsesBonnes, List<String> reponsesFausses, int time) {
+        this.intitule = intitule;
+        this.choixUnique = choixUnique;
+        this.reponsesBonnes = reponsesBonnes;
+        this.reponsesFausses = reponsesFausses;
+        this.time = time;
+        List<Integer> intergerLists = new ArrayList();
+    }
 
-	public void setChoixUnique(boolean choixUnique) {this.choixUnique = choixUnique;}
-	public boolean isChoixUnique() {return choixUnique;}
+    public int getId_quest() {
+        return id_quest;
+    }
 
-	public void setReponsesBonnes(List<String> reponsesBonnes) {this.reponsesBonnes = reponsesBonnes;}
-	public List<String> getReponsesBonnes() {return reponsesBonnes;}
-	public void addReponseBonne(String reponseBonne) {this.reponsesBonnes.add(reponseBonne);}
-	public void removeReponseBonne(String reponseBonne) {this.reponsesBonnes.remove(reponseBonne);}
+    public void setIntitule(String intitule) {
+        this.intitule = intitule;
+    }
 
-	public void setReponsesFausses(List<String> reponsesFausses) {this.reponsesFausses = reponsesFausses;}
-	public List<String> getReponsesFausses() {return reponsesFausses;}
-	public void addReponseFausse(String reponseFausse) {this.reponsesFausses.add(reponseFausse);}
-	public void removeReponseFausse(String reponseFausse) {this.reponsesFausses.remove(reponseFausse);}
+    public String getIntitule() {
+        return intitule;
+    }
 
-	public void setTime(int time) {this.time = time;}
-	public int getTime() {return time;}
+    public void setChoixUnique(boolean choixUnique) {
+        this.choixUnique = choixUnique;
+    }
 
-	public void setRepertoire(Repertoire repertoire) {
-		this.repertoire = repertoire;
-	}
-	public Repertoire getRepertoire() {
-		return repertoire;
-	}
+    public boolean isChoixUnique() {
+        return choixUnique;
+    }
 
-	public List<Integer> getNbBonneReponse() {
-		return nbBonneReponse;
-	}
+    public void setReponsesBonnes(List<String> reponsesBonnes) {
+        this.reponsesBonnes = reponsesBonnes;
+    }
 
-	public void setNbBonneReponse(List<Integer> nbBonneReponse) {
-			this.nbBonneReponse = nbBonneReponse;
-	}
+    public List<String> getReponsesBonnes() {
+        return reponsesBonnes;
+    }
 
-	public List<Integer> getNbMauvaiseReponse() {
-		return nbMauvaiseReponse;
-	}
+    public void addReponseBonne(String reponseBonne) {
+        this.reponsesBonnes.add(reponseBonne);
+    }
 
-	public void setNbMauvaiseReponse(List<Integer> nbMauvaiseReponse) {
+    public void removeReponseBonne(String reponseBonne) {
+        this.reponsesBonnes.remove(reponseBonne);
+    }
 
-		this.nbMauvaiseReponse = this.nbMauvaiseReponse;
-	}
+    public void setReponsesFausses(List<String> reponsesFausses) {
+        this.reponsesFausses = reponsesFausses;
+    }
+
+    public List<String> getReponsesFausses() {
+        return reponsesFausses;
+    }
+
+    public void addReponseFausse(String reponseFausse) {
+        this.reponsesFausses.add(reponseFausse);
+    }
+
+    public void removeReponseFausse(String reponseFausse) {
+        this.reponsesFausses.remove(reponseFausse);
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setRepertoire(Repertoire repertoire) {
+        this.repertoire = repertoire;
+    }
+
+    public Repertoire getRepertoire() {
+        return repertoire;
+    }
+
+    public List<Integer> getNbReponse() {
+        return nbReponse;
+    }
+
+    public void setNbReponse(String reponse) {
+        if (nbReponse.size() == 0) {
+            for (String rep :
+                    reponsesBonnes) {
+                reponses.add(rep);
+                nbReponse.add(0);
+            }
+            for (String rep :
+                    reponsesFausses) {
+                reponses.add(rep);
+                nbReponse.add(0);
+            }
+        }
+        int index = this.reponses.indexOf(reponse);
+        System.out.println("index :" + index);
+        nbReponse.set(index , nbReponse.get(index)+1);
+    }
+
 }
