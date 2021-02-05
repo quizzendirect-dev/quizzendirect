@@ -94,6 +94,8 @@ public class QuestionDataFetcher {
 
                 // On crée la nouvelle question
                 Question nouvelleQuestion = new Question(dataFetchingEnvironment.getArgument("intitule"), dataFetchingEnvironment.getArgument("choixUnique"), dataFetchingEnvironment.getArgument("reponsesBonnes"), dataFetchingEnvironment.getArgument("reponsesFausses"), dataFetchingEnvironment.getArgument("time"));
+                nouvelleQuestion.setReponses(reponses);
+                System.out.println(" listRep :"+ nouvelleQuestion.getReponses());
                 questions.add(nouvelleQuestion);
                 repertoire.setQuestions(questions);
 
@@ -111,10 +113,22 @@ public class QuestionDataFetcher {
             Optional<Question> question = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
             if (!question.isPresent())
                 return new Error("updateQuestion", "NOT_FOUND", "Erreur : Aucune question correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")) + "' n'a été trouvée.");
+
+            //recuperation reponse etudiant
             String reponse = dataFetchingEnvironment.getArgument("reponse");
-            question.get().setNbReponse(reponse);
+
+            //creer tableautmp
+            List<Integer> nbReponsetmp =  question.get().getNbReponse();
+            System.out.println("nbReponse tmp =" + nbReponsetmp);
+
+            int index = question.get().getReponses().indexOf(reponse);
+            nbReponsetmp.set(index , question.get().getNbReponse().get(index)+1);
+
+            question.get().setNbReponse(nbReponsetmp);
             questionRepository.save(question.get());
-            System.out.println(question.get().getNbReponse());
+            Optional<Question> newQ = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
+            System.out.println("reponse Set Question recupe :" + newQ.get().getNbReponse());
+            System.out.println("reponse Set :" + question.get().getNbReponse());
             return question.get();
         };
     }

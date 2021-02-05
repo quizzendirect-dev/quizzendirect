@@ -1,6 +1,8 @@
 /* WebSocket */
 var stompClient = null;
 var laquestion = null;
+// Boolean used as a workaround to avoid the fact that the click event is launch twice when a answer is chosen
+var boolQuery = true;
 
 /* Connecte le webSocket dés l'arrivée de la page */
 (function connect() {
@@ -67,10 +69,14 @@ $(function () {
 
     /* Quand un étudiant clique sur une réponse, le chargement s'affiche */
     $("label").click(function () {
-        var reponseValue = $(this).children(4)[2].innerHTML
-        sendReponse(reponseValue);
-        $('#loadbar').show();
-        $("#quiz").fadeOut();
+        if(boolQuery) {
+            boolQuery=false
+            var reponseValue = $(this).children(4)[2].innerHTML
+            sendReponse(reponseValue);
+            $('#loadbar').show();
+            $("#quiz").fadeOut();
+
+        }else boolQuery =true
     });
 });
 

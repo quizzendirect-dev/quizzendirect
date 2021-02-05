@@ -16,7 +16,7 @@ type Question {
     """nombre reponse repondue à la question"""
     nbReponse : [Int]
     """reponse de la question"""
-    reponse : [String]
+    reponses : [String]
 }
 
 

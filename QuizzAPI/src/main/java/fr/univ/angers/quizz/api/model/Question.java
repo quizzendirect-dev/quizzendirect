@@ -29,9 +29,9 @@ public class Question implements Serializable {
     @JoinColumn(name = "id_quest")
     private Repertoire repertoire;
     @ElementCollection
-    private List<String> reponses;
+    private List<String> reponses = new ArrayList<>();
     @ElementCollection
-    private List<Integer> nbReponse;
+    private List<Integer> nbReponse = new ArrayList<>();
 
     public Question() {
     }
@@ -114,26 +114,24 @@ public class Question implements Serializable {
         return repertoire;
     }
 
+    public List<String> getReponses() {
+        return reponses;
+    }
+
+    public void setReponses(List<String> reponses) {
+        this.reponses = reponses;
+        if (nbReponse.size() == 0)
+            for (int i = 0; i < reponses.size(); i++) {
+                nbReponse.add(0);
+            }
+    }
+
     public List<Integer> getNbReponse() {
         return nbReponse;
     }
 
-    public void setNbReponse(String reponse) {
-        if (nbReponse.size() == 0) {
-            for (String rep :
-                    reponsesBonnes) {
-                reponses.add(rep);
-                nbReponse.add(0);
-            }
-            for (String rep :
-                    reponsesFausses) {
-                reponses.add(rep);
-                nbReponse.add(0);
-            }
-        }
-        int index = this.reponses.indexOf(reponse);
-        System.out.println("index :" + index);
-        nbReponse.set(index , nbReponse.get(index)+1);
+    public void setNbReponse(List<Integer> nbreponse) {
+        this.nbReponse = nbreponse;
     }
 
 }

@@ -269,9 +269,10 @@ $(document).on("click", ".button-stat", function () {
     let query = "query{  " +
         "  getQuestionById(id_quest:" + id_quest + ")" +
         "  { " +
-        "    ...on Question{id_quest intitule choixUnique reponsesBonnes reponsesFausses reponse nbReponse}\n" +
+        "    ...on Question{id_quest intitule choixUnique reponsesBonnes reponsesFausses reponses nbReponse}\n" +
         "  }" +
         "}";
+    console.log(query)
     const donnees = callAPI(query);
     donnees.then(object => {
         var question = {
@@ -280,15 +281,23 @@ $(document).on("click", ".button-stat", function () {
             'choixUnique': object.data.getQuestionById.choixUnique,
             'reponsesBonnes': object.data.getQuestionById.reponsesBonnes,
             'reponsesFausses': object.data.getQuestionById.reponsesFausses,
-            'reponse' : object.data.getQuestionById.reponse,
-            'nbReponse' : object.data.getQuestionById.reponse,
+            'reponses' : object.data.getQuestionById.reponses,
+            'nbReponse' : object.data.getQuestionById.nbReponse,
             'time': time
         };
+        console.log(question)
         alertStat(question);
     });
 })
 
 function alertStat(question){
+    var stats="";
+    var i=0;
+    for (const reponse in question.reponse) {
+        stats = stats+reponse+" ("+ nbReponse[i]+") \n"
+    }
+    console.log(stats)
+    alert(stats)
 
 }
 
