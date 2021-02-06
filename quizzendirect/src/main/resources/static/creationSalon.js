@@ -264,6 +264,12 @@ $(document).on("click", ".button-lancer", function () {
     });
 })
 
+//listener close modal stats
+$(document).on("click", "#closeModalStat", function () {
+    $("#modalStat").css("display" , "none")
+
+});
+
 $(document).on("click", ".button-stat", function () {
     let id_quest = $(this).parent().parent().find(".id_quest").val();
     let query = "query{  " +
@@ -286,19 +292,44 @@ $(document).on("click", ".button-stat", function () {
             'time': time
         };
         console.log(question)
-        alertStat(question);
+        afficherStat(question);
     });
 })
 
-function alertStat(question){
+function afficherStat(question){
     var stats="";
     var i=0;
-    for (const reponse in question.reponse) {
-        stats = stats+reponse+" ("+ nbReponse[i]+") \n"
-    }
-    console.log(stats)
-    alert(stats)
 
+    for (const reponse in question.reponses) {
+        var pourcentage = calculPourcentage(question.nbReponse[i] , question.nbReponse);
+        stats =
+            stats+
+            "<p>"+
+            " "+
+            question.reponses[i].toString()+
+            " ("+
+            question.nbReponse[i].toString()+
+            ") "+
+            pourcentage.toFixed(2) +
+            "% </p>";
+        i++
+    }
+    $("#bodyModals").html(stats)
+    $("#modalStat").css("display" , "block")
+   // setTimeout(function() {alert(stats); }, 1);
+
+}
+
+function calculPourcentage(valueNbreponse , nbReponses){
+    var tmpReponse=0;
+    console.log("NB Reponses :"+nbReponses)
+    for (var i=0; i<nbReponses.length ; i++){
+        console.log("tmpvalue : "+tmpReponse)
+        console.log("nbrep :"+nbReponses[i])
+        tmpReponse = parseInt(tmpReponse)+parseInt(nbReponses[i])
+    }
+    console.log(""+valueNbreponse+" (*100)/"+tmpReponse)
+    return ((valueNbreponse*100)/tmpReponse)
 }
 
 function updateUpDownButton() {

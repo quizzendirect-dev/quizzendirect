@@ -95,7 +95,7 @@ public class QuestionDataFetcher {
                 // On crée la nouvelle question
                 Question nouvelleQuestion = new Question(dataFetchingEnvironment.getArgument("intitule"), dataFetchingEnvironment.getArgument("choixUnique"), dataFetchingEnvironment.getArgument("reponsesBonnes"), dataFetchingEnvironment.getArgument("reponsesFausses"), dataFetchingEnvironment.getArgument("time"));
                 nouvelleQuestion.setReponses(reponses);
-                System.out.println(" listRep :"+ nouvelleQuestion.getReponses());
+
                 questions.add(nouvelleQuestion);
                 repertoire.setQuestions(questions);
 
@@ -119,7 +119,6 @@ public class QuestionDataFetcher {
 
             //creer tableautmp
             List<Integer> nbReponsetmp =  question.get().getNbReponse();
-            System.out.println("nbReponse tmp =" + nbReponsetmp);
 
             int index = question.get().getReponses().indexOf(reponse);
             nbReponsetmp.set(index , question.get().getNbReponse().get(index)+1);
@@ -127,8 +126,6 @@ public class QuestionDataFetcher {
             question.get().setNbReponse(nbReponsetmp);
             questionRepository.save(question.get());
             Optional<Question> newQ = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
-            System.out.println("reponse Set Question recupe :" + newQ.get().getNbReponse());
-            System.out.println("reponse Set :" + question.get().getNbReponse());
             return question.get();
         };
     }
