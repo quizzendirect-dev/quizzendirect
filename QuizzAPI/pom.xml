@@ -6,7 +6,6 @@
 	<groupId>projet7</groupId>
 	<artifactId>QuizzAPI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<name>quizz</name>
 	<url>http://maven.apache.org</url>
 
