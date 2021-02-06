@@ -363,7 +363,10 @@ function setConnected(connected) {
 };
 
 function connect(codeAcces) {
-    var socket = new SockJS('http://localhost:20020/ws');
+    let environement = window.location.hostname
+    if (environement == "localhost")
+        environement += ":20020"
+    var socket = new SockJS('http://'+ environement +'/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);

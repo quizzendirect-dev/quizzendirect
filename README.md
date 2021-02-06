@@ -1,23 +1,25 @@
-Plan de formation : 
+Deploy :
 
-Objectif principal, se renseigner sur toutes les technologies utilisées dans ce projet
+1) builder les images docker 
 
-vidéo GIT : https://www.youtube.com/watch?v=rP3T0Ee6pLU
-commande add;commit;push;pull;status
+se deplacer dans QuizzAPI/
+docker build -t quizzendirect-dev/quizapi:latest .
 
-Spring (idée générale à comprendre) :
-series de vidéo https://www.youtube.com/watch?v=MDdA53nrgLo
-JEE
+se deplacer dans quizzendirect
+docker build -t quizzendirect-dev/qed:latest .
 
-Maven : https://mcgivrer.wordpress.com/2014/04/08/maven-premier-pas-pour-les-non-sachants/
+2) modifier son fichier host
+sudo gedit /etc/hosts
+ajouter à la fin du fichier 
+127.0.0.1 quizendirect.info-univ-angers.fr
 
-GraphQL : https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/
-Query Mutation subscrib
-depot git
-
-Bootstrap :
-Parcourir la doc : https://getbootstrap.com/docs/4.3/getting-started/introduction/
-+ regarder les divers exemple : https://getbootstrap.com/docs/4.3/examples/ 
+3)lancer le docker compose :
+docker-compose up -d
 
 
+4) Aller sur son navigateur favori et acceder à quizendirect.info-univ-angers.fr
+(sachant que l'on peut toujours acceder à l'application par le localhost)
 
+commandes pratiques :
+docker-compose logs
+docker-compose restart
