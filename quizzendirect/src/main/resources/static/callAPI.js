@@ -31,7 +31,7 @@ var callAPI = async function (query) {
     try {
         result = await $.ajax({
             method: "POST",
-            url: "http://" +environement+"/graphql",
+            url: "https://" +environement+"/graphql",
             headers: {'Content-Type': 'application/json'},
             data: JSON.stringify({
                 query: query
