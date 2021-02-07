@@ -25,13 +25,17 @@ var callAPI = function (query) {
 var callAPI = async function (query) {
     let result;
     let environement = window.location.hostname
-    if (environement == "localhost")
-        environement += ":20020"
-    console.log(environement);
+    if (environement == "localhost"){
+        environement = "://" + environement + ":20020";
+    }
+    else {
+        environement = "s://" +environement
+    }
+    console.log(environement)
     try {
         result = await $.ajax({
             method: "POST",
-            url: "https://" +environement+"/graphql",
+            url: "http"+ environement + "/graphql",
             headers: {'Content-Type': 'application/json'},
             data: JSON.stringify({
                 query: query

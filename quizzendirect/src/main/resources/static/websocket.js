@@ -14,9 +14,14 @@ function setConnected(connected) {
 
 function connect() {
     let environement = window.location.hostname
-    if (environement == "localhost")
-        environement += ":20020"
-    var socket = new SockJS('https://' + environement + '/ws');
+    if (environement == "localhost"){
+        environement = "://" + environement + ":20020";
+    }
+    else {
+        environement = "s://" +environement
+    }
+    console.log(environement)
+    var socket = new SockJS('http'+ environement + '/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
