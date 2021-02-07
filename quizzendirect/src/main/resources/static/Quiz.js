@@ -17,7 +17,7 @@ var boolQuery = true;
     var socket = new SockJS('http'+ environement + '/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
+
         // ajout du code d'accés selon la variable en get dans l'url
         stompClient.subscribe('/quiz/salon/' + getQueryVariable("codeAcces"), function (question) {
             getQuestion(JSON.parse(question.body));
@@ -98,7 +98,7 @@ function sendReponse(reponseVal) {
             "  }" +
             "  }\n" +
             "}"
-        console.log(query)
+
         const donnee = callAPI(query);
     }
 

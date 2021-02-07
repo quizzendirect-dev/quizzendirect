@@ -107,6 +107,19 @@ public class QuestionDataFetcher {
                     "Error : TOKEN");
         };
     }
+    public DataFetcher<Object> restartReponses(){
+        return dataFetchingEnvironment -> {
+            if (!parseJWT(dataFetchingEnvironment.getArgument("token")))
+                return new Error("restartReponses", "TOKEN",
+                        "Error : TOKEN");
+            Optional<Question> question = questionRepository.findById(Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")));
+            if (!question.isPresent())
+                return new Error("updateQuestion", "NOT_FOUND", "Erreur : Aucune question correspondant à l'ID : '" + Integer.parseInt(dataFetchingEnvironment.getArgument("id_quest")) + "' n'a été trouvée.");
+            question.get().setReponses(question.get().getReponses());
+            questionRepository.save(question.get());
+            return question.get();
+        };
+    }
 
     public DataFetcher<Object> updateReponse() {
         return dataFetchingEnvironment -> {

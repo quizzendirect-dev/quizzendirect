@@ -105,8 +105,6 @@ type Query {
     EnseignantByMail(mail: String!, token : String!) : EnseignantResult
     """Renvoie un mail d'enseignant si ce mail exist deja"""
     getMailProf(mail: String!) : String
-    """Renvoie la liste de tous les enseignants"""
-    allEnseignants : [Enseignant]
     """Renvoie la liste de toutes les questions"""
     allQuestions : [Question]
     """Renvoie la liste de tous les répertoires"""
@@ -174,6 +172,7 @@ type Mutation {
     removeEnseignant(token : String!,id_ens: ID!) : EnseignantResult
 
     #   Question
+    """met à jour la reponse de la question correspondant à l'id spécifié"""
     updateReponse(reponse : String!, id_quest : ID! ) : QuestionResult
     """Crée une nouvelle question correspondant aux paramètres spécifiés"""
     createQuestion(token : String!, intitule: String!, choixUnique: Boolean!, reponsesBonnes: [String]!, reponsesFausses: [String]!, time: Int! , nomRepertoire : String) : QuestionResult
@@ -181,6 +180,8 @@ type Mutation {
     updateQuestion(token : String!, id_quest: ID!, intitule: String, choixUnique: Boolean, reponsesBonnes: [String], reponsesFausses: [String], time: Int, repertoire: RepertoireInput) : QuestionResult
     """Supprime la question correspondant à l'id spécifié"""
     removeQuestion(token : String!, id_quest: ID!) : QuestionResult
+    """redemare la question pour les stats"""
+    restartQuestionById(token : String!, id_quest: ID!) : QuestionResult
 
     #   Répertoire
     """Crée un nouveau répertoire correspondant aux paramètres spécifiés"""

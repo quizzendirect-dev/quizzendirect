@@ -25,7 +25,6 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
-        console.log('Connected: ' + frame);
         stompClient.subscribe('/quiz/salon', function (question) {
             getQuestion(JSON.parse(question.body));
         });
@@ -37,7 +36,6 @@ function disconnect() {
         stompClient.disconnect();
     }
     setConnected(false);
-    console.log("Disconnected");
 };
 
 function sendQuestion() {

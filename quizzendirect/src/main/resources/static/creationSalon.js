@@ -230,6 +230,7 @@ function updateLancerButton(disabled) {
 }
 
 $(document).on("click", ".button-lancer", function () {
+    var token = getCookie("token")
     updateLancerButton(true)
     let time = $(this).parent().parent().find(".choose-time").val()
     let timer = 0
@@ -244,8 +245,8 @@ $(document).on("click", ".button-lancer", function () {
     }, 1000)
 
     let id_quest = $(this).parent().parent().find(".id_quest").val();
-    let query = "query{  " +
-        "  getQuestionById(id_quest:" + id_quest + ")" +
+    let query = "mutation{  " +
+        "  restartQuestionById(id_quest:" + id_quest + ", token : \""+ token +"\")" +
         "  { " +
         "    ...on Question{id_quest intitule choixUnique reponsesBonnes reponsesFausses time}\n" +
         "  }" +
@@ -253,11 +254,11 @@ $(document).on("click", ".button-lancer", function () {
     const donnees = callAPI(query);
     donnees.then(object => {
         var question = {
-            'id_quest': object.data.getQuestionById.id_quest,
-            'intitule': object.data.getQuestionById.intitule,
-            'choixUnique': object.data.getQuestionById.choixUnique,
-            'reponsesBonnes': object.data.getQuestionById.reponsesBonnes,
-            'reponsesFausses': object.data.getQuestionById.reponsesFausses,
+            'id_quest': object.data.restartQuestionById.id_quest,
+            'intitule': object.data.restartQuestionById.intitule,
+            'choixUnique': object.data.restartQuestionById.choixUnique,
+            'reponsesBonnes': object.data.restartQuestionById.reponsesBonnes,
+            'reponsesFausses': object.data.restartQuestionById.reponsesFausses,
             'time': time
         };
         sendQuestion(question);
@@ -269,6 +270,10 @@ $(document).on("click", "#closeModalStat", function () {
     $("#modalStat").css("display" , "none")
 
 });
+//function pour remettre a zero les reponses
+
+
+
 
 $(document).on("click", ".button-stat", function () {
     let id_quest = $(this).parent().parent().find(".id_quest").val();
@@ -278,7 +283,6 @@ $(document).on("click", ".button-stat", function () {
         "    ...on Question{id_quest intitule choixUnique reponsesBonnes reponsesFausses reponses nbReponse}\n" +
         "  }" +
         "}";
-    console.log(query)
     const donnees = callAPI(query);
     donnees.then(object => {
         var question = {
@@ -291,7 +295,6 @@ $(document).on("click", ".button-stat", function () {
             'nbReponse' : object.data.getQuestionById.nbReponse,
             'time': time
         };
-        console.log(question)
         afficherStat(question);
     });
 })
@@ -322,13 +325,10 @@ function afficherStat(question){
 
 function calculPourcentage(valueNbreponse , nbReponses){
     var tmpReponse=0;
-    console.log("NB Reponses :"+nbReponses)
     for (var i=0; i<nbReponses.length ; i++){
-        console.log("tmpvalue : "+tmpReponse)
-        console.log("nbrep :"+nbReponses[i])
+
         tmpReponse = parseInt(tmpReponse)+parseInt(nbReponses[i])
     }
-    console.log(""+valueNbreponse+" (*100)/"+tmpReponse)
     return ((valueNbreponse*100)/tmpReponse)
 }
 
@@ -374,7 +374,6 @@ function connect(codeAcces) {
     var socket = new SockJS('http'+ environement + '/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
         // ajout dans l'url le code d'accéss ( variable globale ) qui a été affecté lors de l'ouverture du salon
         stompClient.subscribe('/quiz/salon/' + codeAcces);
     });
@@ -384,7 +383,6 @@ function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
-    console.log("Disconnected");
 };
 
 function sendQuestion(question) {

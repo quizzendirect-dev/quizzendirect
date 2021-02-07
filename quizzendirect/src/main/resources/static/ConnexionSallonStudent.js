@@ -15,7 +15,7 @@ $(function(){
         donnees.then(object => {
             // récupére tous les salons
             let allSalon = object.data.allSalons;
-            console.log(allSalon);
+
             // récupérer le code d'accés entré par l'étudiant
             let codeAccesInput = $("#idSalon").val();
 
@@ -27,7 +27,7 @@ $(function(){
 
             // si le code d'accés est le bon, on renvoie l'étudiant sur la page quiz avec le CODEACCES en GET
             if(bonCodeAcces) {
-                //console.log("yes");//
+
                 window.location.href="/quiz?codeAcces="+codeAccesInput+"";
             }
         });

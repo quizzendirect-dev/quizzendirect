@@ -42,12 +42,6 @@ var callAPI = async function (query) {
             })
 
         });
-       /* console.log("query")
-        console.log(query)
-        console.log("ERROR = "+result.data.error)
-        alert(result)
-        if(result.data.error ==undefined)
-        window.location.href = "/";*/
 
         return result;
     }
