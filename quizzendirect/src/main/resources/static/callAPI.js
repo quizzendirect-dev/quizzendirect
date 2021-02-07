@@ -27,7 +27,7 @@ var callAPI = async function (query) {
     let environement = window.location.hostname
     if (environement == "localhost")
         environement += ":20020"
-    console.log(environement);
+
     try {
         result = await $.ajax({
             method: "POST",
@@ -38,12 +38,6 @@ var callAPI = async function (query) {
             })
 
         });
-       /* console.log("query")
-        console.log(query)
-        console.log("ERROR = "+result.data.error)
-        alert(result)
-        if(result.data.error ==undefined)
-        window.location.href = "/";*/
 
         return result;
     }

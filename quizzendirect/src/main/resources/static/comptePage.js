@@ -80,7 +80,6 @@ $(function () {
                                 "   }" +
                                 "  }" +
                                 "}";
-                            console.log(mutation)
                             const donnees = callAPI(mutation);
                             donnees.then((objectcreatEns) => {
                                 document.cookie = "userName= " + objectcreatEns.data.createEnseignant.nom

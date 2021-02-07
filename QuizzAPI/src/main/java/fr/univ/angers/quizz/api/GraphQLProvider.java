@@ -85,7 +85,6 @@ public class GraphQLProvider {
                       .dataFetcher("verifToken", enseignantDataFetcher.checkToken())
                       .dataFetcher("getQuestionByIntitule", questionDataFetcher.getQuestionByIntitule())
                       .dataFetcher("EnseignantVerification", enseignantDataFetcher.getEnseignantVerification())
-                      .dataFetcher("allEnseignants", enseignantDataFetcher.getAllEnseignant())
                       .dataFetcher("allQuestions", questionDataFetcher.getAllQuestion())
                       .dataFetcher("allRepertoires", repertoireDataFetcher.getAllRepertoire())
                       .dataFetcher("allHistoriques", historiqueDataFetcher.getAllHistorique())
@@ -106,11 +105,13 @@ public class GraphQLProvider {
                       .dataFetcher("createEnseignant", enseignantDataFetcher.createEnseignant())
                       .dataFetcher("updateEnseignant", enseignantDataFetcher.updateEnseignant())
                       .dataFetcher("removeEnseignant", enseignantDataFetcher.removeEnseignant())
-                      .dataFetcher("updateReponse", questionDataFetcher.updateReponse())
+
                       //    Question
+                      .dataFetcher("updateReponse", questionDataFetcher.updateReponse())
                       .dataFetcher("createQuestion", questionDataFetcher.createQuestion())
                       .dataFetcher("updateQuestion", questionDataFetcher.updateQuestion())
                       .dataFetcher("removeQuestion", questionDataFetcher.removeQuestion())
+                      .dataFetcher("restartQuestionById", questionDataFetcher.restartReponses())
 
                       //    Repertoire
                       .dataFetcher("createRepertoire", repertoireDataFetcher.createRepertoire())

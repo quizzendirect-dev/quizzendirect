@@ -124,6 +124,11 @@ public class Question implements Serializable {
             for (int i = 0; i < reponses.size(); i++) {
                 nbReponse.add(0);
             }
+        else{
+            for (int i = 0; i < reponses.size(); i++) {
+                nbReponse.set(i, 0);
+            }
+        }
     }
 
     public List<Integer> getNbReponse() {
