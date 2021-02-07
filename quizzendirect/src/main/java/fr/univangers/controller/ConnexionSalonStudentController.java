@@ -91,7 +91,7 @@ public class ConnexionSalonStudentController {
         }
         else {
             model.addAttribute("erreur","Mauvais salon en entrée");
-            return "/ConnexionSallonStudent";
+            return "ConnexionSallonStudent";
         }
     }
 
