@@ -18,7 +18,7 @@ public class ConnexionSalonStudentController {
 
     @GetMapping("/ConnexionSalonStudent")
     public String getConnexionSalonStudent(){
-        return "/ConnexionSallonStudent";
+        return "ConnexionSallonStudent";
     }
 
     @PostMapping("/ConnexionSalonStudent")
