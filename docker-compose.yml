@@ -1,11 +1,13 @@
 version: "2"
 services:
   api:
-    image: quizzendirect-dev/quizzapi:latest
+    build:
+      context: ./QuizzAPI
     ports:
      - 20020:20020
   frontapp:
-    image: quizzendirect-dev/qed:latest
+    build:
+      context: ./quizzendirect
     ports:
      - 8081:8081
   proxy:
