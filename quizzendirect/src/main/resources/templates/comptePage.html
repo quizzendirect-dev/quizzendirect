@@ -39,7 +39,7 @@
                         <div class="col-lg-12">
                             <form id="login-form" action="#" th:action="@{/login}" th:object="${user}" method="post" role="form"
                                   style="display: block;">
-                                <small th:text="${errorLogin}"></small>
+                                <!--<small th:text="${errorLogin}"></small>-->
                                 <div class="form-group">
                                     <input type="email" name="login-email" id="login-email" class="form-control" placeholder="Email" value="" th:field="*{email}" required>
                                 </div>
