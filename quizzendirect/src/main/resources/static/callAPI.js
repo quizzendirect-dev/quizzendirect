@@ -51,20 +51,6 @@ var callAPI = async function (query) {
 };
 
 
-var getAllQuestions = function () {
-    var query = '{' +
-        '  allQuestions {' +
-        '    id_quest' +
-        '    intitule' +
-        '    reponsesBonnes' +
-        '    reponsesFausses' +
-        '  }' +
-        '}';
-
-    const data =  callAPI(query);
-    return data;
-}
-
 function verifyCookie(){
     console.log("cookie token "+getCookie("token") )
     console.log("cookie nom"+ getCookie("userName") )
@@ -90,20 +76,6 @@ function getCookie(name) {
 /* Pour accéder aux données (avec l'API) :
 1) Ajouter la balise <script src="CHEMIN/callAPI.js" ></script> dans le fichier html
 2) Faire appel à la fonction callAPI(query), qui prend en parametre une variable query, qui contiendra votre requete
-Exemple : On recupére toutes les questions
-    var query = '{' +
-        '  allQuestions {' +
-        '    id_quest' +
-        '    intitule' +
-        '    reponsesBonnes' +
-        '    reponsesFausses' +
-        '  }' +
-        '}';
-   const donnees = callAPI(query);
-   donnees.then((data) =>
-            anotherFunction(donnees.data.allQuestions)
-            );
-
  */
 
 
