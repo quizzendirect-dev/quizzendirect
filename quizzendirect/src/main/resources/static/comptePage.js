@@ -1,1 +1,217 @@
-var _0x14a6=['\x20\x20\x20}','#register-form','length','\x20\x20\x20\x20nom','SHA-256','593046HSrYhO','Cet\x20enseignant\x20existe\x20déjà.','1228847IsDvBz','join','register-password','preventDefault','224428NTobEM','Les\x20mots\x20de\x20passe\x20ne\x20correspondent\x20pas','\x20\x20EnseignantVerification(mail\x20:\x20\x22','388430hdQjVD','507759QcRqDs','register-confirm-password','then','getToken','click','token=\x20','createEnseignant','fadeOut','userName=\x20','\x22,\x20mdp\x20:\x20\x22','slice','toString','1OWPgnn','login-password','\x20\x20mail:\x22','login-email','byteLength','cookie','\x20\x20\x20\x20id_ens','getElementById','subtle','82949gvxyeY','\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20mail','fadeIn','delay','digest','active','data','userEmail=','\x22){','#login-form-link','id_ens','connection','00000000','\x20\x20}','mail','1GGKvxs','\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20id_ens\x20','772307nWVyHb','nom','mutation{\x20createEnseignant(nom:\x22','value','#login-form','l\x27email\x20doit\x20étre\x20une\x20adresse\x20de\x20l\x27université\x20d\x27Angers','\x22)}','getUint32','\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20...\x20on\x20Enseignant{\x20','getMailProf','\x20\x20getMailProf(\x20mail\x20:\x20\x22','removeClass','push','encode','\x20\x20getToken(ens_Id\x20:\x20\x22','query{\x20getToken(ens_Id\x20:\x20','motdepasse','href','register-email','Cet\x20enseignant\x20n\x27existe\x20pas','\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20nom','EnseignantVerification','location','addClass','@univ-angers.fr','register-submit'];var _0x4f7c=function(_0x54c368,_0x1626a3){_0x54c368=_0x54c368-0x124;var _0x14a6b2=_0x14a6[_0x54c368];return _0x14a6b2;};(function(_0x54f4a6,_0x357b8c){var _0x5b48e1=_0x4f7c;while(!![]){try{var _0x3ca872=parseInt(_0x5b48e1(0x128))*-parseInt(_0x5b48e1(0x168))+parseInt(_0x5b48e1(0x153))+parseInt(_0x5b48e1(0x12a))*parseInt(_0x5b48e1(0x15f))+-parseInt(_0x5b48e1(0x152))+parseInt(_0x5b48e1(0x14f))+parseInt(_0x5b48e1(0x149))+-parseInt(_0x5b48e1(0x14b));if(_0x3ca872===_0x357b8c)break;else _0x54f4a6['push'](_0x54f4a6['shift']());}catch(_0x4ef73e){_0x54f4a6['push'](_0x54f4a6['shift']());}}}(_0x14a6,0x61002),$(function(){var _0x79c047=_0x4f7c;$('#login-form-link,\x20#login-form-link2')[_0x79c047(0x157)](function(_0xdaf62f){var _0x3e150a=_0x79c047;$(_0x3e150a(0x12e))[_0x3e150a(0x16b)](0x64)[_0x3e150a(0x16a)](0x64),$(_0x3e150a(0x145))[_0x3e150a(0x15a)](0x64),$('#register-form-link')[_0x3e150a(0x135)](_0x3e150a(0x16d)),$('#login-form-link')[_0x3e150a(0x141)]('active'),_0xdaf62f[_0x3e150a(0x14e)]();}),$('#register-form-link')['click'](function(_0x16b536){var _0x2a7a01=_0x79c047;$(_0x2a7a01(0x145))['delay'](0x64)[_0x2a7a01(0x16a)](0x64),$(_0x2a7a01(0x12e))[_0x2a7a01(0x15a)](0x64),$(_0x2a7a01(0x171))[_0x2a7a01(0x135)](_0x2a7a01(0x16d)),$(this)[_0x2a7a01(0x141)](_0x2a7a01(0x16d)),_0x16b536[_0x2a7a01(0x14e)]();}),document[_0x79c047(0x166)](_0x79c047(0x143))['addEventListener']('click',function(_0x383565){var _0x5f35a2=_0x79c047;_0x383565[_0x5f35a2(0x14e)]();var _0x34b869=document['getElementById']('register-prenom'),_0x5b3946=_0x34b869[_0x5f35a2(0x12d)],_0x522cee=document[_0x5f35a2(0x166)]('register-name'),_0x14c463=_0x522cee[_0x5f35a2(0x12d)],_0x170dcc=document[_0x5f35a2(0x166)](_0x5f35a2(0x13c)),_0x3c78b2=_0x170dcc[_0x5f35a2(0x12d)],_0x5591ed=document[_0x5f35a2(0x166)](_0x5f35a2(0x14d)),_0xbf4bc3=_0x5591ed[_0x5f35a2(0x12d)],_0x54f547=document['getElementById'](_0x5f35a2(0x154)),_0x4a06db=_0x54f547[_0x5f35a2(0x12d)];if(!_0x3c78b2['endsWith'](_0x5f35a2(0x142)))_0x383565[_0x5f35a2(0x14e)](),alert(_0x5f35a2(0x12f));else{if(_0xbf4bc3[_0x5f35a2(0x146)]<0x6)_0x383565[_0x5f35a2(0x14e)](),alert('Le\x20mot\x20de\x20passe\x20doit\x20contenir\x20au\x20minimum\x206\x20caractéres');else{if(_0xbf4bc3!=_0x4a06db)_0x383565[_0x5f35a2(0x14e)](),alert(_0x5f35a2(0x150));else{let _0x432c6f=_0x14c463[_0x5f35a2(0x15e)](),_0x4c370a=_0x3c78b2['toString']();var _0x292570=sha256(_0xbf4bc3[_0x5f35a2(0x15e)]());let _0x2e683c='{'+_0x5f35a2(0x134)+_0x4c370a+'\x22)'+'}';const _0x2b9867=callAPI(_0x2e683c);_0x2b9867[_0x5f35a2(0x155)](_0x565bf9=>{var _0x9252e9=_0x5f35a2,_0x756461=![];_0x565bf9[_0x9252e9(0x16e)][_0x9252e9(0x133)]==_0x3c78b2&&(_0x756461=!![]);_0x292570=mdpCrypto;if(_0x756461==![]){let _0x36038d=_0x9252e9(0x12c)+_0x432c6f+'\x22'+_0x9252e9(0x161)+_0x4c370a+'\x22'+'\x20\x20motdepasse:\x22'+_0x292570+'\x22)'+'\x20\x20{'+_0x9252e9(0x132)+_0x9252e9(0x129)+_0x9252e9(0x13e)+_0x9252e9(0x169)+_0x9252e9(0x144)+_0x9252e9(0x126)+'}';const _0x5828ad=callAPI(_0x36038d);_0x5828ad[_0x9252e9(0x155)](_0x642d2d=>{var _0x2ce6e7=_0x9252e9;document[_0x2ce6e7(0x164)]=_0x2ce6e7(0x15b)+_0x642d2d[_0x2ce6e7(0x16e)]['createEnseignant'][_0x2ce6e7(0x12b)],document[_0x2ce6e7(0x164)]=_0x2ce6e7(0x16f)+_0x642d2d[_0x2ce6e7(0x16e)][_0x2ce6e7(0x159)][_0x2ce6e7(0x127)],document['cookie']='userId_ens='+_0x642d2d[_0x2ce6e7(0x16e)][_0x2ce6e7(0x159)][_0x2ce6e7(0x172)];var _0x3f18bb=_0x642d2d[_0x2ce6e7(0x16e)][_0x2ce6e7(0x159)][_0x2ce6e7(0x172)];let _0x3fc9d6=_0x2ce6e7(0x139)+_0x3f18bb+','+'\x20\x20mdp:\x22'+_0x292570+'\x22)'+'}';var _0x5063ec=callAPI(_0x3fc9d6);_0x5063ec[_0x2ce6e7(0x155)](_0x4d0d40=>{var _0x4680e1=_0x2ce6e7;document[_0x4680e1(0x164)]=_0x4680e1(0x158)+_0x4d0d40[_0x4680e1(0x16e)][_0x4680e1(0x156)],verifyCookie(),window['location']['href']=_0x4680e1(0x124);});});}else alert(_0x9252e9(0x14a));});}}}}),document[_0x79c047(0x166)]('login-submit')['addEventListener'](_0x79c047(0x157),function(_0x15d8b0){var _0x32b111=_0x79c047;_0x15d8b0[_0x32b111(0x14e)]();var _0x428de9=document[_0x32b111(0x166)](_0x32b111(0x162)),_0x4d0623=_0x428de9[_0x32b111(0x12d)],_0x2fedf6=document[_0x32b111(0x166)](_0x32b111(0x160));sha256(_0x2fedf6[_0x32b111(0x12d)]),mail=_0x4d0623,mdpValue=_0x2fedf6[_0x32b111(0x12d)];if(mdpCrypto!=undefined)doConnection();else inDoConnect=!![];});}));var mdpCrypto,mail,mdpValue,inDoConnect=![];function doConnection(){var _0x48f152=_0x4f7c;let _0x2bdbed='{'+_0x48f152(0x151)+mail+'\x22,\x20mdp\x20:\x20\x22'+mdpCrypto+_0x48f152(0x170)+_0x48f152(0x165)+'\x20\x20\x20\x20mail'+'\x20\x20\x20\x20motdepasse'+_0x48f152(0x147)+_0x48f152(0x126)+'}';const _0xbb328b=callAPI(_0x2bdbed);if(mdpCrypto!=undefined)_0xbb328b[_0x48f152(0x155)](_0x19467e=>{var _0x31ec5b=_0x48f152,_0x158ff4=![],_0x40345a=![];if(_0x19467e[_0x31ec5b(0x16e)][_0x31ec5b(0x13f)][_0x31ec5b(0x127)]==mail){_0x158ff4=!![];if(_0x19467e[_0x31ec5b(0x16e)][_0x31ec5b(0x13f)][_0x31ec5b(0x13a)]==mdpCrypto){_0x40345a=!![];var _0x2cc069=_0x19467e[_0x31ec5b(0x16e)]['EnseignantVerification'][_0x31ec5b(0x172)],_0x116b52=_0x19467e[_0x31ec5b(0x16e)][_0x31ec5b(0x13f)][_0x31ec5b(0x12b)],_0x1e8e09=_0x19467e[_0x31ec5b(0x16e)][_0x31ec5b(0x13f)][_0x31ec5b(0x127)];let _0x96814a='{'+_0x31ec5b(0x138)+_0x2cc069+_0x31ec5b(0x15c)+mdpCrypto+_0x31ec5b(0x130);var _0x49a0e1=callAPI(_0x96814a);_0x49a0e1['then'](_0x25ea7d=>{var _0x19bf11=_0x31ec5b;document[_0x19bf11(0x164)]=_0x19bf11(0x158)+_0x25ea7d['data'][_0x19bf11(0x156)],document['cookie']=_0x19bf11(0x15b)+_0x116b52,document[_0x19bf11(0x164)]=_0x19bf11(0x16f)+_0x1e8e09,document[_0x19bf11(0x164)]='userId_ens='+_0x2cc069,verifyCookie(),window[_0x19bf11(0x140)][_0x19bf11(0x13b)]='connection';});}}_0x158ff4==!![]&&_0x40345a==![]&&alert('Le\x20mot\x20de\x20passe\x20ou\x20le\x20mail\x20son\x20mauvais.'),_0x158ff4==![]&&alert(_0x31ec5b(0x13d));});}function sha256(_0x4e40f3){var _0x5a8b85=_0x4f7c,_0x3c1ab9=new TextEncoder('utf-8')[_0x5a8b85(0x137)](_0x4e40f3),_0x36ab08;return crypto[_0x5a8b85(0x167)][_0x5a8b85(0x16c)](_0x5a8b85(0x148),_0x3c1ab9)[_0x5a8b85(0x155)](function(_0x4737f9){mdpCrypto=hex(_0x4737f9);if(inDoConnect)doConnection();}),mdpCrypto;}function hex(_0x29aaf8){var _0x18e8a3=_0x4f7c,_0x196ecc=[],_0x19d589=new DataView(_0x29aaf8);for(var _0x1de59e=0x0;_0x1de59e<_0x19d589[_0x18e8a3(0x163)];_0x1de59e+=0x4){var _0x3b7e26=_0x19d589[_0x18e8a3(0x131)](_0x1de59e),_0x2029b9=_0x3b7e26[_0x18e8a3(0x15e)](0x10),_0xa63ada=_0x18e8a3(0x125),_0x24205e=(_0xa63ada+_0x2029b9)[_0x18e8a3(0x15d)](-_0xa63ada[_0x18e8a3(0x146)]);_0x196ecc[_0x18e8a3(0x136)](_0x24205e);}return _0x196ecc[_0x18e8a3(0x14c)]('');}
+
+
+
+$(function () {
+    // Pour gérer le visuel login/sign in
+    $('#login-form-link, #login-form-link2').click(function (e) {
+        $("#login-form").delay(100).fadeIn(100);
+        $("#register-form").fadeOut(100);
+        $('#register-form-link').removeClass('active');
+        $('#login-form-link').addClass('active');
+        e.preventDefault();
+    });
+    $('#register-form-link').click(function (e) {
+        $("#register-form").delay(100).fadeIn(100);
+        $("#login-form").fadeOut(100);
+        $('#login-form-link').removeClass('active');
+        $(this).addClass('active');
+        e.preventDefault();
+    });
+
+
+    // Quand l'enseignant clique sur le boutton pour créer un compte
+    document.getElementById("register-submit").addEventListener("click", function (e) {
+
+        e.preventDefault();
+        // on recupére ses informations
+        var prenom = document.getElementById("register-prenom");
+        var prenom_value = prenom.value;
+        var nom = document.getElementById("register-name");
+        var nom_value = nom.value;
+        var email = document.getElementById("register-email");
+        var email_value = email.value;
+        var mdp1 = document.getElementById("register-password");
+        var mdp1_value = mdp1.value;
+        var mdp2 = document.getElementById("register-confirm-password");
+        var mdp2_value = mdp2.value;
+
+        // on impose le mail doit etre un mail de l'université d'Angers
+        if (!email_value.endsWith("@univ-angers.fr")) {
+            e.preventDefault();
+            alert("l'email doit étre une adresse de l'université d'Angers");
+        }
+
+        // on impose que le mot de passe ait une longueur supérieur a 6 caractères
+        else {
+            if (mdp1_value.length < 6) {
+                e.preventDefault();
+                alert("Le mot de passe doit contenir au minimum 6 caractéres");
+            } else {
+                // on vérifie que les 2 mots de passes entrés sont égaux
+                if (mdp1_value != mdp2_value) {
+                    e.preventDefault();
+                    alert("Les mots de passe ne correspondent pas");
+                } else {
+                    // On recupére tous les enseignants avec un appel à l'API
+                    let nom_value_mutation = nom_value.toString();
+                    let email_value_mutation = email_value.toString();
+                    var mpd1_value_mutation = sha256(mdp1_value.toString());
+
+                    let query_allEns = "{" +
+                        "  getMailProf( mail : \"" + email_value_mutation + "\")" +
+                        "}";
+                    const donnees_ens = callAPI(query_allEns)
+                    donnees_ens.then((object0) => {
+                        var enseignantExist = false;
+                        if (object0.data.getMailProf == email_value) {
+                            enseignantExist = true;
+                        }
+                        mpd1_value_mutation = mdpCrypto
+                        // si l email n'existe pas, on crée l'enseignant et les cookies/sessions
+                        if (enseignantExist == false) {
+                            let mutation = "mutation{ createEnseignant(nom:\"" + nom_value_mutation + "\"" +
+                                "  mail:\"" + email_value_mutation + "\"" +
+                                "  motdepasse:\"" + mpd1_value_mutation + "\")" +
+                                "  {" +
+                                "            ... on Enseignant{ " +
+                                "                   id_ens " +
+                                "                   nom" +
+                                "                   mail" +
+                                "   }" +
+                                "  }" +
+                                "}";
+                            const donnees = callAPI(mutation);
+                            donnees.then((objectcreatEns) => {
+                                document.cookie = "userName= " + objectcreatEns.data.createEnseignant.nom
+                                document.cookie = "userEmail=" + objectcreatEns.data.createEnseignant.mail
+                                document.cookie = "userId_ens=" + objectcreatEns.data.createEnseignant.id_ens;
+                                var id_ens = objectcreatEns.data.createEnseignant.id_ens
+                                let tokenQuery = "query{ getToken(ens_Id : " + id_ens + "," +
+                                    "  mdp:\"" + mpd1_value_mutation + "\")" +
+                                    "}";
+                                var token = callAPI(tokenQuery);
+                                token.then((object) => {
+                                    document.cookie = "token= " + object.data.getToken;
+                                    verifyCookie()
+                                    window.location.href = "connection";
+                                })
+
+                            })
+                        }
+                        // sinon on notifie que cet enseignant existe déjà avec une alerte
+                        else {
+                            alert("Cet enseignant existe déjà.");
+                        }
+                    })
+                }
+            }
+        }
+    });
+
+    // Quand l'enseignant clique sur le boutton pour se connecter
+    document.getElementById("login-submit").addEventListener("click", function (e) {
+
+        e.preventDefault();
+        // on récupére les informations saisies
+        var email_connexion = document.getElementById("login-email");
+        var email_connexion_value = email_connexion.value;
+        var mdp_email = document.getElementById("login-password");
+        sha256(mdp_email.value);
+        mail = email_connexion_value
+        mdpValue = mdp_email.value
+        if (mdpCrypto != undefined) {
+            doConnection()
+        }
+        else inDoConnect = true;
+    });
+
+
+});
+var mdpCrypto;
+var mail;
+var mdpValue;
+var inDoConnect=false;
+
+function doConnection() {
+
+    // on fait appel à l'API pour récupérer tous les enseignants
+    let query_Ens = "{" +
+        "  EnseignantVerification(mail : \"" + mail + "\", mdp : \"" + mdpCrypto + "\"){" +
+        "    id_ens" +
+        "    mail" +
+        "    motdepasse" +
+        "    nom" +
+        "  }" +
+        "}";
+
+    const donnees_ens = callAPI(query_Ens)
+    if (mdpCrypto != undefined)
+        donnees_ens.then((object0) => {
+
+            var enseignantExist = false;
+            var mdpTrue = false;
+            // si on trouve que le mail existe
+            if (object0.data.EnseignantVerification.mail == mail) {
+                enseignantExist = true;
+                if (object0.data.EnseignantVerification.motdepasse == mdpCrypto) {
+                    mdpTrue = true;
+                    var id_ens = object0.data.EnseignantVerification.id_ens
+                    var nom_user = object0.data.EnseignantVerification.nom
+                    var user_mail = object0.data.EnseignantVerification.mail
+                    let query_token = "{" +
+                        "  getToken(ens_Id : \"" + id_ens + "\", mdp : \"" + mdpCrypto + "\")}";
+
+                    var token = callAPI(query_token);
+
+                    token.then((object) => {
+                        document.cookie = "token= " + object.data.getToken;
+                        document.cookie = "userName= " + nom_user;
+                        document.cookie = "userEmail=" + user_mail;
+                        document.cookie = "userId_ens=" + id_ens;
+                        verifyCookie()
+                        window.location.href = "connection";
+                    })
+                }
+            }
+
+            // On gére les erreurs
+            if ((enseignantExist == true) && (mdpTrue == false)) {
+                alert("Le mot de passe ou le mail son mauvais.");
+            }
+            if (enseignantExist == false) {
+                alert("Cet enseignant n'existe pas");
+            }
+
+
+        })
+}
+
+function sha256(str) {
+    // We transform the string into an arraybuffer.
+    var buffer = new TextEncoder("utf-8").encode(str);
+    var tmp;
+    crypto.subtle.digest("SHA-256", buffer).then(function (hash) {
+        mdpCrypto = hex(hash);
+        if(inDoConnect) doConnection()
+    });
+    return mdpCrypto
+
+}
+
+function hex(buffer) {
+    var hexCodes = [];
+    var view = new DataView(buffer);
+    for (var i = 0; i < view.byteLength; i += 4) {
+        // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
+        var value = view.getUint32(i)
+        // toString(16) will give the hex representation of the number without padding
+        var stringValue = value.toString(16)
+        // We use concatenation and slice for padding
+        var padding = '00000000'
+        var paddedValue = (padding + stringValue).slice(-padding.length)
+        hexCodes.push(paddedValue);
+    }
+
+    // Join all the hex strings into one
+    return hexCodes.join("");
+}

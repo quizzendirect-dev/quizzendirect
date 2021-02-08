@@ -370,7 +370,6 @@ function connect(codeAcces) {
     else {
         environement = "s://" +environement
     }
-    console.log(environement)
     var socket = new SockJS('http'+ environement + '/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {

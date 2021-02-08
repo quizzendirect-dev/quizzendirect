@@ -1,27 +1,5 @@
 
 
-
-/*
-var callAPI = function (query) {
-            var result = null;
-            $.ajax({
-            method: "POST",
-            url: "http://localhost:20020/graphql",
-            headers: {'Content-Type': 'application/json'},
-            async : false,
-            data: JSON.stringify({
-                query: query
-            })
-        }).done(function(data){
-            result = data.data;
-        })
-        .fail(function(data) {
-            console.log("Ajax Echec");
-        });
-        return result;
-}
-*/
-
 var callAPI = async function (query) {
     let result;
     let environement = window.location.hostname
@@ -50,12 +28,9 @@ var callAPI = async function (query) {
     }
 };
 
-
+//Function to check a cookie
 function verifyCookie(){
-    console.log("cookie token "+getCookie("token") )
-    console.log("cookie nom"+ getCookie("userName") )
-    console.log("cookie userEmail" + getCookie("userEmail"))
-    console.log("cookie userId_ens"+getCookie("userId_ens"))
+
 }
 
 
