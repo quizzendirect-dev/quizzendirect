@@ -368,18 +368,19 @@ $(document).on('click','#ModifierQuestion',function () {
         let updateQuery = "mutation{\n" +
             "  updateQuestion\n" +
             "  (token : \""+ token +"\" , id_quest: " + idQuest + ",\n" +
-            "  \tintitule: \"" + manageDoubleQuote(enonce) + "\",\n" +
+            "  intitule: \"" + manageDoubleQuote(enonce) + "\",\n" +
             "    choixUnique: "+ choix +",\n" +
             "    reponsesBonnes: [\n";
-        reponsesBonnes.forEach(reponse =>
-            updateQuery += "      "+manageDoubleQuote(reponse)+ "\n"
+        reponsesBonnes.forEach(reponse => {
+                updateQuery += "      " + reponse.replaceAll("\\", "\\\\") + "\n"
+            }
         )
 
         updateQuery += "    ],\n" +
             "    reponsesFausses: [\n";
-        reponsesFausse.forEach(reponse =>
-            updateQuery += "      "+manageDoubleQuote(reponse) +"\n"
-        )
+        reponsesFausse.forEach(reponse => {
+            updateQuery += "      " + reponse.replaceAll("\\", "\\\\") + "\n"
+        })
 
         updateQuery += "    ]\n" +
             "  ){\n" +

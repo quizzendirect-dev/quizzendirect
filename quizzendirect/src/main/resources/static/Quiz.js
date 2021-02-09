@@ -91,7 +91,7 @@ function sendReponse(reponseVal) {
     if (laquestion != null) {
         //TODO ajouter IF() ELSE
         let query = "mutation{\n" +
-            "  updateReponse(reponse : \"" + reponseVal + "\" , id_quest: " + laquestion.id_quest + " ){\n" +
+            "  updateReponse(reponse : \"" + reponseVal.replaceAll("\\", "\\\\") + "\" , id_quest: " + laquestion.id_quest + " ){\n" +
             "  ... on Question {\n" +
             "    id_quest\n" +
             "  }" +
