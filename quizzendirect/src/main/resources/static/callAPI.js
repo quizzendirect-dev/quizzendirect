@@ -9,7 +9,6 @@ var callAPI = async function (query) {
     else {
         environement = "s://" +environement
     }
-    console.log(environement)
     try {
         result = await $.ajax({
             method: "POST",

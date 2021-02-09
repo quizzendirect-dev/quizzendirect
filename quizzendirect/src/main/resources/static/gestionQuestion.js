@@ -307,7 +307,6 @@ $(document).on('click','#AjoutQuestion',function () {
             }
         });
         enregistrementQuestion(enonce, choix, reponsesBonnes, reponsesFausse, 10, nomRepertoire);
-        ajouteQuestion(nomRepertoire, enonce);
         let token = getCookie("token");
         let userId_ens = getCookie("userId_ens")
         let query = "{" +
@@ -328,15 +327,15 @@ $(document).on('click','#AjoutQuestion',function () {
             "       }" +
             "   }" +
             "}"
-
         const donnee = callAPI(query);
+
         donnee.then((object) => {
-                let id_rep = getIdRepertory(object.data.getEnseignantById, userId_ens, nomRepertoire);
-                let questions = getQuestionByrepertoire(object.data.getEnseignantById, userId_ens, nomRepertoire);
-                questionadded(id_rep, questions, enonce, choix, reponsesBonnes, reponsesFausse, 10);
-                $('#modalPoll-1').modal('hide');
-            }
-        );
+            ajouteQuestion(nomRepertoire, enonce);
+            let id_rep = getIdRepertory(object.data.getEnseignantById, userId_ens, nomRepertoire);
+            let questions = getQuestionByrepertoire(object.data.getEnseignantById, userId_ens, nomRepertoire);
+            questionadded(id_rep, questions, enonce, choix, reponsesBonnes, reponsesFausse, 10);
+            $('#modalPoll-1').modal('hide');
+        });
     }
 
 });
@@ -369,17 +368,17 @@ $(document).on('click','#ModifierQuestion',function () {
         let updateQuery = "mutation{\n" +
             "  updateQuestion\n" +
             "  (token : \""+ token +"\" , id_quest: " + idQuest + ",\n" +
-            "  \tintitule: \"" + enonce + "\",\n" +
+            "  \tintitule: \"" + manageDoubleQuote(enonce) + "\",\n" +
             "    choixUnique: "+ choix +",\n" +
             "    reponsesBonnes: [\n";
         reponsesBonnes.forEach(reponse =>
-            updateQuery += "      "+reponse+ "\n"
+            updateQuery += "      "+manageDoubleQuote(reponse)+ "\n"
         )
 
         updateQuery += "    ],\n" +
             "    reponsesFausses: [\n";
         reponsesFausse.forEach(reponse =>
-            updateQuery += "      "+reponse +"\n"
+            updateQuery += "      "+manageDoubleQuote(reponse) +"\n"
         )
 
         updateQuery += "    ]\n" +
@@ -482,7 +481,6 @@ $(document).on('click','.row button',function () {
             "  }\n" +
             "  }\n" +
             "}"
-
         const donnee = callAPI(query);
         donnee.then((object) => {
             let question = object.data.getQuestionById;
